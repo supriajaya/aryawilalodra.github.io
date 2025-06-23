@@ -105,19 +105,18 @@
     }
 
     .popup-music {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #ff0055;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    }
-
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
     video.hidden {
       display: none;
     }
@@ -127,6 +126,21 @@
       width: 100%;
       margin-top: 20px;
     }
+    
+    
+    .popup-home {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
     
     <style>
   .leaflet-control-attribution {
@@ -172,9 +186,14 @@
     <img src="https://nasukafoods.site/ktp.jpg" alt="" />
     <p><strong>Bidang Profesional</strong></p>
     <li>✅ Aplikator aluminium composite panel
-    <li>✅ UMKM Nasuka foods</li>
-    <li>✅ Transporter small package premium </li>
-    <li>✅ Website programing</li>
+    <li>✅ Transporter premium</li>
+    <li>✅ UMKM Kuliner </li>
+    <li>✅ Programing</li>
+    
+<p><a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: white; text-align: center; display: block; text-decoration: underline;">
+  Penyimpanan berkas untuk publik
+</a>
+    
   </section>
 
 
@@ -183,60 +202,10 @@
     
 <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 10px;"></video>
 
-<h4 style="margin: 8px 0 4px; color: white; text-align: center;">Lemari</h4>
-<p style="font-size: 13px; color: white; text-align: center;">Penyimpanan berkas untuk publik</p> </div>
-  
-
-  <!-- Map -->
-  <div id="map"></div>
-<style>
-  .leaflet-control-attribution {
-    display: none !important;
-  }
-</style>
-  <!-- Script & Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
-      authDomain: "posisi-saya.firebaseapp.com",
-      projectId: "posisi-saya",
-      storageBucket: "posisi-saya.appspot.com",
-      messagingSenderId: "1090605644806",
-      appId: "1:1090605644806:web:7a257eee40570904135787"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    let map = L.map('map').setView([-6.2, 106.8], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    
-    let marker = L.marker([-6.2, 106.8]).addTo(map);
-    const lokasiRef = doc(db, "lokasi_saya", "nasukafoods");
-    onSnapshot(lokasiRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const latlng = [data.lat, data.lng];
-        marker.setLatLng(latlng);
-        map.setView(latlng, 15);
-      }
-    });
-  </script>
-<p>.</p>
-<p>.</p>
-  <div class="bottom-bar">
-    <a href="https://aryawilalodra.site">🏠<br>Home</a>
-    <a href="">🔍<br>Arsip</a>
-    <a href="">📝<br>Surat</a>
-    <a href="">📨<br>Lemari</a>
-    <a href="">👤<br>Journey</a>
-  </div>
-
+<h4 style="margin: 8px 0 4px; color: white; text-align: center;">BERKAS</h4>
+<a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: white; text-align: center; display: block; text-decoration: underline;">
+  Koleksi video
+</a>
   <script>
     function toggleMusic() {
       const video = document.getElementById('videomusic');
@@ -250,6 +219,6 @@
       }
     }
   </script>
-
+<div class="popup-home">🏠 Home</div>
 </body>
-</html>
+</html> 
