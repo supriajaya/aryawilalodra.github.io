@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nasuka foods</title>
+  <title>Arya Wilalodra</title>
   <style>
     body {
       margin: 0;
@@ -14,8 +14,8 @@
 
     .hero-section {
       position: relative;
-      height: 50vh;
-      background: url('https://aryafoods.shop/ciloksaji.jpeg') no-repeat center center/cover;
+      height: 30vh;
+      background: url('https://nasukafoods.site/fotoarya1.jpg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -41,7 +41,7 @@
 
     .info .location {
       font-size: 12px;
-      color: #ccc;
+      color: black;
     }
 
     .info .username {
@@ -90,7 +90,7 @@
 
     .gallery {
       background: #111;
-      padding: 20px 10px 80px; /* extra bottom padding for bar */
+      padding: 20px 10px 20px;
     }
 
     .gallery img {
@@ -103,21 +103,61 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
+
+    .popup-music {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #ff0055;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+
+    video.hidden {
+      display: none;
+    }
+
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    
+    <style>
+  .leaflet-control-attribution {
+    display: none !important;
+  }
+</style>
+    
   </style>
+  
+  <style>
+  
+</style>
 </head>
 <body>
+
+  <div id="musicBtn" class="popup-music" onclick="toggleMusic()">▶️</div>
+  <video id="videomusic" class="hidden">
+    <source src="https://nasukafoods.site/avang.mp4" type="video/mp4">
+  </video>
 
   <section class="hero-section">
     <div class="promo-text">
       Selamat datang di halaman <br />
-      <strong>Nasuka Foods</strong>
+      <strong>Arya Wilalodra</strong>
     </div>
 
     <div class="info">
       <div class="location">📍Bandung | Jawa Barat</div>
-      <div class="username">Nasuka foods</div>
-      <div class="desc">Promo cilok hangat & siap saji!</div>
-      <div class="music">🎵 suara asli - nasuka foods</div>
+      <div class="username"></div>
+      <div class="desc">Founder : Nasuka corporation </div>
+      <div class="music">🎵 Music - Slow Avangard</div>
     </div>
 
     <div class="sidebar">
@@ -127,41 +167,79 @@
     </div>
   </section>
 
-  <p>Kami nasuka foods yang berdiri sejak 17 agustus 2020 memperkenalkan produk andalan kami - Cilok Isian Gajih, Dengan slogan : Rasa yang dulu pernah ada</p>
-  <p>Cilok yang menurut kami dan beberapa pelanggan bilang : Enak, Lezat, Dan Mantul ( Mantap Betul)</p>
-  <p>Kami memahami bahwa setiap orang berbeda selera tapi cobalah cilok legendaris dengan citarasa yang sama sejak kami masa kecil nikmati (era 1980an)</p>
-
+  <p>Terimakasih telah berkunjung di website https://www.aryawilalodra.site</p>
+ 
   <section class="gallery">
-    <img src="https://nasukafoods.site/bumbukacang.jpeg" alt="Cilok Sajian 1" />
-    <p>Kami meracik bumbu kacang dengan ciri khas Manis dan gurih</p>
-    <img src="https://nasukafoods.site/aida.jpeg" alt="Cilok Sajian 2" />
-    <p>Aura pedas dengan cabe bubuk extra pedas, makin banyak makin pedazz</p>
-    
-    <p><strong>Promo spesial</strong></p>
-    <img src="https://nasukafoods.site/paketcilok.jpg" alt="Cilok Sajian 3" />
-    <p>Orang bijak pernah berkata: Terkadang suatu hal ditakar bukan atas apa yang dibayar, Tapi atas apa yang diperoleh, Apakah nilai nya sebanding?</p>
-    <p>Ya, Dengan harga seribuan, Cilok yang diracik dengan higienis, tinggi protein, asupan nilai gizi yang baik untuk tubuh, kelezatan isian gajih sapi pilihan, itu sebanding</p>
-    <p>Dapatkan diskon 5% untuk pembelian 100pcs</p>
-    <p>✅ Gratis ongkos kirim (secibaduyut raya)</p>
-    <p>✅ Gratis booster sosial media 1M viewers untuk 10 video tiktok kamu</p>
-    <p>✅ Kemasan ekslusif</p>
-
-    <p><strong>Nikmati cilok mu dengan gembira dan dapatkan rasa yang dulu pernah ada 😊</strong></p>
-  
-    <a href="https://wa.me/62859109819017?text=Halo%20Arya%20saya%20mau%20pesan%20cilok%20ya" 
-       target="_blank" 
-       style="display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-      📲 Pesan via WhatsApp
-    </a>
+    <img src="https://nasukafoods.site/ktp.jpg" alt="" />
+    <p><strong>Bidang Profesional</strong></p>
+    <li>✅ Aplikator aluminium composite panel
+    <li>✅ UMKM Nasuka foods</li>
+    <li>✅ Transporter small package premium </li>
+    <li>✅ Website programing</li>
   </section>
 
+  <!-- Map -->
+  <div id="map"></div>
+<style>
+  .leaflet-control-attribution {
+    display: none !important;
+  }
+</style>
+  <!-- Script & Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    let map = L.map('map').setView([-6.2, 106.8], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    
+    let marker = L.marker([-6.2, 106.8]).addTo(map);
+    const lokasiRef = doc(db, "lokasi_saya", "nasukafoods");
+    onSnapshot(lokasiRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const latlng = [data.lat, data.lng];
+        marker.setLatLng(latlng);
+        map.setView(latlng, 15);
+      }
+    });
+  </script>
+<p>Ok</p>
   <div class="bottom-bar">
-    <a href="https://nasukafoods.site">🏠<br>Home</a>
-    <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
-    <a href="https://nasukafoods.site/komentar-bebas.html">📝<br>Komentar</a>
-    <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
-    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
+    <a href="https://aryawilalodra.site">🏠<br>Home</a>
+    <a href="">🔍<br>Arsip</a>
+    <a href="">📝<br>Surat</a>
+    <a href="">📨<br>Lemari</a>
+    <a href="">👤<br>Journey</a>
   </div>
+
+  <script>
+    function toggleMusic() {
+      const video = document.getElementById('videomusic');
+      const btn = document.getElementById('musicBtn');
+      if (video.paused) {
+        video.play();
+        btn.innerText = '⏸️';
+      } else {
+        video.pause();
+        btn.innerText = '▶️';
+      }
+    }
+  </script>
 
 </body>
 </html>
