@@ -8,8 +8,22 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background-color: black;
-      color: white;
+      background-color: lightgray;
+      color: black;
+    }
+
+    .heartbeat {
+      animation: pulse 0.6s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    #likeIcon {
+      display: inline-block;
     }
 
     .hero-section {
@@ -25,8 +39,7 @@
       text-align: center;
       margin-top: 5vh;
       font-size: 24px;
-      font-weight: bold;
-      text-shadow: 0 0 6px black;
+      font-weight: normal;
       padding: 0 20px;
     }
 
@@ -89,8 +102,8 @@
     }
 
     .gallery {
-      background: #111;
-      padding: 20px 10px 20px;
+      background: lightgray;
+      padding: 10px 5px 10px;
     }
 
     .gallery img {
@@ -105,18 +118,19 @@
     }
 
     .popup-music {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 1000;
-  background: none;
-  box-shadow: none;
-  padding: 0;
-  border-radius: 0;
-}
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
     video.hidden {
       display: none;
     }
@@ -126,34 +140,27 @@
       width: 100%;
       margin-top: 20px;
     }
-    
-    
+
     .popup-home {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 1000;
-  background: none;
-  box-shadow: none;
-  padding: 0;
-  border-radius: 0;
-}
-    
-    <style>
-  .leaflet-control-attribution {
-    display: none !important;
-  }
-</style>
-    
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .leaflet-control-attribution {
+      display: none !important;
+    }
   </style>
-  
-  <style>
-  
-</style>
 </head>
+
 <body>
 
   <div id="musicBtn" class="popup-music" onclick="toggleMusic()">▶️</div>
@@ -170,42 +177,34 @@
     <div class="info">
       <div class="location">📍Bandung | Jawa Barat</div>
       <div class="username"></div>
-      <div class="desc">Founder : Nasuka corporation </div>
+      <div class="desc">Founder : Nasuka corporation</div>
       <div class="music">🎵 Music - Slow Avangard</div>
     </div>
 
     <div class="sidebar">
-      <div>❤️ 1.M</div>
-      <div>💬 900.K</div>
-      <div>🔗 Share</div>
+      <div><span id="likeIcon" onclick="heartbeat()">❤️</span> <strong>201.M</strong></div>
+      <div>💬 <strong>900.K</strong></div>
+      <div>🔗 <strong>Share</strong></div>
     </div>
   </section>
-
 
   <section class="gallery">
     <img src="https://nasukafoods.site/nasukacorporation.jpg" alt="" />
     <p><strong>Bidang Profesional</strong></p>
-    <li>✅ Aplikator aluminium composite panel
+    <li>✅ Aplikator aluminium composite panel</li>
     <li>✅ Transporter premium</li>
-    <li>✅ UMKM Kuliner </li>
+    <li>✅ UMKM Kuliner</li>
     <li>✅ Programing</li>
-    
-<p><a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: white; text-align: center; display: block; text-decoration: underline;">
-  Penyimpanan berkas untuk publik
-</a>
-    
+<p></p>
+    <a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: black; text-align: center; display: block; text-decoration: underline;">
+      Penyimpanan berkas untuk publik
+    </a>
   </section>
 
+  <div style="max-width: 300px; margin: 15px auto; background: gray; border-radius: 10px; padding: 5px;">
+    <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 5px;"></video>
+  </div>
 
-  
-<div style="max-width: 300px; margin: 15px auto; background: #222; border-radius: 10px; padding: 10px;">
-    
-<video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 10px;"></video>
-
-<h4 style="margin: 8px 0 4px; color: white; text-align: center;">BERKAS</h4>
-<a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: white; text-align: center; display: block; text-decoration: underline;">
-  Koleksi video
-</a>
   <script>
     function toggleMusic() {
       const video = document.getElementById('videomusic');
@@ -218,7 +217,13 @@
         btn.innerText = '▶️';
       }
     }
+
+    function heartbeat() {
+      const icon = document.getElementById('likeIcon');
+      icon.classList.add('heartbeat');
+      setTimeout(() => icon.classList.remove('heartbeat'), 600);
+    }
   </script>
-<div class="popup-home">🏠 Home</div>
+
 </body>
-</html> 
+</html>
