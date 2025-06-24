@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arya Wilalodra</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: gray;
+      color: white;
+    }
+
+    .hero-section {
+      position: relative;
+      height: 20vh;
+      background: url('http://aryawilalodra.site/fotoleles.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .promo-text {
+      text-align: center;
+      margin-top: 5vh;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 6px black;
+      padding: 0 20px;
+    }
+
+    .info, .sidebar {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    .info {
+      left: 10px;
+    }
+
+    .info .location {
+      font-size: 12px;
+      color: black;
+    }
+
+    .info .username {
+      font-weight: bold;
+    }
+
+    .info .desc {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .info .music {
+      font-size: 12px;
+      color: #ffbb00;
+    }
+
+    .sidebar {
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar div {
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      font-size: 12px;
+      z-index: 999;
+    }
+
+    .bottom-bar a {
+      color: white;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .gallery {
+      background: #111;
+      padding: 20px 10px 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .popup-music {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+    video.hidden {
+      display: none;
+    }
+
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    
+    
+    .popup-home {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+    
+    <style>
+  .leaflet-control-attribution {
+    display: none !important;
+  }
+</style>
+    
+  </style>   
+  <style>
+  
+</style>    
+ 
+</head>
+<body>
+
+  <div id="musicBtn" class="popup-music" onclick="toggleMusic()">▶️</div>
+  <video id="videomusic" class="hidden">
+    <source src="https://nasukafoods.site/avang.mp4" type="video/mp4">
+  </video>
+
+  <section class="hero-section">
+    <div class="promo-
+      File     text"><br />
+      <strong></strong>
+    </div>
+
+    <div class="info">
+<div class="location">📍Jawa Barat</div>      
+      <div class="username"></div>
+      <div class="desc">Founder : Nasuka corporation </div>
+      <div class="music">🎵 Music - Slow Avangard</div>
+    </div>
+
+    <div
+           class="sidebar">
+           <div>❤️ 1.M</div>
+           <div>💬 900.K</div>
+           <div>🔗 Share</div>
+    </div>
+
+
+
+
+  <script>
+    function toggleMusic() {
+      const video = document.getElementById('videomusic');
+      const btn = document.getElementById('musicBtn');
+      if (video.paused) {
+        video.play();
+        btn.innerText = '⏸️';
+      } else {
+        video.pause();
+        btn.innerText = '▶️';
+      }
+    }
+  </script>
+
+
+ 
+
+
+  
+
+
+<a href="https://aryawilalodra.site" class="popup-home">🏠 Home</a>
+
+</body>
+</html> 
