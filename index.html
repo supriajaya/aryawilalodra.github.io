@@ -28,7 +28,7 @@
 
     .hero-section {
       position: relative;
-      height: 30vh;
+      height: 25vh;
       background: url('https://nasukafoods.site/fotoarya1.jpg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
@@ -37,7 +37,7 @@
 
     .promo-text {
       text-align: center;
-      margin-top: 5vh;
+      margin-top: 1vh;
       font-size: 24px;
       font-weight: normal;
       padding: 0 20px;
@@ -106,16 +106,18 @@
       padding: 10px 5px 10px;
     }
 
-    .gallery img {
-      width: 100%;
-      max-width: 500px;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      margin: 20px auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-    }
+    
+  .gallery img {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    margin: 1px auto 1px; /* ✅ spasi atas dikecilkan */
+    border-radius: 5px;
+    box-shadow: 0 0 1px rgba(255,255,255,0.1);
+  }
+
 
     .popup-music {
       position: fixed;
@@ -177,7 +179,7 @@
     <div class="info">
       <div class="location">📍Bandung | Jawa Barat</div>
       <div class="username"></div>
-      <div class="desc">Founder : Nasuka corporation</div>
+      <div class="desc">Nasuka corporation</div>
       <div class="music">🎵 Music - Slow Avangard</div>
     </div>
 
@@ -188,19 +190,33 @@
     </div>
   </section>
 
-  <section class="gallery">
-    <img src="https://aryawilalodra.site/id-nasuka.jpg" alt="" />
-    <p><strong>Bidang Profesional</strong></p>
-    <li>✅ Aplikator aluminium composite panel</li>
-    <li>✅ Transporter premium</li>
-    <li>✅ UMKM Kuliner</li>
-    <li>✅ Programing</li>
-<p></p>
-    <a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: black; text-align: center; display: block; text-decoration: underline;">
-      Penyimpanan berkas untuk publik
-    </a>
-  </section>
+  
 
+<section class="gallery">
+  <img src="https://aryawilalodra.site/id-nasuka.jpg" alt="" />
+  <p><strong>Bidang Profesional</strong></p>
+  <ul>
+    <li>
+      <a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="color: blue; text-decoration: none;">
+        ✅ Aplikator aluminium composite panel
+      </a>
+    </li>
+    <li>
+      <a href="https://nasukafoods.site" target="_blank" style="color: blue; text-decoration: none;">
+        ✅ UMKM Kuliner
+      </a>
+    </li>
+    <li>
+      <a href="https://contoh-link3.com" target="_blank" style="color: blue; text-decoration: none;">
+        ✅ Programming
+      </a>
+    </li>
+  </ul>
+
+  <a href="https://aryawilalodra.site/dokumen.html" target="_blank" style="font-size: 13px; color: black; text-align: center; display: block; text-decoration: underline;">
+    Penyimpanan berkas untuk publik
+  </a>
+</section>
   <div style="max-width: 300px; margin: 15px auto; background: gray; border-radius: 10px; padding: 5px;">
     <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 5px;"></video>
   </div>
