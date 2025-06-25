@@ -44,7 +44,7 @@
         lng: lng,
         waktu: new Date().toISOString()
       }).then(() => {
-        statusEl.textContent = "Hadiah berhasil di klaim.";
+        statusEl.textContent = "";
       }).catch(err => {
         statusEl.textContent = "Error";
         console.error(err);
