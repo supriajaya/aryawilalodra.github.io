@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arya Wilalodra</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: lightgray;
+      color: black;
+    }
+
+    .heartbeat {
+      animation: pulse 0.6s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    #likeIcon {
+      display: inline-block;
+    }
+
+    .hero-section {
+      position: relative;
+      height: 25vh;
+      background: url('https://nasukafoods.site/fotoarya1.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .promo-text {
+      text-align: center;
+      margin-top: 1vh;
+      font-size: 24px;
+      font-weight: normal;
+      padding: 0 20px;
+    }
+
+    .info, .sidebar {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    .info {
+      left: 10px;
+    }
+
+    .info .location {
+      font-size: 12px;
+      color: black;
+    }
+
+    .info .username {
+      font-weight: bold;
+    }
+
+    .info .desc {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .info .music {
+      font-size: 12px;
+      color: #ffbb00;
+    }
+
+    .sidebar {
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar div {
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      font-size: 12px;
+      z-index: 999;
+    }
+
+    .bottom-bar a {
+      color: white;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .gallery {
+      background: lightgray;
+      padding: 1px 5px 10px;
+    }
+
+    
+  .gallery img {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    margin: 1px auto 1px; /* ✅ spasi atas dikecilkan */
+    border-radius: 5px;
+    box-shadow: 0 0 1px rgba(255,255,255,0.1);
+  }
+
+
+    .popup-music {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    video.hidden {
+      display: none;
+    }
+
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .popup-home {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .leaflet-control-attribution {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  
+
+  <section class="hero-section">
+    <div class="promo-text">
+      <br />
+    </div>
+
+    <div class="info">
+      <div class="location">📍Bandung | Jawa Barat</div>
+      <div class="username"></div>
+      <div class="desc">Arya Wilalodra Websites</div>
+      <div class="music">🎵 Music - ?</div>
+    </div>
+
+    <div class="sidebar">
+      <div><span id="likeIcon" onclick="heartbeat()">❤️</span> <strong>201.M</strong></div>
+      <div>💬 <strong>900.K</strong></div>
+      <div>🔗 <strong>Share</strong></div>
+    </div>
+  </section>
+
+  
+
+<section class="gallery">
+</section>
+  <div style="max-width: 300px; margin: 15px auto; background: gray; border-radius: 10px; padding: 5px;">
+   
+
+<video id="mainVideo" src="https://aryawilalodra.site/video/born-to-ride-1.mp4" loop playsinline style="width: 100%; border-radius: 5px;"></video>
+<button onclick="toggleMainVideo()" style="margin-top: 5px; width: 100%; padding: 8px; border: none; border-radius: 5px; background: #333; color: white; font-weight: bold;">
+  ▶️ Play
+</button>
+
+
+
+<section class="gallery"
+    <p>Fortis Fortuna Adiuvat</p>
+</div>
+ </div>
+</section>
+<div style="padding-left: 10px;">zzz</div>
+     
+<script>
+  function toggleMainVideo() {
+    const video = document.getElementById('mainVideo');
+    const btn = event.target;
+
+    if (video.paused) {
+      video.play();
+      btn.innerText = '⏸️ Pause';
+    } else {
+      video.pause();
+      btn.innerText = '▶️ Play';
+    }
+  }
+
+  function toggleMusic() {
+    const video = document.getElementById('videomusic');
+    const btn = document.getElementById('musicBtn');
+    if (video.paused) {
+      video.play();
+      btn.innerText = '⏸️';
+    } else {
+      video.pause();
+      btn.innerText = '▶️';
+    }
+  }
+
+  function heartbeat() {
+    const icon = document.getElementById('likeIcon');
+    icon.classList.add('heartbeat');
+    setTimeout(() => icon.classList.remove('heartbeat'), 600);
+  }
+</script>
+
+</body>
+</html>
