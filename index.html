@@ -13,6 +13,7 @@
       padding-bottom: 100px;
       overflow-x: hidden;
     }
+
     .heartbeat {
       animation: pulse 0.6s ease;
     }
@@ -21,7 +22,8 @@
       50% { transform: scale(1.4); }
       100% { transform: scale(1); }
     }
-    #likeIcon { display: inline-block; cursor: pointer; }
+
+    #likeIcon { display: inline-block; }
 
     .hero-section {
       position: relative;
@@ -31,6 +33,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
+
     .promo-text {
       margin-top: 1vh;
       font-size: 24px;
@@ -38,16 +41,34 @@
       padding: 0 20px;
       text-align: center;
     }
-    .promo-text strong { display: block; }
+
+    .promo-text strong {
+      display: block;
+    }
 
     .info, .sidebar {
       position: absolute;
       bottom: 20px;
     }
-    .info { left: 10px; }
-    .info .location { font-size: 12px; color: black; }
-    .info .desc { font-size: 14px; margin-top: 5px; }
-    .info .music { font-size: 12px; color: #ffbb00; }
+
+    .info {
+      left: 10px;
+    }
+
+    .info .location {
+      font-size: 12px;
+      color: black;
+    }
+
+    .info .desc {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .info .music {
+      font-size: 12px;
+      color: #ffbb00;
+    }
 
     .sidebar {
       right: 10px;
@@ -55,6 +76,7 @@
       flex-direction: column;
       align-items: center;
     }
+
     .sidebar div {
       margin: 8px 0;
       font-size: 12px;
@@ -83,6 +105,7 @@
       background: lightgray;
       padding: 10px 15px 20px;
     }
+
     .gallery img {
       width: 90%;
       max-width: 270px;
@@ -97,13 +120,16 @@
     .gallery p, .gallery ul, .gallery li, .gallery a {
       text-align: left;
     }
+
     .gallery ul {
       padding-left: 20px;
     }
+
     .gallery a {
       color: blue;
       text-decoration: none;
     }
+
     .gallery a:hover {
       text-decoration: underline;
     }
@@ -138,6 +164,7 @@
       text-decoration: none;
       margin-bottom: 5px;
     }
+
     .subjudul-list a:hover {
       text-decoration: underline;
     }
@@ -152,14 +179,14 @@
 
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(16, 1fr);
+      grid-template-columns: repeat(8, 1fr);
       gap: 8px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .video-grid a video {
       width: 100%;
-      height: 90px;
+      height: 50px;
       object-fit: cover;
       border-radius: 5px;
     }
@@ -211,29 +238,24 @@
   </div>
   <div class="sidebar">
     <div style="position: relative;">
-      <span id="likeIcon" onclick="handleLike()">❤️</span>
+      <span id="likeIcon" onclick="handleLike()" style="cursor:pointer;">❤️</span>
       <strong id="likeCount">201.M</strong>
-      <div id="popupLike">❤️ <span id="popupValue">0</span></div>
+      <div id="popupLike">Jumlah Likes : <span id="popupValue">0</span></div>
     </div>
     <div>💬 <strong>900.K</strong></div>
-    <div id="shareWrapper" style="position: relative; cursor:pointer;">
-      🔗 <strong>Share</strong>
-      <div id="shareDropdown" style="display:none; position:absolute; top:100%; right:0; background:white; border:1px solid #ccc; padding:5px 10px; border-radius:6px; font-size:12px; z-index:1000;">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://aryawilalodra.site" target="_blank" style="display:block; color:#1877F2; text-decoration:none; margin-bottom:4px;">📘 Share to Facebook</a>
-        <a href="https://twitter.com/intent/tweet?url=https://aryawilalodra.site" target="_blank" style="display:block; color:#1DA1F2; text-decoration:none;">🐦 Share to X</a>
-      </div>
-    </div>
+    <div>🔗 <strong>Share</strong></div>
+
   </div>
 </section>
 
 <section class="gallery">
   <ul>
+    <strong>Expert Profesional</strong><p>
     <li><a href="https://aryawilalodra.site/aplikator-acp.html" target="_blank">✅ Aplikator aluminium composite panel</a></li>
     <li><a href="https://nasukafoods.site" target="_blank">✅ UMKM Kuliner</a></li>
   </ul>
 
   <div class="video-grid">
-    <!-- 16 Video Dummy -->
     <a href="#"><video autoplay muted loop src="https://www.w3schools.com/html/mov_bbb.mp4"></video></a>
     <a href="#"><video autoplay muted loop src="https://www.w3schools.com/html/movie.mp4"></video></a>
     <a href="#"><video autoplay muted loop src="https://www.w3schools.com/html/mov_bbb.mp4"></video></a>
@@ -271,7 +293,19 @@
   ©copyright - arya wilalodra 2025
 </footer>
 
-<!-- Firebase dan Script -->
+<script>
+  function heartbeat() {
+    const icon = document.getElementById('likeIcon');
+    icon.classList.add('heartbeat');
+    setTimeout(() => icon.classList.remove('heartbeat'), 600);
+  }
+
+  function toggleSubjudul() {
+    const popup = document.getElementById('subjudulPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+  }
+</script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
   import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
@@ -316,36 +350,6 @@
     if (num >= 1_000) return (num / 1_000).toFixed(1) + 'K';
     return num.toString();
   }
-
-  function heartbeat() {
-    likeIcon.classList.add('heartbeat');
-    setTimeout(() => likeIcon.classList.remove('heartbeat'), 600);
-  }
-</script>
-
-<!-- Subjudul toggle -->
-<script>
-  function toggleSubjudul() {
-    const popup = document.getElementById('subjudulPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-  }
-</script>
-
-<!-- Share dropdown script -->
-<script>
-  const shareWrapper = document.getElementById("shareWrapper");
-  const shareDropdown = document.getElementById("shareDropdown");
-
-  shareWrapper.addEventListener("click", function (e) {
-    e.stopPropagation();
-    shareDropdown.style.display = shareDropdown.style.display === "block" ? "none" : "block";
-  });
-
-  document.addEventListener("click", function (e) {
-    if (!shareWrapper.contains(e.target)) {
-      shareDropdown.style.display = "none";
-    }
-  });
 </script>
 
 </body>
