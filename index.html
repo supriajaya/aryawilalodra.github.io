@@ -36,7 +36,7 @@
 
     .promo-text {
       margin-top: 1vh;
-      font-size: 24px;
+      font-size: 12px;
       font-weight: normal;
       padding: 0 20px;
       text-align: center;
@@ -56,17 +56,17 @@
     }
 
     .info .location {
-      font-size: 12px;
+      font-size: 5px;
       color: black;
     }
 
     .info .desc {
-      font-size: 14px;
-      margin-top: 5px;
+      font-size: 7px;
+      margin-top: 2px;
     }
 
     .info .music {
-      font-size: 14px;
+      font-size: 7px;
       color: black;
     }
 
@@ -78,8 +78,8 @@
     }
 
     .sidebar div {
-      margin: 8px 0;
-      font-size: 12px;
+      margin: 4px 0;
+      font-size: 5px;
       position: relative;
     }
 
@@ -122,14 +122,16 @@
     }
 
     .gallery ul {
-      padding-left: 20px;
+      padding-left: 1px;
     }
 
     .gallery a {
       color: blue;
       text-decoration: none;
     }
-
+.gallery ul li a {
+  font-size: 5px; /* atau ukuran yang lebih kecil sesuai keinginan */
+}
     .gallery a:hover {
       text-decoration: underline;
     }
@@ -229,7 +231,7 @@
 <section class="hero-section">
   <div class="promo-text">
     Selamat datang di halaman
-    <strong>Arya Wilalodra</strong>
+    <strong></strong>
   </div>
   <div class="info">
     <div class="location">📍 Jawa Barat</div>
@@ -239,10 +241,10 @@
   <div class="sidebar">
     <div style="position: relative;">
       <span id="likeIcon" onclick="handleLike()" style="cursor:pointer;">❤️</span>
-      <strong id="likeCount">201.M</strong>
+      <strong id="likeCount">201.M</strong></span>
       <div id="popupLike">Jumlah Likes : <span id="popupValue">0</span></div>
     </div>
-    <div>💬 <strong>900.K</strong></div>
+    <div>💬 <strong>945.K</strong></div>
     <div>🔗 <strong>Share</strong></div>
 
   </div>
@@ -275,7 +277,7 @@
   </div>
 
   <div style="position: relative;">
-    <a class="toggle-link" onclick="toggleSubjudul()">Penyimpanan arsip publik</a>
+    <a class="toggle-link" onclick="toggleSubjudul()">Arsip publik</a>
   </div>
 </section>
 
