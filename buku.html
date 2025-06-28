@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Buku Digital</title>
+  <title>Buku Digital: 48 Hukum Kekuasaan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     body {
@@ -30,7 +30,7 @@
       height: 480px;
       perspective: 1500px;
       touch-action: pan-y;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .page {
@@ -43,9 +43,9 @@
       transform-origin: left center;
       transition: transform 0.8s ease;
       backface-visibility: hidden;
-      overflow-y: auto;
-      padding: 20px;
+      padding: 10px 10px 3px 10px; /* bawah lebih luas */
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     .page.flipped {
@@ -53,11 +53,9 @@
       z-index: 0;
     }
 
-    .page:nth-child(1) { z-index: 5; }
-    .page:nth-child(2) { z-index: 4; }
-    .page:nth-child(3) { z-index: 3; }
-    .page:nth-child(4) { z-index: 2; }
-    .page:nth-child(5) { z-index: 1; }
+    .page:nth-child(n) {
+      z-index: 100;
+    }
 
     h2 {
       margin-top: 0;
@@ -72,64 +70,142 @@
 </head>
 <body>
 
-  <header>Buku Digital: Teknologi & Kehidupan</header>
+<header>Buku Digital: 48 Hukum Kekuasaan</header>
 
-  <div class="book" id="book">
-    <div class="page">
-      <h2>📘 Pendahuluan</h2>
-      <p>Selamat datang di buku digital ini. Melalui halaman-halaman berikut, kamu akan menemukan topik menarik seputar teknologi dan kehidupan sehari-hari dalam format sederhana.</p>
-    </div>
-    <div class="page">
-      <h2>💡 Apa itu Teknologi?</h2>
-      <p>Teknologi adalah alat, sistem, dan metode yang digunakan manusia untuk memudahkan pekerjaan dan mempercepat proses. Dari telepon genggam hingga kecerdasan buatan, teknologi terus berkembang pesat.</p>
-    </div>
-    <div class="page">
-      <h2>📱 Evolusi Smartphone</h2>
-      <p>Smartphone berkembang dari alat komunikasi sederhana menjadi perangkat multifungsi. Kini, hampir semua aspek kehidupan bisa diakses dari genggaman tangan.</p>
-    </div>
-    <div class="page">
-      <h2>🌐 Internet dan Kehidupan Modern</h2>
-      <p>Internet menghubungkan dunia. Pendidikan, pekerjaan, hiburan, dan komunikasi kini bisa dilakukan dari mana saja, kapan saja. Namun, penting juga menjaga keamanan digital.</p>
-    </div>
-    <div class="page">
-      <h2>✍️ Penutup</h2>
-      <p>Teknologi bukan lagi masa depan, tapi sudah menjadi bagian dari kehidupan sekarang. Mari kita gunakan dengan bijak, untuk memperbaiki kualitas hidup dan bukan sebaliknya.</p>
-    </div>
-  </div>
+<div class="book" id="book"></div>
 
-  <script>
-    const pages = document.querySelectorAll('.page');
-    let current = 0;
+<script>
+  const book = document.getElementById('book');
+  const longText = `Sesuai dengan namanya, cerpen atau cerita pendek merupakan sebuah karya pendek yang dibatasi dengan jumlah kata.
 
-    function flipForward() {
-      if (current < pages.length) {
-        pages[current].classList.add('flipped');
-        current++;
+Setidaknya saat membuat cerita pendek, kamu harus mengingat bahwa ada aturan jumlah kata yaitu maksimal 20.000 kata.
+
+Selain itu juga ada aturan dalam menggunakan bahasa, yaitu bahasa Indonesia yang baik dan benar.
+
+Namun, terkadang juga terdapat beberapa orang membuat cerita menggunakan bahasa santai dan gaul, hal ini tergantung pada kisah di dalam cerpen tersebut.
+
+Bahkan sebenarnya ada juga <a href="https://contoh.link/" target="_blank">BOS</a>  penulis yang menggunakan bahasa daerah saat menuliskan cerita pendek.
+
+TeeRrkadang juga memakai variasi bahasa antara bahasa Indonesia dan bahasa daerah agar ceritanya lebih terasa nyata dan menarik.
+
+Agar lebih paham lagi, sebaiknya kamu memperhatikan beberapa contoh cerita pendek singkat bahasa Indonesia berikut ini dengan berbagai tema.
+
+Dengan banyak belajar contohnya, tentu akan memudahkanmu mendapat referensi saat ingin membuatnya sendiri.
+Juminten sangat terkenal di sekolahnya karena merupakan salah satu siswi paling pandai. Pantas saja teman Juminten sangat banyak, tidak peduli laki-laki atau perempuan.
+Namun, Juminten tetap merasa kesepian karena sebenarnya ia memiliki sahabat lain yang sudah menemaninya sejak kecil.
+
+Juminten benar-benar menyayangi sahabatnya tersebut, mereka sudah tidak bertemu selama 10 tahun.
+
+Sahabat Juminten bernama Iris, mereka terpisah karena Iris harus ikut orang tuanya ke luar negeri.
+
+Suatu hari Juminten benar-benar memikirkan sahabatnya itu, lalu memutuskan untuk mencarinya.
+
+Dengan uang tabungannya, Juminten memutuskan untuk pergi ke Amerika tanpa sepengetahuan orang tuanya. Suatu sore, ia sudah berkemas-kemas dan berniat pergi saat tengah malam.
+
+Namun, ternyata orang tuanya mengabari bahwa hari ini akan ada tamu special yang datang ke rumahnya.
+
+Juminten terpaksa membatalkannya karena tamu tersebut. Saat tamu itu datang mengetuk pintu, Juminten membukanya dengan muka lesu.
+
+Namun saat ia membuka pintu, ternyata Iris dan orang tuanya berdiri di depan pintu tersebut. Juminten sangat bahagia sampai menangis.
+
+Dari contoh cerita pendek singkat bahasa Indonesia tersebut, tentu kamu sudah memahami bahwa menuliskan cerpen harus menggunakan bahasa Indonesia dengan baik dan benar. 
+
+Penting sekali memperhatikan struktur saat membuat cerpen. Dengan adanya struktur tentu akan lebih memudahkanmu dalam menyusun ceritanya.
+
+2. Contoh Cerita Pendek Singkat Bahasa Indonesia Tema Keluarga
+
+Keluarga adalah sebuah kelompok yang terdiri dari orang tua dan anak – anaknya. Di dalam keluarga sering sekali terjadi konflik yang dapat menjadi pelajaran berharga bagi semua orang.
+
+Itu sebabnya, banyak orang yang membuat contoh cerita pendek singkat bahasa Indonesia menggunakan tema keluarga.
+
+Kamu juga bisa membuatnya jika menyukai cerita tentang keluarga, seperti contoh berikut ini.
+
+Diam-Diam Kakak Menyayangiku
+
+Hidup dengan keluarga pas-pasan sudah bukan hal aneh lagi untuk. Sejak kecil, keluarga kami sangat kesulitan bahkan hanya untuk mencari makan.
+
+Ayah dan ibu benar-benar bekerja keras untuk menghidupiku dan kakak, karena kami masih harus sekolah di 1 SMA yang sama.
+
+Namun aku dan kakak rupanya sering membuat ayah dan ibu kesal, sebagai kakak beradik laki-laki, kami sering merasa tidak puas satu sama lain.
+
+Tiada hari tanpa bertengkar, sampai ayah dan ibu pernah menangis melihat pertengkaran kami yang tidak pernah kunjung usai.
+
+Suatu hari ketika kakak sudah lulus SMA dan akan kuliah, kebetulan aku harus pergi ke luar kota mengikuti study tour dari sekolah.
+
+Kuliah dan mengikuti study tour tentu membutuhkan uang. Memang jumlah uang untuk study tour tidak begitu banyak.
+
+Namun jika aku mengambilnya dari sebagian uang kuliah kakak, pasti kakak tidak bisa kuliah.
+
+Aku sudah hampir mendebat kakak, karena dulu kakak sudah pernah ikut study tour. Menurutku study tour cukup penting.
+
+Namun, ternyata kakak memberikan sebagian uang kuliahnya tanpa marah seperti biasanya.
+
+Hal itu membuatku terharu karena ternyata kakak menyayangiku, tetapi aku akhirnya memutuskan tidak mengikuti study tour karena kuliah kakak jauh lebih penting.
+
+
+
+`.repeat(1); // Contoh teks panjang 
+
+  function createPages(text, chunkSize = 900) {
+    const words = text.split(" ");
+    let pageText = "";
+    const pages = [];
+
+    for (let word of words) {
+      if ((pageText + word).length > chunkSize) {
+        pages.push(pageText.trim());
+        pageText = "";
       }
+      pageText += word + " ";
     }
+    if (pageText) pages.push(pageText.trim());
 
-    function flipBackward() {
-      if (current > 0) {
-        current--;
-        pages[current].classList.remove('flipped');
-      }
+    pages.forEach((content, i) => {
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.zIndex = pages.length - i;
+      page.innerHTML = `<p>${content.replace(/\n/g, '<br>')}</p>`;
+      book.appendChild(page);
+    });
+  }
+
+  createPages(longText);
+
+  // Flip logic
+  const pages = () => document.querySelectorAll('.page');
+  let current = 0;
+
+  function flipForward() {
+    const p = pages();
+    if (current < p.length) {
+      p[current].classList.add('flipped');
+      current++;
     }
+  }
 
-    let startX = 0;
-    document.getElementById('book').addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-    });
+  function flipBackward() {
+    const p = pages();
+    if (current > 0) {
+      current--;
+      p[current].classList.remove('flipped');
+    }
+  }
 
-    document.getElementById('book').addEventListener('touchend', e => {
-      let endX = e.changedTouches[0].clientX;
-      let deltaX = endX - startX;
-      if (Math.abs(deltaX) > 50) {
-        deltaX < 0 ? flipForward() : flipBackward();
-      }
-    });
+  let startX = 0;
+  book.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
 
-    document.getElementById('book').addEventListener('click', flipForward);
-  </script>
+  book.addEventListener('touchend', e => {
+    let endX = e.changedTouches[0].clientX;
+    let deltaX = endX - startX;
+    if (Math.abs(deltaX) > 50) {
+      deltaX < 0 ? flipForward() : flipBackward();
+    }
+  });
+
+  book.addEventListener('click', flipForward);
+</script>
 
 </body>
 </html>
