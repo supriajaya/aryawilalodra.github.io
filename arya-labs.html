@@ -44,28 +44,37 @@
         lng: lng,
         waktu: new Date().toISOString()
       }).then(() => {
-        statusEl.textContent = "Good";
+        statusEl.textContent = "Terkirim (" + new Date().toLocaleTimeString() + ")";
       }).catch(err => {
-        statusEl.textContent = "Error";
+        statusEl.textContent = "Gagal mengirim lokasi";
         console.error(err);
       });
     };
 
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        updateLocation(lat, lng);
-      }, (err) => {
-        statusEl.textContent = "Error, coba resfres halaman";
-      }, {
-        enableHighAccuracy: true,
-        maximumAge: 5000,
-        timeout: 10000
-      });
-    } else {
-      statusEl.textContent = "Error";
-    }
+    const getLocationOnce = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          updateLocation(lat, lng);
+        }, (err) => {
+          statusEl.textContent = "Gagal mendapatkan lokasi";
+          console.error(err);
+        }, {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 10000
+        });
+      } else {
+        statusEl.textContent = "Geolocation tidak didukung";
+      }
+    };
+
+    // Jalankan pertama kali
+    getLocationOnce();
+
+    // Ulangi tiap 5 menit (300.000 ms)
+    setInterval(getLocationOnce, 300000);
   </script>
 </body>
 </html>
