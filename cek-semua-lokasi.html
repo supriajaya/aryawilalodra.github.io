@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lihat Semua Lokasi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style> html, body, #map { height: 100%; margin: 0; } </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const map = L.map('map').setView([-6.9, 107.6], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const pelanggan = ["anisa012345678", "irwan012345678", "anipkah"];
+    const markerMap = {};
+
+    pelanggan.forEach(nama => {
+      const ref = doc(db, "lokasi_saya", nama);
+      onSnapshot(ref, (snap) => {
+        const data = snap.data();
+        if (!data) return;
+        const pos = [data.lat, data.lng];
+        const waktu = new Date(data.waktu).toLocaleTimeString();
+
+        if (markerMap[nama]) {
+          markerMap[nama].setLatLng(pos).bindPopup(`${nama} @ ${waktu}`);
+        } else {
+          markerMap[nama] = L.marker(pos).addTo(map).bindPopup(`${nama} @ ${waktu}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
