@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Nasuka Foods</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: hsl(190, 60%, 40%);
+            --color-primary-darker: hsl(190, 60%, 30%);
+            --color-secondary: hsl(210, 29%, 24%);
+            --color-text-dark: hsl(210, 10%, 20%);
+            --color-text-light: #ffffff;
+            --color-background-light: hsl(210, 15%, 95%);
+            --color-accent-green: hsl(120, 39%, 45%);
+            --color-border: #e0e0e0;
+            --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-light);
+            color: var(--color-text-dark);
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 0.9em;
+        }
+
+        header {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22.4px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        .main-content {
+            padding-top: 80px; /* Sesuaikan dengan tinggi header */
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--color-secondary);
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .section-title {
+            color: var(--color-primary-darker);
+            font-family: 'Poppins', sans-serif;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-border);
+            padding-bottom: 5px;
+        }
+
+        /* Keranjang di Checkout */
+        #checkoutCartItems .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+
+        #checkoutCartItems .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        #checkoutCartItems .item-info {
+            flex-grow: 1;
+        }
+
+        #checkoutCartItems .item-name {
+            font-weight: 600;
+        }
+
+        #checkoutCartItems .item-qty {
+            margin-left: 10px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        #checkoutCartItems .item-price {
+            font-weight: 600;
+            color: var(--color-accent-green);
+        }
+
+        #checkoutCartSummary {
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--color-primary);
+        }
+
+        /* Formulir */
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-secondary);
+        }
+
+        form input[type="text"],
+        form input[type="tel"],
+        form textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1em;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        form button[type="submit"] {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: var(--color-primary-darker);
+            transform: translateY(-2px);
+        }
+
+        /* QRIS Section */
+        #qrisSection {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--color-border);
+            display: none; /* Awalnya tersembunyi */
+        }
+
+        #qrisSection p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        #qrisImage {
+            max-width: 250px;
+            height: auto;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-light);
+        }
+
+        #confirmPaymentBtn {
+            background-color: var(--color-accent-green);
+            color: var(--color-text-light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        #confirmPaymentBtn:hover {
+            background-color: hsl(120, 39%, 35%);
+        }
+
+        /* Order History Section */
+        .order-history-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--color-border);
+        }
+
+        .order-history-section h2 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: var(--color-secondary);
+        }
+
+        .order-item {
+            background-color: var(--color-background-light);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .order-item h3 {
+            margin-top: 0;
+            color: var(--color-primary-darker);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .order-item p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .order-item .order-status {
+            font-weight: 600;
+            color: var(--color-accent-green); /* Warna hijau untuk status sukses */
+        }
+
+        .order-item .order-status.pending {
+            color: orange; /* Warna oranye untuk status menunggu */
+        }
+
+        .order-item .whatsapp-order-btn {
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .order-item .whatsapp-order-btn:hover {
+            background-color: #1DA851;
+        }
+
+        .empty-history-message {
+            text-align: center;
+            font-style: italic;
+            color: var(--color-text-dark);
+            padding: 20px;
+        }
+
+        footer {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 25px;
+            margin-top: auto;
+            font-size: 14px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--color-text-light);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 10px auto;
+                padding: 15px;
+                padding-top: 70px;
+            }
+            h2 { font-size: 1.5em; }
+            .section-title { font-size: 1.1em; }
+            form input[type="text"], form input[type="tel"], form textarea {
+                width: calc(100% - 20px);
+            }
+            form button[type="submit"] { font-size: 1em; padding: 10px 20px; }
+            #qrisImage { max-width: 200px; }
+            .order-item h3 { font-size: 1.1em; }
+            .order-item .whatsapp-order-btn { font-size: 0.85em; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+    </header>
+
+    <div class="main-content">
+        <h2>Detail Pesanan Anda</h2>
+
+        <h3 class="section-title">Keranjang Belanja</h3>
+        <div id="checkoutCartItems">
+            <p id="emptyCartMessage" style="display: none;">Keranjang Anda kosong. Silakan kembali ke halaman produk.</p>
+        </div>
+        <p id="checkoutCartSummary">Total: <span id="checkoutTotal">Rp 0</span></p>
+
+        <h3 class="section-title">Informasi Pengiriman</h3>
+        <form id="checkoutForm">
+            <label for="customerName">Nama Lengkap:</label>
+            <input type="text" id="customerName" required placeholder="Contoh: Budi Santoso">
+
+            <label for="customerPhone">Nomor Telepon (WhatsApp):</label>
+            <input type="tel" id="customerPhone" pattern="[0-9]{10,15}" required placeholder="Contoh: 081234567890">
+
+            <label for="customerAddress">Alamat Lengkap:</label>
+            <textarea id="customerAddress" rows="4" required placeholder="Contoh: Jl. Merdeka No. 10, RT 01/ RW 02, Kel. Maju, Kec. Jaya, Kota Bahagia"></textarea>
+
+            <button type="submit">Lanjutkan Pembayaran</button>
+        </form>
+
+        <div id="qrisSection">
+            <p>Silakan *scan* QRIS di bawah ini untuk menyelesaikan pembayaran:</p>
+            <img src="https://via.placeholder.com/250x250?text=QRIS+Code" alt="QRIS Code" id="qrisImage">
+            <p>Setelah pembayaran berhasil, klik tombol di bawah ini:</p>
+            <button id="confirmPaymentBtn">Konfirmasi Pembayaran Selesai</button>
+            <a id="whatsappOrderBtn" class="whatsapp-order-btn" style="text-decoration: none; display: inline-flex; justify-content: center; align-items: center; margin-top: 10px;">Hubungi WhatsApp</a>
+        </div>
+
+        <div class="order-history-section">
+            <h3 class="section-title">Riwayat Pesanan Saya</h3>
+            <div id="orderHistoryList">
+                <p class="empty-history-message">Belum ada riwayat pesanan.</p>
+            </div>
+            <button id="clearHistoryBtn" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: 20px; display: none;">Hapus Riwayat</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Nasuka Foods. Hak Cipta Dilindungi Undang-Undang.</p>
+        <p><a href="terms-conditions.html">Syarat & Ketentuan</a> | <a href="privacy-policy.html">Kebijakan Privasi</a></p>
+    </footer>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration (PASTIKAN INI SAMA DENGAN DARI KONSOL ANDA)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAM25NU85K_qnyqv6k4U7hnhD4qXltRfDk",
+            authDomain: "nasukaweb.firebaseapp.com",
+            projectId: "nasukaweb",
+            storageBucket: "nasukaweb.firebasestorage.app",
+            messagingSenderId: "933566688071",
+            appId: "1:933566688071:web:1fa9e5644b2dd2067a3a62"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Fungsi untuk mengautentikasi pengguna secara anonim
+        function authenticateAnonymously() {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, (user) => {
+                    if (!user) { // Jika belum ada pengguna terautentikasi
+                        signInAnonymously(auth)
+                            .then((userCredential) => {
+                                console.log("Signed in anonymously. UID:", userCredential.user.uid);
+                                resolve(userCredential.user);
+                            })
+                            .catch((error) => {
+                                console.error("Anonymous sign-in failed:", error);
+                                reject(error);
+                            });
+                    } else {
+                        console.log("Already signed in as:", user.uid);
+                        resolve(user);
+                    }
+                });
+            });
+        }
+
+        // --- Mulai dari sini adalah kode JavaScript checkout.html utama ---
+
+        // Fungsi helper untuk mengambil keranjang dari localStorage
+        function getCart() {
+            const cart = localStorage.getItem('nasukaCart');
+            try {
+                return cart ? JSON.parse(cart) : [];
+            } catch (e) {
+                console.error("Error parsing cart from localStorage:", e);
+                return [];
+            }
+        }
+
+        // Fungsi helper untuk menyimpan keranjang ke localStorage
+        function saveCart(cart) {
+            localStorage.setItem('nasukaCart', JSON.stringify(cart));
+        }
+
+        // Fungsi helper untuk memformat Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        // === Elemen DOM ===
+        const checkoutCartItems = document.getElementById('checkoutCartItems');
+        const checkoutTotalSpan = document.getElementById('checkoutTotal');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const qrisSection = document.getElementById('qrisSection');
+        const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+        const whatsappOrderBtn = document.getElementById('whatsappOrderBtn');
+        const orderHistoryList = document.getElementById('orderHistoryList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+        let currentOrderDetails = null; // Menyimpan detail pesanan yang sedang diproses
+
+        // 1. Menampilkan Item Keranjang di Halaman Checkout
+        function displayCartItems() {
+            const cart = getCart();
+            checkoutCartItems.innerHTML = '';
+            let totalCartPrice = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                checkoutForm.style.display = 'none';
+                qrisSection.style.display = 'none';
+            } else {
+                emptyCartMessage.style.display = 'none';
+                checkoutForm.style.display = 'block';
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('cart-item');
+                    itemElement.innerHTML = `
+                        <span class="item-info">
+                            <span class="item-name">${item.name}</span>
+                            (x${item.quantity})
+                        </span>
+                        <span class="item-price">${formatRupiah(item.price * item.quantity)}</span>
+                    `;
+                    checkoutCartItems.appendChild(itemElement);
+                    totalCartPrice += item.price * item.quantity;
+                });
+            }
+            checkoutTotalSpan.textContent = formatRupiah(totalCartPrice);
+        }
+
+        // 2. Mengelola Submit Formulir Checkout
+        checkoutForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Keranjang Anda kosong. Silakan tambahkan produk terlebih dahulu.');
+                return;
+            }
+
+            try {
+                const user = await authenticateAnonymously();
+                if (!user || !user.uid) {
+                    alert("Gagal mendapatkan ID pengguna. Tidak dapat memproses pesanan.");
+                    return;
+                }
+
+                const customerName = document.getElementById('customerName').value;
+                const customerPhone = document.getElementById('customerPhone').value;
+                const customerAddress = document.getElementById('customerAddress').value;
+
+                currentOrderDetails = {
+                    orderId: `ORD-${Date.now()}-${user.uid.substring(0, 4)}`,
+                    userId: user.uid, // Penting: Simpan UID pengguna
+                    items: cart.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    total: parseFloat(checkoutTotalSpan.textContent.replace(/[Rp.,]/g, '').replace(/\s/g, '')),
+                    customerInfo: {
+                        name: customerName,
+                        phone: customerPhone,
+                        address: customerAddress
+                    },
+                    status: 'Menunggu Pembayaran',
+                    timestamp: new Date().toISOString()
+                };
+
+                // SIMPAN PESANAN KE CLOUD FIRESTORE
+                // Koleksi 'orders' akan berisi semua pesanan dari semua user
+                // Setiap dokumen pesanan akan memiliki field 'userId'
+                await addDoc(collection(db, "orders"), currentOrderDetails);
+
+                // Kosongkan keranjang di localStorage
+                saveCart([]);
+                displayCartItems();
+
+                qrisSection.style.display = 'block';
+                checkoutForm.style.display = 'none';
+
+                updateWhatsappButton(currentOrderDetails);
+
+                // Perbarui tampilan riwayat pesanan dari Firestore
+                renderOrderHistory();
+                alert('Pesanan Anda berhasil dibuat! Silakan lanjutkan pembayaran dengan QRIS.');
+
+            } catch (error) {
+                console.error("Error submitting order:", error);
+                alert("Terjadi kesalahan saat menyimpan pesanan. Silakan coba lagi.");
+            }
+        });
+
+        // 3. Mengelola Tombol Konfirmasi Pembayaran Selesai
+        confirmPaymentBtn.addEventListener('click', async () => {
+            if (currentOrderDetails && currentOrderDetails.userId) {
+                try {
+                    const user = await authenticateAnonymously();
+                    if (!user || user.uid !== currentOrderDetails.userId) {
+                        alert("ID pengguna tidak cocok. Tidak dapat mengonfirmasi.");
+                        return;
+                    }
+
+                    // Untuk memperbarui status di Firestore, Anda perlu mencari dokumen berdasarkan orderId.
+                    // Ini akan sedikit lebih kompleks karena memerlukan ID dokumen Firestore.
+                    // Jika Anda ingin fungsionalitas ini, kita bisa tambahkan:
+                    // Anda perlu menyimpan doc ID dari addDoc di 'currentOrderDetails'
+                    // const orderDocRef = doc(db, "orders", currentOrderDetails.firestoreDocId);
+                    // await updateDoc(orderDocRef, { status: "Pembayaran Selesai" });
+
+                    alert('Pembayaran Anda telah dikonfirmasi. Pesanan akan segera diproses.');
+                    qrisSection.style.display = 'none';
+                    checkoutForm.style.display = 'none';
+                    renderOrderHistory(); // Perbarui tampilan riwayat
+                    currentOrderDetails = null;
+                } catch (error) {
+                    console.error("Error confirming payment:", error);
+                    alert("Terjadi kesalahan saat mengonfirmasi pembayaran.");
+                }
+            } else {
+                alert('Tidak ada pesanan aktif untuk dikonfirmasi.');
+            }
+        });
+
+        // 4. Update Tombol WhatsApp
+        function updateWhatsappButton(order) {
+            if (order) {
+                const message = `Halo Admin Nasuka Foods, saya ${order.customerInfo.name} ingin konfirmasi pesanan ID *${order.orderId}* dengan total *${formatRupiah(order.total)}*. Saya sudah melakukan pembayaran via QRIS. Mohon segera diproses. Detail alamat: ${order.customerInfo.address}`;
+                const encodedMessage = encodeURIComponent(message);
+                whatsappOrderBtn.href = `https://wa.me/${order.customerInfo.phone}?text=${encodedMessage}`;
+                whatsappOrderBtn.target = '_blank';
+                whatsappOrderBtn.style.display = 'inline-flex';
+            } else {
+                whatsappOrderBtn.style.display = 'none';
+            }
+        }
+
+        // 5. Menampilkan Riwayat Pesanan dari Cloud Firestore
+        async function renderOrderHistory() {
+            const orderHistoryListElement = document.getElementById('orderHistoryList');
+            const emptyHistoryMessage = orderHistoryListElement.querySelector('.empty-history-message');
+            
+            orderHistoryListElement.innerHTML = ''; // Kosongkan tampilan
+
+            try {
+                const user = await authenticateAnonymously();
+                if (!user || !user.uid) {
+                    emptyHistoryMessage.style.display = 'block';
+                    orderHistoryListElement.appendChild(emptyHistoryMessage);
+                    clearHistoryBtn.style.display = 'none';
+                    return;
+                }
+
+                // Ambil riwayat pesanan dari Firestore untuk user ini
+                const q = query(
+                    collection(db, "orders"),
+                    where("userId", "==", user.uid), // Filter berdasarkan UID pengguna
+                    orderBy("timestamp", "desc") // Urutkan dari terbaru
+                );
+                const querySnapshot = await getDocs(q);
+
+                let orderHistory = [];
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    orderHistory.push({ ...doc.data(), id: doc.id }); // Sertakan doc.id jika perlu untuk update/delete
+                });
+
+                if (orderHistory.length === 0) {
+                    emptyHistoryMessage.style.display = 'block';
+                    orderHistoryListElement.appendChild(emptyHistoryMessage);
+                    clearHistoryBtn.style.display = 'none';
+                } else {
+                    emptyHistoryMessage.style.display = 'none';
+                    clearHistoryBtn.style.display = 'block';
+                    orderHistory.forEach(order => {
+                        const orderItem = document.createElement('div');
+                        orderItem.classList.add('order-item');
+                        const statusClass = order.status === 'Menunggu Pembayaran' ? 'pending' : '';
+                        orderItem.innerHTML = `
+                            <h3>Pesanan ID: ${order.orderId}</h3>
+                            <p>Total: <strong>${formatRupiah(order.total)}</strong></p>
+                            <p>Status: <span class="order-status ${statusClass}">${order.status}</span></p>
+                            <p>Waktu: ${new Date(order.timestamp).toLocaleString('id-ID')}</p>
+                            <p>Nama: ${order.customerInfo.name}</p>
+                            <p>No. HP: ${order.customerInfo.phone}</p>
+                            <p>Alamat: ${order.customerInfo.address}</p>
+                            <a class="whatsapp-order-btn" 
+                                    data-order-id="${order.orderId}" 
+                                    data-customer-name="${order.customerInfo.name}"
+                                    data-customer-phone="${order.customerInfo.phone}"
+                                    data-order-total="${order.total}"
+                                    data-order-address="${order.customerInfo.address}"
+                                    target="_blank"
+                                    style="text-decoration: none;">Hubungi WhatsApp</a>
+                        `;
+                        orderHistoryListElement.appendChild(orderItem);
+                    });
+                }
+                
+                // Attach listener to newly created WhatsApp buttons
+                orderHistoryListElement.querySelectorAll('.whatsapp-order-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const btn = event.target;
+                        const orderId = btn.dataset.orderId;
+                        const customerName = btn.dataset.customerName;
+                        const customerPhone = btn.dataset.customerPhone;
+                        const orderTotal = parseFloat(btn.dataset.orderTotal);
+                        const orderAddress = btn.dataset.orderAddress;
+
+                        const message = `Halo Admin Nasuka Foods, saya ${customerName} ingin konfirmasi pesanan ID *${orderId}* dengan total *${formatRupiah(orderTotal)}*. Saya sudah melakukan pembayaran via QRIS. Mohon segera diproses. Detail alamat: ${orderAddress}`;
+                        const encodedMessage = encodeURIComponent(message);
+                        window.open(`https://wa.me/${customerPhone}?text=${encodedMessage}`, '_blank');
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error rendering order history from Firestore:", error);
+                emptyHistoryMessage.style.display = 'block';
+                orderHistoryListElement.appendChild(emptyHistoryMessage);
+                clearHistoryBtn.style.display = 'none';
+                alert("Gagal memuat riwayat pesanan. Silakan periksa koneksi internet Anda atau coba lagi nanti.");
+            }
+        }
+
+        // 6. Mengelola Tombol Hapus Riwayat
+        clearHistoryBtn.addEventListener('click', async () => {
+            if (!confirm('Apakah Anda yakin ingin menghapus semua riwayat pesanan? Tindakan ini tidak dapat dibatalkan.')) {
+                return;
+            }
+
+            try {
+                const user = await authenticateAnonymously();
+                if (!user || !user.uid) {
+                    alert("Tidak dapat menghapus riwayat. ID pengguna tidak ditemukan.");
+                    return;
+                }
+
+                // Ambil semua dokumen pesanan untuk pengguna ini
+                const q = query(
+                    collection(db, "orders"),
+                    where("userId", "==", user.uid)
+                );
+                const querySnapshot = await getDocs(q);
+
+                // Hapus setiap dokumen satu per satu
+                const deletePromises = [];
+                querySnapshot.forEach((docItem) => { // Perhatikan nama variabel 'docItem' agar tidak bentrok
+                    deletePromises.push(deleteDoc(doc(db, "orders", docItem.id))); // Menggunakan doc() dengan path lengkap
+                });
+                await Promise.all(deletePromises);
+
+                alert('Riwayat pesanan telah dihapus dari server Anda.');
+                renderOrderHistory(); // Perbarui tampilan
+            } catch (error) {
+                console.error("Error clearing order history:", error);
+                alert("Terjadi kesalahan saat menghapus riwayat pesanan.");
+            }
+        });
+
+        // === Inisialisasi Saat Halaman Dimuat ===
+        document.addEventListener('DOMContentLoaded', () => {
+            authenticateAnonymously().then(() => {
+                displayCartItems();
+                renderOrderHistory();
+            }).catch(error => {
+                console.error("Initialization failed:", error);
+                alert("Gagal memulai aplikasi. Silakan coba lagi.");
+            });
+        });
+    </script>
+</body>
+</html>
