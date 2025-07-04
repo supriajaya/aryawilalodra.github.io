@@ -18,6 +18,7 @@
             --color-accent-green: hsl(120, 39%, 45%);
             --color-border: #e0e0e0;
             --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
+            --spacing-unit: 1rem; /* Define a base spacing unit */
         }
 
         body {
@@ -26,13 +27,13 @@
             background-color: var(--color-background-light);
             color: var(--color-text-dark);
             line-height: 1.7;
-            font-size: 0.9em;
+            font-size: 16px; /* Base font size for responsiveness */
         }
 
         header {
             background-color: var(--color-secondary);
             color: var(--color-text-light);
-            padding: 20px 30px;
+            padding: calc(var(--spacing-unit) * 1.25) var(--spacing-unit); /* 20px 16px */
             text-align: center;
             box-shadow: var(--shadow-light);
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -41,31 +42,42 @@
             left: 0;
             width: 100%;
             z-index: 1000;
+            box-sizing: border-box; /* Include padding in width */
         }
 
         header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 1.5em; /* 24px */
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.05em;
         }
+        
+        .section-heading {
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-secondary);
+            text-align: center;
+            margin-top: calc(var(--spacing-unit) * 6); /* Adjusted for header */
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+            font-size: 1.8em;
+        }
+
 
         .product-grid {
-            padding: 100px 20px 20px; /* Padding top for fixed header */
+            padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.25); /* 16px 20px */
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: calc(var(--spacing-unit) * 1.5625); /* 25px */
             max-width: 1200px;
-            margin: 20px auto;
+            margin: 0 auto calc(var(--spacing-unit) * 1.25);
         }
 
         .product-card {
             background-color: #fff;
-            border-radius: 12px;
+            border-radius: 0.75rem; /* 12px */
             box-shadow: var(--shadow-light);
             overflow: hidden;
             text-align: center;
-            padding-bottom: 20px;
+            padding-bottom: calc(var(--spacing-unit) * 1.25); /* 20px */
             transition: transform 0.2s ease;
         }
 
@@ -75,37 +87,37 @@
 
         .product-card img {
             width: 100%;
-            height: 200px;
+            height: 12.5rem; /* 200px */
             object-fit: cover;
             border-bottom: 1px solid var(--color-border);
         }
 
         .product-card h3 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.4em;
+            font-size: 1.3em; /* 20.8px */
             color: var(--color-primary-darker);
-            margin: 15px 10px 5px;
+            margin: 0.9375rem 0.625rem 0.3125rem; /* 15px 10px 5px */
         }
 
         .product-card p {
-            margin: 0 10px 15px;
-            font-size: 1em;
+            margin: 0 0.625rem 0.9375rem; /* 0 10px 15px */
+            font-size: 0.95em;
             color: var(--color-text-dark);
         }
 
         .product-card .price {
             font-weight: 700;
-            font-size: 1.3em;
+            font-size: 1.2em; /* 19.2px */
             color: var(--color-accent-green);
-            margin-bottom: 15px;
+            margin-bottom: 0.9375rem; /* 15px */
         }
 
         .add-to-cart-btn {
             background-color: var(--color-primary);
             color: var(--color-text-light);
             border: none;
-            padding: 10px 25px;
-            border-radius: 20px;
+            padding: 0.625rem 1.5625rem; /* 10px 25px */
+            border-radius: 1.25rem; /* 20px */
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
@@ -120,8 +132,8 @@
         /* Floating Cart Icon */
         .cart-icon-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: calc(var(--spacing-unit) * 1.25); /* 20px */
+            right: calc(var(--spacing-unit) * 1.25); /* 20px */
             z-index: 1000;
         }
 
@@ -129,8 +141,8 @@
             background-color: var(--color-accent-green);
             color: var(--color-text-light);
             border-radius: 50%;
-            width: 55px;
-            height: 55px;
+            width: 3.4375rem; /* 55px */
+            height: 3.4375rem; /* 55px */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -152,39 +164,14 @@
             font-size: 0.7em;
             font-weight: bold;
             border-radius: 50%;
-            padding: 3px 7px;
+            padding: 0.1875rem 0.4375rem; /* 3px 7px */
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -0.3125rem; /* -5px */
+            right: -0.3125rem; /* -5px */
             transform: translate(25%, -25%);
-            min-width: 20px;
+            min-width: 1.25rem; /* 20px */
             text-align: center;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--color-secondary);
-            color: var(--color-text-light);
-            text-align: center;
-            padding: 25px;
-            margin-top: 40px;
-            font-size: 14px;
-            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-        }
-
-        footer p {
-            margin: 5px 0;
-        }
-
-        footer a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: var(--color-text-light);
         }
 
         /* Basic modal for cart view */
@@ -205,8 +192,8 @@
         .modal-content {
             background-color: #fefefe;
             margin: auto;
-            padding: 25px;
-            border-radius: 12px;
+            padding: calc(var(--spacing-unit) * 1.5625); /* 25px */
+            border-radius: 0.75rem; /* 12px */
             width: 90%;
             max-width: 500px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
@@ -216,9 +203,9 @@
         .close-button {
             color: #aaa;
             position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 28px;
+            top: 0.625rem; /* 10px */
+            right: 1.25rem; /* 20px */
+            font-size: 1.75em; /* 28px */
             font-weight: bold;
             cursor: pointer;
         }
@@ -234,7 +221,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 0.625rem 0; /* 10px */
             border-bottom: 1px dashed var(--color-border);
         }
 
@@ -253,15 +240,15 @@
         .modal-body .item-qty-controls {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.3125rem; /* 5px */
         }
 
         .modal-body .qty-btn {
             background-color: var(--color-primary);
             color: white;
             border: none;
-            width: 25px;
-            height: 25px;
+            width: 1.5625rem; /* 25px */
+            height: 1.5625rem; /* 25px */
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -279,19 +266,19 @@
 
         .modal-body .item-price {
             font-weight: 600;
-            margin-left: 10px;
+            margin-left: 0.625rem; /* 10px */
             color: var(--color-accent-green);
         }
 
         .modal-footer {
             text-align: right;
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: calc(var(--spacing-unit) * 1.25); /* 20px */
+            padding-top: 0.9375rem; /* 15px */
             border-top: 2px solid var(--color-primary);
         }
 
         .modal-footer .total-price {
-            font-size: 1.4em;
+            font-size: 1.3em; /* 20.8px */
             font-weight: 700;
         }
 
@@ -299,12 +286,12 @@
             background-color: var(--color-accent-green);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 0.75rem 1.875rem; /* 12px 30px */
+            border-radius: 1.5625rem; /* 25px */
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1.05em; /* 16.8px */
             font-weight: 600;
-            margin-top: 20px;
+            margin-top: calc(var(--spacing-unit) * 1.25); /* 20px */
             width: 100%;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-decoration: none; /* for link */
@@ -320,37 +307,112 @@
             text-align: center;
             font-style: italic;
             color: var(--color-text-dark);
-            padding: 20px;
+            padding: calc(var(--spacing-unit) * 1.25); /* 20px */
         }
 
+        /* Footer */
+        footer {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: calc(var(--spacing-unit) * 1.5625); /* 25px */
+            margin-top: calc(var(--spacing-unit) * 2.5); /* 40px */
+            font-size: 0.875em; /* 14px */
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            margin: 0.3125rem 0; /* 5px */
+        }
+
+        footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--color-text-light);
+        }
+
+        /* Media Queries for Mobile Responsiveness */
         @media (max-width: 768px) {
+            body {
+                font-size: 15px; /* Slightly smaller base font for smaller screens */
+            }
+            header {
+                padding: var(--spacing-unit) 0.75rem; /* 16px 12px */
+            }
+            header h1 {
+                font-size: 1.4em;
+            }
+            .section-heading {
+                font-size: 1.6em;
+                margin-top: calc(var(--spacing-unit) * 5);
+            }
             .product-grid {
-                grid-template-columns: 1fr;
-                padding-top: 90px;
+                grid-template-columns: 1fr; /* Single column layout */
+                padding: var(--spacing-unit) 0.9375rem; /* 16px 15px */
             }
             .product-card {
                 margin: 0 auto; /* Center single column cards */
             }
+            .product-card h3 {
+                font-size: 1.2em;
+            }
+            .product-card p {
+                font-size: 0.9em;
+            }
+            .product-card .price {
+                font-size: 1.1em;
+            }
+            .add-to-cart-btn {
+                font-size: 0.95em;
+                padding: 0.5rem 1.25rem; /* 8px 20px */
+            }
             .cart-icon-container {
-                bottom: 15px;
-                right: 15px;
+                bottom: 0.9375rem; /* 15px */
+                right: 0.9375rem; /* 15px */
             }
             .cart-icon {
-                width: 50px;
-                height: 50px;
+                width: 3.125rem; /* 50px */
+                height: 3.125rem; /* 50px */
                 font-size: 1.6em;
             }
             .modal-content {
-                padding: 15px;
+                padding: 0.9375rem; /* 15px */
             }
             .close-button {
-                font-size: 24px;
-                top: 5px;
-                right: 15px;
+                font-size: 1.5em; /* 24px */
+                top: 0.3125rem; /* 5px */
+                right: 0.9375rem; /* 15px */
             }
             .checkout-button {
                 font-size: 1em;
-                padding: 10px 25px;
+                padding: 0.625rem 1.5625rem; /* 10px 25px */
+            }
+            footer {
+                padding: var(--spacing-unit); /* 16px */
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px; /* Even smaller base font for very small screens */
+            }
+            header h1 {
+                font-size: 1.1em;
+            }
+            .section-heading {
+                font-size: 1.4em;
+                margin-top: calc(var(--spacing-unit) * 4);
+            }
+            .product-grid {
+                padding: 0.75rem; /* 12px */
+            }
+            .product-card h3 {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -359,6 +421,8 @@
     <header>
         <h1>Nasuka Foods</h1>
     </header>
+
+    <h2 class="section-heading">PRODUK KAMI</h2>
 
     <div class="product-grid" id="productGrid">
         <div class="product-card" data-id="1" data-name="Nasi Goreng Spesial" data-price="25000">
@@ -424,8 +488,6 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-        // Tidak perlu Firestore di sini, karena hanya digunakan untuk riwayat pesanan di checkout.html
-        // import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
         // Your web app's Firebase configuration (PASTIKAN INI SAMA DENGAN DARI KONSOL ANDA)
         const firebaseConfig = {
@@ -440,7 +502,6 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        // const db = getFirestore(app); // Tidak perlu di index.html
 
         // Fungsi untuk mengautentikasi pengguna secara anonim
         function authenticateAnonymously() {
@@ -470,7 +531,6 @@
         // Jadikan objek Firebase global jika Anda membutuhkannya di skrip lain di halaman ini
         window.firebaseApp = app;
         window.firebaseAuth = auth;
-        // window.firebaseDb = db; // Tidak perlu di index.html
     </script>
 
     <script>
@@ -633,7 +693,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateCartCount(); // Perbarui jumlah keranjang saat halaman dimuat
             // Autentikasi anonim sudah dipanggil di blok script type="module" di atas.
-            // Tidak ada lagi interaksi Firebase di sini selain autentikasi.
         });
     </script>
 </body>
