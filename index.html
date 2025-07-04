@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nasuka Foods - Beranda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: hsl(190, 60%, 40%);
+            --color-primary-darker: hsl(190, 60%, 30%);
+            --color-secondary: hsl(210, 29%, 24%);
+            --color-text-dark: hsl(210, 10%, 20%);
+            --color-text-light: #ffffff;
+            --color-background-light: hsl(210, 15%, 95%);
+            --color-accent-green: hsl(120, 39%, 45%);
+            --color-border: #e0e0e0;
+            --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-light);
+            color: var(--color-text-dark);
+            line-height: 1.7;
+            font-size: 0.9em;
+        }
+
+        header {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        .product-grid {
+            padding: 100px 20px 20px; /* Padding top for fixed header */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .product-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4em;
+            color: var(--color-primary-darker);
+            margin: 15px 10px 5px;
+        }
+
+        .product-card p {
+            margin: 0 10px 15px;
+            font-size: 1em;
+            color: var(--color-text-dark);
+        }
+
+        .product-card .price {
+            font-weight: 700;
+            font-size: 1.3em;
+            color: var(--color-accent-green);
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: var(--color-primary-darker);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Cart Icon */
+        .cart-icon-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .cart-icon {
+            background-color: var(--color-accent-green);
+            color: var(--color-text-light);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: var(--shadow-light);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none; /* For the link */
+        }
+
+        .cart-icon:hover {
+            background-color: hsl(120, 39%, 35%);
+            transform: scale(1.05);
+        }
+
+        .cart-count {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 0.7em;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 3px 7px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            transform: translate(25%, -25%);
+            min-width: 20px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            font-size: 14px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--color-text-light);
+        }
+
+        /* Basic modal for cart view */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1001; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-body .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+
+        .modal-body .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .modal-body .item-details {
+            flex-grow: 1;
+        }
+
+        .modal-body .item-name {
+            font-weight: 600;
+        }
+
+        .modal-body .item-qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .modal-body .qty-btn {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            line-height: 1;
+            padding: 0;
+            transition: background-color 0.2s;
+        }
+
+        .modal-body .qty-btn:hover {
+            background-color: var(--color-primary-darker);
+        }
+
+        .modal-body .item-price {
+            font-weight: 600;
+            margin-left: 10px;
+            color: var(--color-accent-green);
+        }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--color-primary);
+        }
+
+        .modal-footer .total-price {
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .checkout-button {
+            background-color: var(--color-accent-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 20px;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none; /* for link */
+            display: inline-block;
+        }
+
+        .checkout-button:hover {
+            background-color: hsl(120, 39%, 35%);
+            transform: translateY(-2px);
+        }
+
+        .empty-cart-modal {
+            text-align: center;
+            font-style: italic;
+            color: var(--color-text-dark);
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                padding-top: 90px;
+            }
+            .product-card {
+                margin: 0 auto; /* Center single column cards */
+            }
+            .cart-icon-container {
+                bottom: 15px;
+                right: 15px;
+            }
+            .cart-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.6em;
+            }
+            .modal-content {
+                padding: 15px;
+            }
+            .close-button {
+                font-size: 24px;
+                top: 5px;
+                right: 15px;
+            }
+            .checkout-button {
+                font-size: 1em;
+                padding: 10px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Nasuka Foods</h1>
+    </header>
+
+    <div class="product-grid" id="productGrid">
+        <div class="product-card" data-id="1" data-name="Nasi Goreng Spesial" data-price="25000">
+            <img src="https://via.placeholder.com/300x200?text=Nasi+Goreng" alt="Nasi Goreng Spesial">
+            <h3>Nasi Goreng Spesial</h3>
+            <p>Nasi goreng dengan bumbu rahasia, telur, ayam suwir, dan kerupuk.</p>
+            <div class="price">Rp 25.000</div>
+            <button class="add-to-cart-btn">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="product-card" data-id="2" data-name="Mie Ayam Bakso" data-price="22000">
+            <img src="https://via.placeholder.com/300x200?text=Mie+Ayam" alt="Mie Ayam Bakso">
+            <h3>Mie Ayam Bakso</h3>
+            <p>Mie ayam lezat dengan topping ayam cincang dan bakso kenyal.</p>
+            <div class="price">Rp 22.000</div>
+            <button class="add-to-cart-btn">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="product-card" data-id="3" data-name="Sate Ayam Madura" data-price="30000">
+            <img src="https://via.placeholder.com/300x200?text=Sate+Ayam" alt="Sate Ayam Madura">
+            <h3>Sate Ayam Madura</h3>
+            <p>10 tusuk sate ayam empuk dengan saus kacang khas Madura.</p>
+            <div class="price">Rp 30.000</div>
+            <button class="add-to-cart-btn">Tambah ke Keranjang</button>
+        </div>
+
+        <div class="product-card" data-id="4" data-name="Es Teh Manis" data-price="7000">
+            <img src="https://via.placeholder.com/300x200?text=Es+Teh" alt="Es Teh Manis">
+            <h3>Es Teh Manis</h3>
+            <p>Es teh segar yang pas untuk menemani hidangan Anda.</p>
+            <div class="price">Rp 7.000</div>
+            <button class="add-to-cart-btn">Tambah ke Keranjang</button>
+        </div>
+    </div>
+
+    <div class="cart-icon-container">
+        <a href="#" class="cart-icon" id="cartIcon">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </a>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Keranjang Anda</h2>
+            <div class="modal-body" id="modalCartItems">
+                <p class="empty-cart-modal" style="display: none;">Keranjang Anda kosong.</p>
+            </div>
+            <div class="modal-footer">
+                <p class="total-price">Total: <span id="modalCartTotal">Rp 0</span></p>
+                <a href="checkout.html" class="checkout-button" id="modalCheckoutBtn">Lanjutkan ke Checkout</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Nasuka Foods. Hak Cipta Dilindungi Undang-Undang.</p>
+        <p><a href="terms-conditions.html">Syarat & Ketentuan</a> | <a href="privacy-policy.html">Kebijakan Privasi</a></p>
+    </footer>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+        // Tidak perlu Firestore di sini, karena hanya digunakan untuk riwayat pesanan di checkout.html
+        // import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration (PASTIKAN INI SAMA DENGAN DARI KONSOL ANDA)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAM25NU85K_qnyqv6k4U7hnhD4qXltRfDk",
+            authDomain: "nasukaweb.firebaseapp.com",
+            projectId: "nasukaweb",
+            storageBucket: "nasukaweb.firebasestorage.app",
+            messagingSenderId: "933566688071",
+            appId: "1:933566688071:web:1fa9e5644b2dd2067a3a62"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // const db = getFirestore(app); // Tidak perlu di index.html
+
+        // Fungsi untuk mengautentikasi pengguna secara anonim
+        function authenticateAnonymously() {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, (user) => {
+                    if (!user) { // Jika belum ada pengguna terautentikasi
+                        signInAnonymously(auth)
+                            .then((userCredential) => {
+                                console.log("Signed in anonymously. UID:", userCredential.user.uid);
+                                resolve(userCredential.user);
+                            })
+                            .catch((error) => {
+                                console.error("Anonymous sign-in failed:", error);
+                                reject(error);
+                            });
+                    } else {
+                        console.log("Already signed in as:", user.uid);
+                        resolve(user);
+                    }
+                });
+            });
+        }
+
+        // Panggil saat aplikasi dimuat untuk memastikan autentikasi
+        authenticateAnonymously();
+
+        // Jadikan objek Firebase global jika Anda membutuhkannya di skrip lain di halaman ini
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        // window.firebaseDb = db; // Tidak perlu di index.html
+    </script>
+
+    <script>
+        // --- JavaScript untuk Keranjang Belanja (localStorage) ---
+
+        // Fungsi helper untuk mengambil keranjang dari localStorage
+        function getCart() {
+            const cart = localStorage.getItem('nasukaCart');
+            try {
+                return cart ? JSON.parse(cart) : [];
+            } catch (e) {
+                console.error("Error parsing cart from localStorage:", e);
+                return []; // Kembalikan array kosong jika ada error parsing
+            }
+        }
+
+        // Fungsi helper untuk menyimpan keranjang ke localStorage
+        function saveCart(cart) {
+            localStorage.setItem('nasukaCart', JSON.stringify(cart));
+        }
+
+        // Fungsi helper untuk memformat Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        // === Elemen DOM ===
+        const productGrid = document.getElementById('productGrid');
+        const cartCountSpan = document.getElementById('cartCount');
+        const cartIcon = document.getElementById('cartIcon');
+        const cartModal = document.getElementById('cartModal');
+        const closeButton = document.querySelector('.close-button');
+        const modalCartItems = document.getElementById('modalCartItems');
+        const modalCartTotalSpan = document.getElementById('modalCartTotal');
+        const emptyCartModalMessage = document.querySelector('.empty-cart-modal');
+        const modalCheckoutBtn = document.getElementById('modalCheckoutBtn');
+
+        // Fungsi untuk memperbarui tampilan jumlah item di ikon keranjang
+        function updateCartCount() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountSpan.textContent = totalItems;
+            cartCountSpan.style.display = totalItems > 0 ? 'block' : 'none';
+        }
+
+        // Fungsi untuk menambahkan produk ke keranjang
+        function addToCart(productId, productName, productPrice) {
+            let cart = getCart();
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            saveCart(cart);
+            updateCartCount();
+            alert(`${productName} telah ditambahkan ke keranjang!`);
+            renderModalCartItems(); // Perbarui tampilan modal jika sedang terbuka
+        }
+
+        // Fungsi untuk merender item di modal keranjang
+        function renderModalCartItems() {
+            let cart = getCart();
+            modalCartItems.innerHTML = '';
+            let totalModalPrice = 0;
+
+            if (cart.length === 0) {
+                emptyCartModalMessage.style.display = 'block';
+                modalCheckoutBtn.style.display = 'none';
+            } else {
+                emptyCartModalMessage.style.display = 'none';
+                modalCheckoutBtn.style.display = 'block';
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('cart-item');
+                    itemElement.innerHTML = `
+                        <div class="item-details">
+                            <span class="item-name">${item.name}</span>
+                            <div class="item-qty-controls">
+                                <button class="qty-btn" data-id="${item.id}" data-action="decrease">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn" data-id="${item.id}" data-action="increase">+</button>
+                            </div>
+                        </div>
+                        <span class="item-price">${formatRupiah(item.price * item.quantity)}</span>
+                    `;
+                    modalCartItems.appendChild(itemElement);
+                    totalModalPrice += item.price * item.quantity;
+                });
+            }
+            modalCartTotalSpan.textContent = formatRupiah(totalModalPrice);
+        }
+
+        // Event listener untuk tombol "Tambah ke Keranjang"
+        productGrid.addEventListener('click', (event) => {
+            if (event.target.classList.contains('add-to-cart-btn')) {
+                const productCard = event.target.closest('.product-card');
+                const productId = productCard.dataset.id;
+                const productName = productCard.dataset.name;
+                const productPrice = parseFloat(productCard.dataset.price);
+                addToCart(productId, productName, productPrice);
+            }
+        });
+
+        // Event listener untuk ikon keranjang (membuka modal)
+        cartIcon.addEventListener('click', (event) => {
+            event.preventDefault(); // Mencegah navigasi default link
+            renderModalCartItems();
+            cartModal.style.display = 'flex'; // Gunakan flex untuk centering
+        });
+
+        // Event listener untuk tombol tutup modal
+        closeButton.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+
+        // Tutup modal jika klik di luar area konten
+        window.addEventListener('click', (event) => {
+            if (event.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+        });
+
+        // Event listener untuk tombol kuantitas di modal
+        modalCartItems.addEventListener('click', (event) => {
+            if (event.target.classList.contains('qty-btn')) {
+                const button = event.target;
+                const productId = button.dataset.id;
+                const action = button.dataset.action;
+                let cart = getCart();
+                const itemIndex = cart.findIndex(item => item.id === productId);
+
+                if (itemIndex > -1) {
+                    if (action === 'increase') {
+                        cart[itemIndex].quantity++;
+                    } else if (action === 'decrease') {
+                        cart[itemIndex].quantity--;
+                        if (cart[itemIndex].quantity <= 0) {
+                            cart.splice(itemIndex, 1); // Hapus jika kuantitas <= 0
+                        }
+                    }
+                    saveCart(cart);
+                    updateCartCount();
+                    renderModalCartItems();
+                }
+            }
+        });
+
+        // === Inisialisasi Saat Halaman Dimuat ===
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount(); // Perbarui jumlah keranjang saat halaman dimuat
+            // Autentikasi anonim sudah dipanggil di blok script type="module" di atas.
+            // Tidak ada lagi interaksi Firebase di sini selain autentikasi.
+        });
+    </script>
+</body>
+</html>
