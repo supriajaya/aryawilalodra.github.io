@@ -18,7 +18,7 @@
             --color-accent-green: hsl(120, 39%, 45%);
             --color-border: #e0e0e0;
             --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
-            --spacing-unit: 1rem; /* Define a base spacing unit */
+            --spacing-unit: 1rem; /* Define a base spacing unit (16px) */
         }
 
         body {
@@ -56,19 +56,18 @@
             font-family: 'Poppins', sans-serif;
             color: var(--color-secondary);
             text-align: center;
-            margin-top: calc(var(--spacing-unit) * 6); /* Adjusted for header */
-            margin-bottom: calc(var(--spacing-unit) * 1.5);
-            font-size: 1.8em;
+            margin-top: calc(var(--spacing-unit) * 6); /* Adjusted for header height (96px) */
+            margin-bottom: calc(var(--spacing-unit) * 1.5); /* 24px */
+            font-size: 1.8em; /* 28.8px */
         }
 
-
         .product-grid {
-            padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.25); /* 16px 20px */
+            padding: var(--spacing-unit); /* 16px padding on all sides of the grid container */
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: calc(var(--spacing-unit) * 1.5625); /* 25px */
             max-width: 1200px;
-            margin: 0 auto calc(var(--spacing-unit) * 1.25);
+            margin: 0 auto calc(var(--spacing-unit) * 1.25); /* 0 auto 20px */
         }
 
         .product-card {
@@ -351,11 +350,11 @@
                 margin-top: calc(var(--spacing-unit) * 5);
             }
             .product-grid {
-                grid-template-columns: 1fr; /* Single column layout */
-                padding: var(--spacing-unit) 0.9375rem; /* 16px 15px */
+                grid-template-columns: 1fr; /* Single column layout for smaller screens */
+                padding: var(--spacing-unit) 0.9375rem; /* 16px 15px padding for grid container */
             }
             .product-card {
-                margin: 0 auto; /* Center single column cards */
+                /* No specific width needed here as grid handles it */
             }
             .product-card h3 {
                 font-size: 1.2em;
@@ -409,7 +408,7 @@
                 margin-top: calc(var(--spacing-unit) * 4);
             }
             .product-grid {
-                padding: 0.75rem; /* 12px */
+                padding: 0.75rem; /* 12px padding for grid container */
             }
             .product-card h3 {
                 font-size: 1.1em;
@@ -425,35 +424,35 @@
     <h2 class="section-heading">PRODUK KAMI</h2>
 
     <div class="product-grid" id="productGrid">
-        <div class="product-card" data-id="1" data-name="Nasi Goreng Spesial" data-price="25000">
-            <img src="https://via.placeholder.com/300x200?text=Nasi+Goreng" alt="Nasi Goreng Spesial">
-            <h3>Nasi Goreng Spesial</h3>
-            <p>Nasi goreng dengan bumbu rahasia, telur, ayam suwir, dan kerupuk.</p>
-            <div class="price">Rp 25.000</div>
+        <div class="product-card" data-id="1" data-name="Paket Cilok Original" data-price="50000">
+            <img src="https://lh3.googleusercontent.com/d/1XyQ1m5f1N0_Z9J_K2u8P5c8h7_0o8h0N" alt="Paket Cilok Original">
+            <h3>Paket Cilok Original</h3>
+            <p>Cilok kenyal dengan bumbu kacang gurih.</p>
+            <div class="price">Rp 50.000</div>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
 
-        <div class="product-card" data-id="2" data-name="Mie Ayam Bakso" data-price="22000">
-            <img src="https://via.placeholder.com/300x200?text=Mie+Ayam" alt="Mie Ayam Bakso">
-            <h3>Mie Ayam Bakso</h3>
-            <p>Mie ayam lezat dengan topping ayam cincang dan bakso kenyal.</p>
-            <div class="price">Rp 22.000</div>
+        <div class="product-card" data-id="2" data-name="Paket Cilok Pedas" data-price="55000">
+            <img src="https://lh3.googleusercontent.com/d/1XyQ1m5f1N0_Z9J_K2u8P5c8h7_0o8h0N" alt="Paket Cilok Pedas">
+            <h3>Paket Cilok Pedas</h3>
+            <p>Cilok dengan saus sambal ekstra pedas untuk pecinta tantangan.</p>
+            <div class="price">Rp 55.000</div>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
 
-        <div class="product-card" data-id="3" data-name="Sate Ayam Madura" data-price="30000">
-            <img src="https://via.placeholder.com/300x200?text=Sate+Ayam" alt="Sate Ayam Madura">
-            <h3>Sate Ayam Madura</h3>
-            <p>10 tusuk sate ayam empuk dengan saus kacang khas Madura.</p>
-            <div class="price">Rp 30.000</div>
+        <div class="product-card" data-id="3" data-name="Paket Cilok Keju" data-price="60000">
+            <img src="https://lh3.googleusercontent.com/d/1XyQ1m5f1N0_Z9J_K2u8P5c8h7_0o8h0N" alt="Paket Cilok Keju">
+            <h3>Paket Cilok Keju</h3>
+            <p>Cilok dengan isian keju lumer yang creamy.</p>
+            <div class="price">Rp 60.000</div>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
 
-        <div class="product-card" data-id="4" data-name="Es Teh Manis" data-price="7000">
-            <img src="https://via.placeholder.com/300x200?text=Es+Teh" alt="Es Teh Manis">
-            <h3>Es Teh Manis</h3>
-            <p>Es teh segar yang pas untuk menemani hidangan Anda.</p>
-            <div class="price">Rp 7.000</div>
+        <div class="product-card" data-id="4" data-name="Paket Cilok Mix" data-price="65000">
+            <img src="https://lh3.googleusercontent.com/d/1XyQ1m5f1N0_Z9J_K2u8P5c8h7_0o8h0N" alt="Paket Cilok Mix">
+            <h3>Paket Cilok Mix</h3>
+            <p>Kombinasi cilok original, pedas, dan keju dalam satu paket.</p>
+            <div class="price">Rp 65.000</div>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
     </div>
@@ -652,16 +651,16 @@
             cartModal.style.display = 'flex'; // Gunakan flex untuk centering
         });
 
-        // Event listener untuk tombol tutup modal
-        closeButton.addEventListener('click', () => {
-            cartModal.style.display = 'none';
-        });
-
         // Tutup modal jika klik di luar area konten
         window.addEventListener('click', (event) => {
             if (event.target === cartModal) {
                 cartModal.style.display = 'none';
             }
+        });
+
+        // Event listener untuk tombol tutup modal
+        closeButton.addEventListener('click', () => {
+            cartModal.style.display = 'none';
         });
 
         // Event listener untuk tombol kuantitas di modal
