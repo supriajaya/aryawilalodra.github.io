@@ -18,6 +18,7 @@
             --color-accent-green: hsl(120, 39%, 45%);
             --color-border: #e0e0e0;
             --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
+            --spacing-unit: 1rem; /* Define a base spacing unit */
         }
 
         body {
@@ -29,13 +30,13 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-size: 0.9em;
+            font-size: 16px; /* Base font size for responsiveness */
         }
 
         header {
             background-color: var(--color-secondary);
             color: var(--color-text-light);
-            padding: 20px 30px;
+            padding: calc(var(--spacing-unit) * 1.25) var(--spacing-unit); /* 20px 16px */
             text-align: center;
             box-shadow: var(--shadow-light);
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -44,41 +45,44 @@
             left: 0;
             width: 100%;
             z-index: 1000;
+            box-sizing: border-box; /* Include padding in width */
         }
 
         header h1 {
             margin: 0;
-            font-size: 22.4px;
+            font-size: 1.4em; /* 22.4px */
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.05em;
         }
 
         .main-content {
-            padding-top: 80px; /* Sesuaikan dengan tinggi header */
+            padding-top: calc(var(--spacing-unit) * 5); /* Adjust for header height (80px) */
             flex-grow: 1;
             max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: var(--spacing-unit) auto;
+            padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5); /* 16px 24px */
             background-color: #fff;
-            border-radius: 12px;
+            border-radius: 0.75rem; /* 12px */
             box-shadow: var(--shadow-light);
+            box-sizing: border-box;
         }
 
         h2 {
             text-align: center;
             color: var(--color-secondary);
             font-family: 'Poppins', sans-serif;
-            margin-bottom: 25px;
-            font-size: 1.8em;
+            margin-bottom: calc(var(--spacing-unit) * 1.5); /* 24px */
+            font-size: 1.6em; /* 25.6px */
         }
 
         .section-title {
             color: var(--color-primary-darker);
             font-family: 'Poppins', sans-serif;
-            margin-top: 30px;
-            margin-bottom: 15px;
+            margin-top: calc(var(--spacing-unit) * 1.875); /* 30px */
+            margin-bottom: var(--spacing-unit); /* 16px */
             border-bottom: 2px solid var(--color-border);
-            padding-bottom: 5px;
+            padding-bottom: 0.3125rem; /* 5px */
+            font-size: 1.2em; /* 19.2px */
         }
 
         /* Keranjang di Checkout */
@@ -86,7 +90,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 0.625rem 0; /* 10px */
             border-bottom: 1px dashed var(--color-border);
         }
 
@@ -102,62 +106,59 @@
             font-weight: 600;
         }
 
-        #checkoutCartItems .item-qty {
-            margin-left: 10px;
-            min-width: 30px;
-            text-align: center;
-        }
-
         #checkoutCartItems .item-price {
             font-weight: 600;
             color: var(--color-accent-green);
+            font-size: 1.05em; /* Slightly larger */
         }
 
         #checkoutCartSummary {
             text-align: right;
-            font-size: 1.2em;
+            font-size: 1.1em; /* 17.6px */
             font-weight: 700;
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: calc(var(--spacing-unit) * 1.25); /* 20px */
+            padding-top: calc(var(--spacing-unit) * 0.9375); /* 15px */
             border-top: 2px solid var(--color-primary);
         }
 
         /* Formulir */
         form label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem; /* 8px */
             font-weight: 600;
             color: var(--color-secondary);
+            font-size: 0.95em;
         }
 
         form input[type="text"],
         form input[type="tel"],
         form textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
+            width: 100%; /* Full width */
+            padding: 0.625rem; /* 10px */
+            margin-bottom: var(--spacing-unit); /* 16px */
             border: 1px solid var(--color-border);
-            border-radius: 8px;
+            border-radius: 0.5rem; /* 8px */
             font-family: 'Open Sans', sans-serif;
-            font-size: 1em;
+            font-size: 1em; /* Inherit base font size */
+            box-sizing: border-box; /* Include padding in width */
         }
 
         form textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 5rem; /* 80px */
         }
 
         form button[type="submit"] {
             background-color: var(--color-primary);
             color: var(--color-text-light);
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 0.75rem 1.875rem; /* 12px 30px */
+            border-radius: 1.5625rem; /* 25px */
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1.05em; /* 16.8px */
             font-weight: 600;
             width: 100%;
-            margin-top: 20px;
+            margin-top: calc(var(--spacing-unit) * 1.25); /* 20px */
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
@@ -169,23 +170,23 @@
         /* QRIS Section */
         #qrisSection {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: calc(var(--spacing-unit) * 1.875); /* 30px */
+            padding-top: calc(var(--spacing-unit) * 1.25); /* 20px */
             border-top: 1px dashed var(--color-border);
             display: none; /* Awalnya tersembunyi */
         }
 
         #qrisSection p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
+            font-size: 1.05em;
+            margin-bottom: var(--spacing-unit); /* 16px */
         }
 
         #qrisImage {
-            max-width: 250px;
+            max-width: 15.625rem; /* 250px */
             height: auto;
             border: 1px solid var(--color-border);
-            border-radius: 8px;
-            margin-bottom: 20px;
+            border-radius: 0.5rem; /* 8px */
+            margin-bottom: calc(var(--spacing-unit) * 1.25); /* 20px */
             box-shadow: var(--shadow-light);
         }
 
@@ -193,12 +194,13 @@
             background-color: var(--color-accent-green);
             color: var(--color-text-light);
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 0.75rem 1.5625rem; /* 12px 25px */
+            border-radius: 1.5625rem; /* 25px */
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
             transition: background-color 0.3s ease;
+            margin-bottom: 0.625rem; /* 10px */
         }
 
         #confirmPaymentBtn:hover {
@@ -207,61 +209,62 @@
 
         /* Order History Section */
         .order-history-section {
-            margin-top: 40px;
-            padding-top: 30px;
+            margin-top: calc(var(--spacing-unit) * 2.5); /* 40px */
+            padding-top: calc(var(--spacing-unit) * 1.875); /* 30px */
             border-top: 2px solid var(--color-border);
         }
 
         .order-history-section h2 {
             margin-top: 0;
-            font-size: 1.6em;
+            font-size: 1.4em; /* 22.4px */
             color: var(--color-secondary);
         }
 
         .order-item {
             background-color: var(--color-background-light);
             border: 1px solid var(--color-border);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 0.5rem; /* 8px */
+            padding: 0.9375rem; /* 15px */
+            margin-bottom: var(--spacing-unit); /* 16px */
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .order-item h3 {
             margin-top: 0;
             color: var(--color-primary-darker);
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 1.1em; /* 17.6px */
+            margin-bottom: 0.625rem; /* 10px */
         }
 
         .order-item p {
-            margin: 5px 0;
+            margin: 0.3125rem 0; /* 5px */
             font-size: 0.95em;
         }
 
         .order-item .order-status {
             font-weight: 600;
-            color: var(--color-accent-green); /* Warna hijau untuk status sukses */
+            color: var(--color-accent-green);
         }
 
         .order-item .order-status.pending {
-            color: orange; /* Warna oranye untuk status menunggu */
+            color: orange;
         }
 
         .order-item .whatsapp-order-btn {
             background-color: #25D366; /* WhatsApp Green */
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 20px;
+            padding: 0.625rem 0.9375rem; /* 10px 15px */
+            border-radius: 1.25rem; /* 20px */
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.9em; /* 14.4px */
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 0.625rem; /* 10px */
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.3125rem; /* 5px */
             transition: background-color 0.3s ease;
+            text-decoration: none;
         }
 
         .order-item .whatsapp-order-btn:hover {
@@ -272,21 +275,21 @@
             text-align: center;
             font-style: italic;
             color: var(--color-text-dark);
-            padding: 20px;
+            padding: var(--spacing-unit) * 1.25; /* 20px */
         }
 
         footer {
             background-color: var(--color-secondary);
             color: var(--color-text-light);
             text-align: center;
-            padding: 25px;
+            padding: calc(var(--spacing-unit) * 1.5625); /* 25px */
             margin-top: auto;
-            font-size: 14px;
+            font-size: 0.875em; /* 14px */
             box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
         }
 
         footer p {
-            margin: 5px 0;
+            margin: 0.3125rem 0; /* 5px */
         }
 
         footer a {
@@ -299,21 +302,80 @@
             color: var(--color-text-light);
         }
 
+        /* Media Queries for Mobile Responsiveness */
         @media (max-width: 768px) {
+            body {
+                font-size: 15px; /* Slightly smaller base font for smaller screens */
+            }
+            header {
+                padding: var(--spacing-unit) 0.75rem; /* 16px 12px */
+            }
+            header h1 {
+                font-size: 1.3em;
+            }
             .main-content {
-                margin: 10px auto;
-                padding: 15px;
-                padding-top: 70px;
+                margin: 0.625rem auto; /* 10px */
+                padding: var(--spacing-unit) 0.9375rem; /* 16px 15px */
+                padding-top: calc(var(--spacing-unit) * 4.375); /* 70px */
+                border-radius: 0; /* No border-radius on full-width mobile */
             }
-            h2 { font-size: 1.5em; }
-            .section-title { font-size: 1.1em; }
-            form input[type="text"], form input[type="tel"], form textarea {
-                width: calc(100% - 20px);
+            h2 {
+                font-size: 1.4em;
+                margin-bottom: var(--spacing-unit);
             }
-            form button[type="submit"] { font-size: 1em; padding: 10px 20px; }
-            #qrisImage { max-width: 200px; }
-            .order-item h3 { font-size: 1.1em; }
-            .order-item .whatsapp-order-btn { font-size: 0.85em; padding: 8px 12px; }
+            .section-title {
+                font-size: 1.1em;
+                margin-top: calc(var(--spacing-unit) * 1.25);
+            }
+            form button[type="submit"] {
+                font-size: 1em;
+                padding: 0.625rem 1.25rem; /* 10px 20px */
+            }
+            #qrisImage {
+                max-width: 12.5rem; /* 200px */
+            }
+            #confirmPaymentBtn {
+                padding: 0.625rem 1.25rem; /* 10px 20px */
+                font-size: 0.95em;
+            }
+            .order-item {
+                padding: 0.75rem; /* 12px */
+            }
+            .order-item h3 {
+                font-size: 1.05em;
+            }
+            .order-item p {
+                font-size: 0.9em;
+            }
+            .order-item .whatsapp-order-btn {
+                font-size: 0.8em;
+                padding: 0.5rem 0.75rem; /* 8px 12px */
+            }
+            footer {
+                padding: var(--spacing-unit); /* 16px */
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px; /* Even smaller base font for very small screens */
+            }
+            header h1 {
+                font-size: 1.2em;
+            }
+            .main-content {
+                padding: 0.75rem; /* 12px */
+                padding-top: calc(var(--spacing-unit) * 4.375); /* 70px */
+            }
+            form input[type="text"],
+            form input[type="tel"],
+            form textarea {
+                padding: 0.5rem; /* 8px */
+            }
+            #qrisImage {
+                max-width: 10rem; /* 160px */
+            }
         }
     </style>
 </head>
@@ -371,7 +433,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
         // Your web app's Firebase configuration (PASTIKAN INI SAMA DENGAN DARI KONSOL ANDA)
         const firebaseConfig = {
@@ -521,8 +583,6 @@
                 };
 
                 // SIMPAN PESANAN KE CLOUD FIRESTORE
-                // Koleksi 'orders' akan berisi semua pesanan dari semua user
-                // Setiap dokumen pesanan akan memiliki field 'userId'
                 await addDoc(collection(db, "orders"), currentOrderDetails);
 
                 // Kosongkan keranjang di localStorage
@@ -553,13 +613,6 @@
                         alert("ID pengguna tidak cocok. Tidak dapat mengonfirmasi.");
                         return;
                     }
-
-                    // Untuk memperbarui status di Firestore, Anda perlu mencari dokumen berdasarkan orderId.
-                    // Ini akan sedikit lebih kompleks karena memerlukan ID dokumen Firestore.
-                    // Jika Anda ingin fungsionalitas ini, kita bisa tambahkan:
-                    // Anda perlu menyimpan doc ID dari addDoc di 'currentOrderDetails'
-                    // const orderDocRef = doc(db, "orders", currentOrderDetails.firestoreDocId);
-                    // await updateDoc(orderDocRef, { status: "Pembayaran Selesai" });
 
                     alert('Pembayaran Anda telah dikonfirmasi. Pesanan akan segera diproses.');
                     qrisSection.style.display = 'none';
@@ -613,9 +666,8 @@
                 const querySnapshot = await getDocs(q);
 
                 let orderHistory = [];
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    orderHistory.push({ ...doc.data(), id: doc.id }); // Sertakan doc.id jika perlu untuk update/delete
+                querySnapshot.forEach((docItem) => {
+                    orderHistory.push({ ...docItem.data(), id: docItem.id });
                 });
 
                 if (orderHistory.length === 0) {
@@ -688,17 +740,15 @@
                     return;
                 }
 
-                // Ambil semua dokumen pesanan untuk pengguna ini
                 const q = query(
                     collection(db, "orders"),
                     where("userId", "==", user.uid)
                 );
                 const querySnapshot = await getDocs(q);
 
-                // Hapus setiap dokumen satu per satu
                 const deletePromises = [];
-                querySnapshot.forEach((docItem) => { // Perhatikan nama variabel 'docItem' agar tidak bentrok
-                    deletePromises.push(deleteDoc(doc(db, "orders", docItem.id))); // Menggunakan doc() dengan path lengkap
+                querySnapshot.forEach((docItem) => {
+                    deletePromises.push(deleteDoc(doc(db, "orders", docItem.id)));
                 });
                 await Promise.all(deletePromises);
 
