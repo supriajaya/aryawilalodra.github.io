@@ -3,114 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pesanan - Nasuka Foods</title>
+    <title>Data Pesanan</title>
     <style>
         body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box; /* Penting untuk responsivitas */
         }
         .container {
+            background-color: #ffffff;
+            padding: 20px; /* Sedikit kurangi padding untuk mobile */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
             max-width: 900px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            margin-top: 20px;
         }
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-size: 1.8em; /* Sesuaikan ukuran font untuk mobile */
         }
-        table {
-            width: 100%;
+        #loading, .error-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        #loading {
+            background-color: #e0f7fa;
+            color: #007bb5;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ef9a9a;
+        }
+        #no-data-message {
+            text-align: center;
+            color: #616161;
+            padding: 20px;
+        }
+
+        /* --- CSS untuk Tabel Responsif --- */
+        .table-wrapper {
+            overflow-x: auto; /* Membuat tabel bisa discroll horizontal */
+            -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih halus di iOS */
+        }
+        #order-data-table {
+            width: 100%; /* Pastikan tabel mengisi lebar wrapper */
             border-collapse: collapse;
             margin-top: 20px;
+            font-size: 0.85em; /* Ukuran font sedikit lebih kecil untuk mobile */
+            min-width: 600px; /* Pastikan tabel tidak terlalu kecil di layar sempit */
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+        #order-data-table th, #order-data-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px; /* Kurangi padding untuk kepadatan */
             text-align: left;
-            vertical-align: top;
+            word-wrap: break-word;
         }
-        th {
-            background-color: #f2f2f2;
+        #order-data-table th {
+            background-color: #e8eaf6;
+            color: #3f51b5;
             font-weight: bold;
+            text-transform: capitalize;
+            white-space: nowrap; /* Mencegah header pecah baris terlalu cepat */
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        #order-data-table tr:nth-child(even) {
+            background-color: #f5f5f5;
         }
-        .loading-message, .error-message, .empty-message {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 1.2em;
-            color: #666;
+        #order-data-table tr:hover {
+            background-color: #e3f2fd;
+            cursor: pointer;
+        }
+
+        /* Media Queries untuk penyesuaian lebih lanjut pada layar kecil */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px; /* Kurangi padding body pada layar kecil */
+            }
+            .container {
+                padding: 15px; /* Kurangi padding container */
+            }
+            h1 {
+                font-size: 1.6em; /* Ukuran font judul lebih kecil lagi */
+            }
+            #order-data-table {
+                font-size: 0.8em; /* Ukuran font tabel lebih kecil lagi */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.4em;
+            }
+            #order-data-table {
+                min-width: 500px; /* Pertahankan lebar minimum agar tidak terlalu sempit */
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Data Pesanan Anda</h1>
-        <div id="loading-message" class="loading-message">Memuat data...</div>
-        <div id="error-message" class="error-message" style="display:none;"></div>
-        <div id="data-table-container">
+
+        <div id="loading" style="display: none;">Memuat data pesanan...</div>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="no-data-message" style="display: none;">Tidak ada data pesanan yang tersedia.</div>
+
+        <div id="order-data-container">
             </div>
-        <div id="empty-message" class="empty-message" style="display:none;">Belum ada data pesanan.</div>
     </div>
 
     <script>
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxSTsv1cqsJISjB8Pl7rohtzmtoQKuByT73fcFlADQqjTA7dtYVd1_6AWnAhT0x6XqijA/exec";
+        document.addEventListener('DOMContentLoaded', function() {
+            // URL Google Apps Script Anda
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbxSTsv1cqsJISjB8Pl7rohtzmtoQKuByT73fcFlADQqjTA7dtYVd1_6AWnAhT0x6XqijA/exec';
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const loadingMessage = document.getElementById('loading-message');
-            const errorMessage = document.getElementById('error-message');
-            const dataTableContainer = document.getElementById('data-table-container');
-            const emptyMessage = document.getElementById('empty-message');
+            const loadingDiv = document.getElementById('loading');
+            const errorMessageDiv = document.getElementById('error-message');
+            const noDataMessageDiv = document.getElementById('no-data-message');
+            const orderDataContainer = document.getElementById('order-data-container');
 
-            try {
-                const response = await fetch(GAS_URL, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+            async function fetchData() {
+                loadingDiv.style.display = 'block';
+                errorMessageDiv.style.display = 'none';
+                noDataMessageDiv.style.display = 'none';
+                orderDataContainer.innerHTML = '';
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                try {
+                    const response = await fetch(GAS_URL);
+
+                    if (!response.ok) {
+                        throw new Error(`Gagal mengambil data: HTTP status ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        displayOrderData(data);
+                    } else {
+                        noDataMessageDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Ada masalah saat memuat data:', error);
+                    errorMessageDiv.style.display = 'block';
+                    errorMessageDiv.textContent = `Gagal memuat data pesanan: ${error.message}. Pastikan URL GAS benar dan CORS sudah dikonfigurasi.`;
+                } finally {
+                    loadingDiv.style.display = 'none';
                 }
-
-                const data = await response.json();
-                
-                if (data.length === 0) {
-                    emptyMessage.style.display = 'block';
-                } else {
-                    let tableHTML = '<table><thead><tr>';
-                    const headers = Object.keys(data[0]);
-                    headers.forEach(header => {
-                        tableHTML += `<th>${header}</th>`;
-                    });
-                    tableHTML += '</tr></thead><tbody>';
-
-                    data.forEach(rowData => {
-                        tableHTML += '<tr>';
-                        headers.forEach(header => {
-                            tableHTML += `<td>${rowData[header]}</td>`;
-                        });
-                        tableHTML += '</tr>';
-                    });
-                    tableHTML += '</tbody></table>';
-                    dataTableContainer.innerHTML = tableHTML;
-                }
-
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                errorMessage.textContent = 'Gagal memuat data pesanan: ' + error.message;
-                errorMessage.style.display = 'block';
-            } finally {
-                loadingMessage.style.display = 'none';
             }
+
+            function displayOrderData(data) {
+                // Buat wrapper untuk tabel agar bisa discroll horizontal
+                let tableWrapperHtml = '<div class="table-wrapper">';
+                let tableHtml = '<table id="order-data-table"><thead><tr>';
+
+                const headers = Object.keys(data[0]);
+                headers.forEach(header => {
+                    tableHtml += `<th>${header}</th>`;
+                });
+                tableHtml += '</tr></thead><tbody>';
+
+                data.forEach(item => {
+                    tableHtml += '<tr>';
+                    headers.forEach(header => {
+                        tableHtml += `<td>${item[header] !== undefined && item[header] !== null ? item[header] : ''}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                });
+                tableHtml += '</tbody></table>';
+                tableWrapperHtml += tableHtml + '</div>'; // Tutup wrapper
+
+                orderDataContainer.innerHTML = tableWrapperHtml;
+            }
+
+            fetchData();
         });
     </script>
 </body>
