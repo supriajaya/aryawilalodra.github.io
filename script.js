@@ -1,91 +1,371 @@
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwVunnvJ3AuJG4V-dv7DoTG0pjSCH-vkoLGY1cJXZ8OwtuZ7AJMSZ3LX7UXsFJTE--92g/exec"; 
+// Konfigurasi URL Google Apps Script Web App Anda
+// PASTIKAN URL INI BENAR SESUAI DENGAN DEPLOYMENT TERBARU ANDA
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyN2d6hEb_MR2fqXKFZXVoWZNtaqA5trsMvLEwt5X0Zor9GoQKAaA7Ufo2rahMtneftqQ/exec';
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let loggedInPhoneNumber = localStorage.getItem('loggedInPhoneNumber') || null;
-
+// Variabel global untuk menyimpan data pelanggan yang sedang login (jika ada)
+let currentCustomer = null;
+// Objek produk dummy (bisa diambil dari Google Sheet nanti)
 const products = [
-    { id: 1, name: "Nasi Ayam Bakar", price: 25000, image: "https://via.placeholder.com/150/FF5733/FFFFFF?text=Nasi+Ayam+Bakar" },
-    { id: 2, name: "Mie Ayam Komplit", price: 20000, image: "https://via.placeholder.com/150/33FF57/FFFFFF?text=Mie+Ayam+Komplit" },
-    { id: 3, name: "Es Teh Manis", price: 5000, image: "https://via.placeholder.com/150/5733FF/FFFFFF?text=Es+Teh+Manis" },
-    { id: 4, name: "Kopi Susu", price: 12000, image: "https://via.placeholder.com/150/FFC300/FFFFFF?text=Kopi+Susu" }
+    { id: 'prod001', name: 'Nasi Goreng Spesial', price: 25000, image: 'https://via.placeholder.com/150/FF5733/FFFFFF?text=NasiGoreng' },
+    { id: 'prod002', name: 'Mie Ayam Bakso', price: 20000, image: 'https://via.placeholder.com/150/33FF57/FFFFFF?text=MieAyam' },
+    { id: 'prod003', name: 'Es Teh Manis', price: 5000, image: 'https://via.placeholder.com/150/3357FF/FFFFFF?text=EsTeh' },
+    { id: 'prod004', name: 'Ayam Geprek', price: 28000, image: 'https://via.placeholder.com/150/FF33FB/FFFFFF?text=AyamGeprek' },
+    { id: 'prod005', name: 'Kopi Susu Gula Aren', price: 18000, image: 'https://via.placeholder.com/150/8A2BE2/FFFFFF?text=KopiSusu' },
+    { id: 'prod006', name: 'Roti Bakar Keju Coklat', price: 15000, image: 'https://via.placeholder.com/150/FFD700/FFFFFF?text=RotiBakar' }
 ];
+let cart = []; // Keranjang belanja
 
-const productList = document.getElementById('productList');
-const cartButton = document.getElementById('cartButton');
-const cartCount = document.getElementById('cartCount');
-const cartOverlay = document.getElementById('cartOverlay');
-const closeCartModal = document.getElementById('closeCartModal');
-const cartItemsContainer = document.getElementById('cartItems');
-const cartTotalDisplay = document.getElementById('cartTotal');
-const checkoutButton = document.getElementById('checkoutButton');
-const profileButton = document.getElementById('profileButton');
-
-const mainContentView = document.getElementById('mainContentView');
-const profilePageView = document.getElementById('profile-page-view');
-const closeProfileButton = document.getElementById('close-profile-button');
-const customerNameInput = document.getElementById('customerName');
-const customerHandphoneInput = document.getElementById('customerHandphone');
-const customerEmailInput = document.getElementById('customerEmail');
-const customerSosmedInput = document.getElementById('customerSosmed');
-const customerAddressInput = document.getElementById('customerAddress');
-const customerBalanceDisplay = document.getElementById('customerBalanceDisplay');
-const saveProfileBtn = document.getElementById('saveProfileBtn');
-const openDepositFormBtn = document.getElementById('openDepositFormBtn');
-const loginRegisterInfo = document.getElementById('loginRegisterInfo');
-
-const depositPageView = document.getElementById('deposit-page-view');
-const closeDepositButton = document.getElementById('close-deposit-button');
-const depositNamaInput = document.getElementById('deposit_nama');
-const depositHandphoneInput = document.getElementById('deposit_handphone');
-const depositAmountInput = document.getElementById('deposit_amount');
-const depositMethodSelect = document.getElementById('deposit_method');
-const depositProofInput = document.getElementById('deposit_proof');
-const submitDepositBtn = document.getElementById('submitDepositBtn');
-
-const registerPageView = document.getElementById('register-page-view');
-const closeRegisterButton = document.getElementById('close-register-button');
-const regNamaInput = document.getElementById('reg_nama');
-const regHandphoneInput = document.getElementById('reg_handphone');
-const regEmailInput = document.getElementById('reg_email');
-const regSosmedInput = document.getElementById('reg_sosmed');
-const regAlamatInput = document.getElementById('reg_alamat');
-const submitRegisterBtn = document.getElementById('submitRegisterBtn');
-
-const loginPageView = document.getElementById('login-page-view');
-const closeLoginButton = document.getElementById('close-login-button');
-const loginHandphoneInput = document.getElementById('login_handphone');
-const submitLoginBtn = document.getElementById('submitLoginBtn');
-
-const customAlertOverlay = document.getElementById('custom-alert-overlay');
-const customAlertMessage = document.getElementById('custom-alert-message');
-const customAlertOkButton = document.getElementById('custom-alert-ok-button');
-
-function showCustomAlert(message) {
-    customAlertMessage.textContent = message;
-    customAlertOverlay.classList.remove('hidden');
+// --- Fungsi Utilitas UI ---
+// Fungsi untuk menampilkan view tertentu dan menyembunyikan yang lain
+function showView(viewId) {
+    document.querySelectorAll('.view').forEach(view => {
+        view.classList.add('hidden');
+    });
+    document.getElementById(viewId).classList.remove('hidden');
 }
 
-function hideCustomAlert() {
-    customAlertOverlay.classList.add('hidden');
+// Fungsi untuk menampilkan custom alert modal
+function showCustomAlert(message, type = 'info') {
+    const alertOverlay = document.getElementById('custom-alert-overlay');
+    const alertMessage = document.getElementById('custom-alert-message');
+    alertMessage.textContent = message;
+    alertMessage.className = ''; // Reset classes
+    if (type === 'success') alertMessage.classList.add('success-text');
+    if (type === 'error') alertMessage.classList.add('error-text');
+
+    alertOverlay.classList.remove('hidden');
 }
 
+// Fungsi untuk menampilkan pesan di dalam formulir (misal: sukses/gagal pendaftaran)
+function displayFormMessage(elementId, message, isSuccess) {
+    const msgElement = document.getElementById(elementId);
+    msgElement.textContent = message;
+    msgElement.className = 'info-message'; // Reset classes
+    if (isSuccess) {
+        msgElement.classList.add('success');
+    } else {
+        msgElement.classList.add('error');
+    }
+    msgElement.style.display = 'block';
+}
+
+// Fungsi untuk menyembunyikan pesan di dalam formulir
+function hideFormMessage(elementId) {
+    document.getElementById(elementId).style.display = 'none';
+}
+
+// Fungsi untuk memperbarui teks tombol profil berdasarkan status login
+function updateProfileButton() {
+    const profileButton = document.getElementById('profileButton');
+    if (currentCustomer && currentCustomer.NamaLengkap) {
+        profileButton.textContent = `Profil (${currentCustomer.NamaLengkap.split(' ')[0]})`;
+    } else {
+        profileButton.textContent = 'Profil Saya';
+    }
+}
+
+// --- Event Listeners Global ---
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts(); // Render daftar produk saat halaman dimuat
+    updateCartDisplay(); // Perbarui tampilan keranjang
+    updateProfileButton(); // Atur teks tombol profil
+    // Coba load pelanggan dari sessionStorage jika ada (untuk menjaga sesi sederhana)
+    const storedCustomer = sessionStorage.getItem('currentCustomer');
+    if (storedCustomer) {
+        currentCustomer = JSON.parse(storedCustomer);
+        updateProfileButton();
+    }
+});
+
+// Tutup Custom Alert
+document.getElementById('custom-alert-ok-button').addEventListener('click', () => {
+    document.getElementById('custom-alert-overlay').classList.add('hidden');
+});
+
+// --- Navigasi dan Modal Keranjang ---
+document.getElementById('profileButton').addEventListener('click', () => {
+    if (currentCustomer) {
+        showView('profile-page-view');
+        loadProfileData(currentCustomer); // Load data pelanggan ke form profil
+    } else {
+        showView('login-page-view');
+        displayFormMessage('loginResponseMessage', 'Silakan masuk atau daftar untuk melihat profil Anda.', false);
+    }
+});
+
+document.getElementById('cartButton').addEventListener('click', () => {
+    document.getElementById('cartOverlay').classList.add('active');
+});
+
+document.getElementById('closeCartModal').addEventListener('click', () => {
+    document.getElementById('cartOverlay').classList.remove('active');
+});
+
+document.getElementById('close-profile-button').addEventListener('click', () => {
+    showView('mainContentView');
+});
+
+document.getElementById('openDepositFormBtn').addEventListener('click', () => {
+    showView('deposit-page-view');
+    if (currentCustomer) {
+        document.getElementById('deposit_nama').value = currentCustomer.NamaLengkap || '';
+        document.getElementById('deposit_handphone').value = currentCustomer.NomorHP || '';
+    }
+});
+
+document.getElementById('close-deposit-button').addEventListener('click', () => {
+    showView('profile-page-view'); // Kembali ke profil setelah menutup deposit
+});
+
+document.getElementById('close-register-button').addEventListener('click', () => {
+    showView('mainContentView');
+});
+
+document.getElementById('close-login-button').addEventListener('click', () => {
+    showView('mainContentView');
+});
+
+document.getElementById('openRegisterFromLogin').addEventListener('click', (e) => {
+    e.preventDefault();
+    showView('register-page-view');
+    hideFormMessage('loginResponseMessage');
+});
+
+document.getElementById('openLoginFromRegister').addEventListener('click', (e) => {
+    e.preventDefault();
+    showView('login-page-view');
+    hideFormMessage('registerResponseMessage');
+});
+
+// --- Fungsionalitas Login/Register ---
+document.getElementById('submitLoginBtn').addEventListener('click', async () => {
+    const handphone = document.getElementById('login_handphone').value.trim();
+    if (!handphone) {
+        displayFormMessage('loginResponseMessage', 'Nomor Handphone harus diisi.', false);
+        return;
+    }
+
+    displayFormMessage('loginResponseMessage', 'Mencari akun...', false);
+
+    const formData = new FormData();
+    formData.append('action', 'getCustomerByHandphone');
+    formData.append('nomorHp', handphone);
+
+    try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success && data.customer) {
+            currentCustomer = data.customer; // Simpan data pelanggan yang login
+            sessionStorage.setItem('currentCustomer', JSON.stringify(currentCustomer)); // Simpan di sessionStorage
+            displayFormMessage('loginResponseMessage', 'Login berhasil! Selamat datang, ' + currentCustomer.NamaLengkap + '!', true);
+            setTimeout(() => {
+                showView('mainContentView'); // Kembali ke halaman utama
+                updateProfileButton(); // Update teks tombol profil
+            }, 1500);
+        } else {
+            currentCustomer = null; // Pastikan tidak ada pelanggan yang login
+            sessionStorage.removeItem('currentCustomer');
+            displayFormMessage('loginResponseMessage', 'Nomor HP tidak terdaftar. Silakan daftar.', false);
+        }
+    } catch (error) {
+        displayFormMessage('loginResponseMessage', 'Terjadi kesalahan saat login: ' + error.message, false);
+        console.error('Error login:', error);
+    }
+});
+
+document.getElementById('submitRegisterBtn').addEventListener('click', async () => {
+    const regNama = document.getElementById('reg_nama').value.trim();
+    const regHandphone = document.getElementById('reg_handphone').value.trim();
+    const regEmail = document.getElementById('reg_email').value.trim();
+    const regSosmed = document.getElementById('reg_sosmed').value.trim();
+    const regAlamat = document.getElementById('reg_alamat').value.trim();
+
+    if (!regNama || !regHandphone) {
+        displayFormMessage('registerResponseMessage', 'Nama Lengkap dan Nomor Handphone harus diisi.', false);
+        return;
+    }
+
+    displayFormMessage('registerResponseMessage', 'Mendaftarkan akun...', false);
+
+    const formData = new FormData();
+    formData.append('action', 'addCustomer');
+    formData.append('namaLengkap', regNama);
+    formData.append('nomorHp', regHandphone);
+    formData.append('email', regEmail);
+    formData.append('sosmed', regSosmed);
+    formData.append('alamatLengkap', regAlamat);
+    formData.append('saldo', '0'); // Saldo awal 0
+    formData.append('tanggalDaftar', new Date().toLocaleDateString('id-ID')); // Tanggal daftar otomatis
+    formData.append('customersId', 'CUST-' + new Date().getTime()); // ID Pelanggan unik
+
+    try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            displayFormMessage('registerResponseMessage', 'Pendaftaran berhasil! Silakan masuk.', true);
+            // Kosongkan form
+            document.getElementById('reg_nama').value = '';
+            document.getElementById('reg_handphone').value = '';
+            document.getElementById('reg_email').value = '';
+            document.getElementById('reg_sosmed').value = '';
+            document.getElementById('reg_alamat').value = '';
+            setTimeout(() => {
+                showView('login-page-view'); // Arahkan ke halaman login
+                displayFormMessage('loginResponseMessage', 'Akun Anda berhasil didaftarkan. Silakan masuk.', true);
+            }, 1500);
+
+        } else {
+            displayFormMessage('registerResponseMessage', 'Pendaftaran gagal: ' + data.message, false);
+        }
+    } catch (error) {
+        displayFormMessage('registerResponseMessage', 'Terjadi kesalahan saat mendaftar: ' + error.message, false);
+        console.error('Error register:', error);
+    }
+});
+
+// --- Fungsionalitas Profil ---
+function loadProfileData(customer) {
+    document.getElementById('customerName').value = customer.NamaLengkap || '';
+    document.getElementById('customerHandphone').value = customer.NomorHP || '';
+    document.getElementById('customerEmail').value = customer.Email || '';
+    document.getElementById('customerSosmed').value = customer.Sosmed || '';
+    document.getElementById('customerAddress').value = customer.AlamatLengkap || '';
+    document.getElementById('customerBalanceDisplay').textContent = (customer.Saldo || 0).toLocaleString('id-ID'); // Format saldo
+    hideFormMessage('profileResponseMessage');
+}
+
+document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+    if (!currentCustomer) {
+        showCustomAlert('Anda harus login untuk menyimpan profil.', 'error');
+        return;
+    }
+
+    displayFormMessage('profileResponseMessage', 'Menyimpan perubahan...', false);
+
+    const updatedData = {
+        nomorHp: currentCustomer.NomorHP, // Nomor HP sebagai kunci unik untuk update
+        namaLengkap: document.getElementById('customerName').value.trim(),
+        email: document.getElementById('customerEmail').value.trim(),
+        sosmed: document.getElementById('customerSosmed').value.trim(),
+        alamatLengkap: document.getElementById('customerAddress').value.trim(),
+    };
+
+    const formData = new FormData();
+    formData.append('action', 'updateCustomer');
+    for (const key in updatedData) {
+        formData.append(key, updatedData[key]);
+    }
+
+    try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            // Update currentCustomer lokal setelah berhasil di-GAS
+            currentCustomer.NamaLengkap = updatedData.namaLengkap;
+            currentCustomer.Email = updatedData.email;
+            currentCustomer.Sosmed = updatedData.sosmed;
+            currentCustomer.AlamatLengkap = updatedData.alamatLengkap;
+            sessionStorage.setItem('currentCustomer', JSON.stringify(currentCustomer)); // Update di sessionStorage
+            displayFormMessage('profileResponseMessage', 'Profil berhasil diperbarui!', true);
+            updateProfileButton(); // Perbarui teks tombol profil jika nama berubah
+        } else {
+            displayFormMessage('profileResponseMessage', 'Gagal memperbarui profil: ' + data.message, false);
+        }
+    } catch (error) {
+        displayFormMessage('profileResponseMessage', 'Terjadi kesalahan saat menyimpan profil: ' + error.message, false);
+        console.error('Error saving profile:', error);
+    }
+});
+
+// --- Fungsionalitas Deposit ---
+document.getElementById('submitDepositBtn').addEventListener('click', async () => {
+    const depositNama = document.getElementById('deposit_nama').value.trim();
+    const depositHandphone = document.getElementById('deposit_handphone').value.trim();
+    const depositAmount = document.getElementById('deposit_amount').value.trim();
+    const depositMethod = document.getElementById('deposit_method').value;
+    const depositProofFile = document.getElementById('deposit_proof').files[0];
+
+    if (!depositNama || !depositHandphone || !depositAmount || !depositMethod) {
+        displayFormMessage('depositResponseMessage', 'Harap isi semua kolom wajib.', false);
+        return;
+    }
+    if (parseInt(depositAmount) < 1) {
+        displayFormMessage('depositResponseMessage', 'Jumlah deposit minimal Rp 1.', false);
+        return;
+    }
+
+    displayFormMessage('depositResponseMessage', 'Mengirim konfirmasi deposit...', false);
+
+    const formData = new FormData();
+    formData.append('action', 'addDeposit');
+    formData.append('tanggal', new Date().toLocaleDateString('id-ID'));
+    formData.append('namaPelanggan', depositNama);
+    formData.append('nomorHp', depositHandphone);
+    formData.append('jumlahDeposit', depositAmount);
+    formData.append('metodePembayaran', depositMethod);
+    formData.append('status', 'Pending'); // Status awal deposit
+
+    if (depositProofFile) {
+        formData.append('fileBlob', depositProofFile);
+        formData.append('fileName', depositProofFile.name);
+        formData.append('contentType', depositProofFile.type); // Tambahkan ini!
+    }
+
+    try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            displayFormMessage('depositResponseMessage', 'Konfirmasi deposit berhasil dikirim! Silakan tunggu verifikasi.', true);
+            // Kosongkan form setelah sukses
+            document.getElementById('deposit_amount').value = '';
+            document.getElementById('deposit_method').value = '';
+            document.getElementById('deposit_proof').value = '';
+            // Anda mungkin ingin memperbarui saldo pelanggan di UI setelah deposit diverifikasi di backend
+        } else {
+            displayFormMessage('depositResponseMessage', 'Gagal mengirim konfirmasi deposit: ' + data.message, false);
+        }
+    } catch (error) {
+        displayFormMessage('depositResponseMessage', 'Terjadi kesalahan saat mengirim deposit: ' + error.message, false);
+        console.error('Error deposit:', error);
+    }
+});
+
+// --- Fungsionalitas Produk & Keranjang ---
 function renderProducts() {
-    productList.innerHTML = '';
+    const productList = document.getElementById('productList');
+    productList.innerHTML = ''; // Bersihkan daftar produk
     products.forEach(product => {
         const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
+        productCard.className = 'product-card';
         productCard.innerHTML = `
             <img src="${product.image}" alt="${product.name}">
             <h3>${product.name}</h3>
             <p>Rp ${product.price.toLocaleString('id-ID')}</p>
-            <button class="btn btn-add-to-cart" data-id="${product.id}">Tambah ke Keranjang</button>
+            <button class="btn btn-secondary add-to-cart-btn" data-id="${product.id}">Tambah ke Keranjang</button>
         `;
         productList.appendChild(productCard);
     });
 
-    document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+    // Tambahkan event listener ke setiap tombol "Tambah ke Keranjang"
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', (e) => {
-            const productId = parseInt(e.target.dataset.id);
+            const productId = e.target.dataset.id;
             addToCart(productId);
         });
     });
@@ -100,479 +380,99 @@ function addToCart(productId) {
         } else {
             cart.push({ ...product, quantity: 1 });
         }
-        saveCart();
         updateCartDisplay();
-        showCustomAlert(`${product.name} ditambahkan ke keranjang!`);
+        showCustomAlert(`${product.name} ditambahkan ke keranjang!`, 'success');
     }
 }
 
 function updateCartDisplay() {
-    cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartItemsContainer.innerHTML = '';
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    const cartCountSpan = document.getElementById('cartCount');
+    const checkoutButton = document.getElementById('checkoutButton');
+
+    cartItemsContainer.innerHTML = ''; // Bersihkan item keranjang
     let total = 0;
+    let itemCount = 0;
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p>Keranjang Anda kosong.</p>';
-        checkoutButton.disabled = true;
     } else {
         cart.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `
-                <span>${item.name} (${item.quantity}x)</span>
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `
+                <span>${item.name} (x${item.quantity})</span>
                 <span>Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</span>
-                <button class="btn-remove" data-id="${item.id}">&times;</button>
+                <button class="remove-from-cart-btn" data-id="${item.id}">&times;</button>
             `;
-            cartItemsContainer.appendChild(itemElement);
+            cartItemsContainer.appendChild(itemDiv);
             total += item.price * item.quantity;
+            itemCount += item.quantity;
         });
-        checkoutButton.disabled = false;
     }
-    cartTotalDisplay.textContent = total.toLocaleString('id-ID');
-}
 
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    saveCart();
-    updateCartDisplay();
-}
+    cartTotalSpan.textContent = total.toLocaleString('id-ID');
+    cartCountSpan.textContent = itemCount;
+    checkoutButton.disabled = cart.length === 0; // Nonaktifkan tombol checkout jika keranjang kosong
 
-function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function clearCart() {
-    cart = [];
-    saveCart();
-    updateCartDisplay();
-}
-
-function showView(viewId) {
-    document.querySelectorAll('.view').forEach(view => {
-        view.classList.add('hidden');
-        view.classList.remove('active');
+    // Tambahkan event listener ke tombol hapus item keranjang
+    document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.dataset.id;
+            removeFromCart(productId);
+        });
     });
-    document.getElementById(viewId).classList.remove('hidden');
-    document.getElementById(viewId).classList.add('active');
 }
 
-async function getCustomerBalance(phoneNumber) {
-    try {
-        const response = await fetch(`${GAS_WEB_APP_URL}?action=getCustomerBalance&phoneNumber=${phoneNumber}`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching balance:', error);
-        return { error: "Gagal mengambil saldo." };
-    }
-}
-
-async function getCustomerProfile(phoneNumber) {
-    try {
-        const response = await fetch(`${GAS_WEB_APP_URL}?action=getCustomerProfile&phoneNumber=${phoneNumber}`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching profile:', error);
-        return { success: false, message: "Gagal mengambil data profil." };
-    }
-}
-
-async function checkPhoneNumberRegistered(phoneNumber) {
-    try {
-        const response = await fetch(`${GAS_WEB_APP_URL}?action=checkPhoneNumber&phoneNumber=${phoneNumber}`);
-        const data = await response.json();
-        return data.isRegistered;
-    } catch (error) {
-        console.error('Error checking phone number:', error);
-        return false;
-    }
-}
-
-async function processCheckout(phoneNumber, cartItems, totalAmount) {
-    try {
-        const response = await fetch(GAS_WEB_APP_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=processCheckout&contents=${encodeURIComponent(JSON.stringify({ phoneNumber, cartItems, totalAmount }))}`
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error during checkout:', error);
-        return { success: false, message: "Terjadi kesalahan saat checkout." };
-    }
-}
-
-async function recordGuestCheckout(cartItems, totalAmount) {
-    try {
-        const response = await fetch(GAS_WEB_APP_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=recordGuestCheckout&contents=${encodeURIComponent(JSON.stringify({ cartItems, totalAmount }))}`
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error recording guest checkout:', error);
-        return { success: false, message: "Terjadi kesalahan saat mencatat pesanan tamu." };
-    }
-}
-
-async function registerCustomer(nama, handphone, email, sosmed, alamat) {
-    try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'registerCustomer');
-        formData.append('nama', nama);
-        formData.append('handphone', handphone);
-        formData.append('email', email);
-        formData.append('sosmed', sosmed);
-        formData.append('alamat', alamat);
-
-        const response = await fetch(GAS_WEB_APP_URL, {
-            method: 'POST',
-            body: formData
-        });
-        const textResponse = await response.text();
-        try {
-            const data = JSON.parse(textResponse);
-            return data;
-        } catch (jsonError) {
-            return { success: false, message: textResponse || "Terjadi kesalahan yang tidak diketahui saat pendaftaran." };
-        }
-    } catch (error) {
-        console.error('Error during registration:', error);
-        return { success: false, message: "Gagal terhubung ke server untuk pendaftaran." };
-    }
-}
-
-async function updateCustomerProfile(phoneNumber, name, email, sosmed, address) {
-    try {
-        const formData = new URLSearchParams();
-        formData.append('action', 'updateCustomerProfile');
-        formData.append('phoneNumber', phoneNumber);
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('sosmed', sosmed);
-        formData.append('address', address);
-
-        const response = await fetch(GAS_WEB_APP_URL, {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error updating profile:', error);
-        return { success: false, message: "Gagal terhubung ke server untuk update profil." };
-    }
-}
-
-async function submitDeposit(nama, handphone, amount, method, proofFile) {
-    const formData = new FormData();
-    formData.append('action', 'doDeposit');
-    formData.append('nama', nama);
-    formData.append('handphone', handphone);
-    formData.append('amount', amount);
-    formData.append('method', method);
-
-    if (proofFile) {
-        const reader = new FileReader();
-        reader.readAsDataURL(proofFile);
-        return new Promise((resolve, reject) => {
-            reader.onload = async () => {
-                const base64data = reader.result.split(',')[1];
-                formData.append('proof', base64data);
-                formData.append('proofContentType', proofFile.type);
-                formData.append('proofFileName', proofFile.name);
-
-                try {
-                    const response = await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const textResponse = await response.text();
-                    resolve({ success: true, message: textResponse });
-                } catch (error) {
-                    console.error('Error submitting deposit with proof:', error);
-                    reject({ success: false, message: "Gagal mengirim konfirmasi deposit dengan bukti." });
-                }
-            };
-            reader.onerror = error => reject({ success: false, message: "Gagal membaca file bukti transfer." });
-        });
-    } else {
-        try {
-            const response = await fetch(GAS_WEB_APP_URL, {
-                method: 'POST',
-                body: formData
-            });
-            const textResponse = await response.text();
-            return { success: true, message: textResponse };
-        } catch (error) {
-            console.error('Error submitting deposit without proof:', error);
-            return { success: false, message: "Gagal mengirim konfirmasi deposit." };
-        }
-    }
-}
-
-cartButton.addEventListener('click', () => {
-    cartOverlay.classList.add('active');
-    updateCartDisplay();
-});
-
-closeCartModal.addEventListener('click', () => {
-    cartOverlay.classList.remove('active');
-});
-
-cartItemsContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-remove')) {
-        const productId = parseInt(e.target.dataset.id);
-        removeFromCart(productId);
-    }
-});
-
-checkoutButton.addEventListener('click', async () => {
+// --- Fungsionalitas Checkout ---
+document.getElementById('checkoutButton').addEventListener('click', async () => {
     if (cart.length === 0) {
-        showCustomAlert("Keranjang belanja Anda kosong.");
+        showCustomAlert('Keranjang Anda kosong.', 'error');
         return;
     }
 
-    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    if (!currentCustomer) {
+        showCustomAlert('Anda harus login untuk melakukan checkout.', 'error');
+        // Arahkan ke halaman login setelah beberapa saat
+        setTimeout(() => {
+            showView('login-page-view');
+            document.getElementById('cartOverlay').classList.remove('active'); // Tutup keranjang
+        }, 1000);
+        return;
+    }
 
-    if (loggedInPhoneNumber) {
-        const confirmCheckout = confirm(`Total belanja Anda Rp ${totalAmount.toLocaleString('id-ID')}. Lanjutkan dengan saldo akun?`);
-        if (confirmCheckout) {
-            const result = await processCheckout(loggedInPhoneNumber, cart, totalAmount);
-            if (result.success) {
-                showCustomAlert(`Checkout berhasil! Saldo Anda sekarang Rp ${result.newBalance.toLocaleString('id-ID')}.`);
-                clearCart();
-                cartOverlay.classList.remove('active');
-                if (profilePageView.classList.contains('active')) {
-                    const profile = await getCustomerProfile(loggedInPhoneNumber);
-                    if (profile.success) {
-                        customerBalanceDisplay.textContent = profile.balance.toLocaleString('id-ID');
-                    }
-                }
-            } else {
-                showCustomAlert(`Checkout gagal: ${result.message}`);
-            }
-        }
-    } else {
-        const confirmGuest = confirm(`Anda belum masuk. Total belanja Anda Rp ${totalAmount.toLocaleString('id-ID')}. Lanjutkan sebagai tamu?`);
-        if (confirmGuest) {
-            const result = await recordGuestCheckout(cart, totalAmount);
-            if (result.success) {
-                showCustomAlert("Pesanan Anda sebagai tamu berhasil dicatat! Silakan menuju kasir untuk pembayaran.");
-                clearCart();
-                cartOverlay.classList.remove('active');
-                window.location.href = 'pembayaran.html'; 
-            } else {
-                showCustomAlert(`Pencatatan pesanan tamu gagal: ${result.message}`);
-            }
+    // Siapkan data pesanan untuk dikirim ke Google Apps Script
+    const totalPembelian = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const detailPesanan = cart.map(item => `${item.name} (x${item.quantity} @Rp ${item.price.toLocaleString('id-ID')})`).join('; ');
+
+    const formData = new FormData();
+    formData.append('action', 'addOrder');
+    formData.append('tanggal', new Date().toLocaleDateString('id-ID'));
+    formData.append('nomorHpPelanggan', currentCustomer.NomorHP); // Gunakan nomor HP pelanggan yang login
+    formData.append('totalPembelian', totalPembelian);
+    formData.append('detailPesanan', detailPesanan);
+    formData.append('metodePembayaran', 'Menunggu Konfirmasi'); // Anda bisa tambahkan pilihan metode pembayaran di sini, misal: 'Saldo Deposit', 'COD', 'Bank Transfer'
+
+    try {
+        showCustomAlert('Memproses pesanan...', 'info');
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            showCustomAlert('Pesanan Anda berhasil dibuat! Terima kasih. Admin akan segera memproses.', 'success');
+            cart = []; // Kosongkan keranjang
+            updateCartDisplay();
+            document.getElementById('cartOverlay').classList.remove('active'); // Tutup keranjang
+            showView('mainContentView'); // Kembali ke halaman utama
         } else {
-            const confirmLoginRegister = confirm("Untuk menggunakan saldo, Anda perlu masuk atau mendaftar. Apakah Anda ingin masuk atau mendaftar sekarang?");
-            if (confirmLoginRegister) {
-                cartOverlay.classList.remove('active');
-                showView('login-page-view');
-            }
+            showCustomAlert('Gagal membuat pesanan: ' + data.message, 'error');
         }
-    }
-});
-
-profileButton.addEventListener('click', async () => {
-    showView('profile-page-view');
-    if (loggedInPhoneNumber) {
-        loginRegisterInfo.innerHTML = '';
-        customerHandphoneInput.value = loggedInPhoneNumber;
-        customerHandphoneInput.readOnly = true;
-
-        const profile = await getCustomerProfile(loggedInPhoneNumber);
-        if (profile.success) {
-            customerNameInput.value = profile.name;
-            customerEmailInput.value = profile.email;
-            customerSosmedInput.value = profile.sosmed;
-            customerAddressInput.value = profile.address;
-            customerBalanceDisplay.textContent = profile.balance.toLocaleString('id-ID');
-            saveProfileBtn.style.display = 'inline-block';
-            openDepositFormBtn.style.display = 'inline-block';
-        } else {
-            showCustomAlert(profile.message || "Gagal memuat profil.");
-            localStorage.removeItem('loggedInPhoneNumber');
-            loggedInPhoneNumber = null;
-            updateProfileViewForLoggedOut();
-        }
-    } else {
-        updateProfileViewForLoggedOut();
-    }
-});
-
-function updateProfileViewForLoggedOut() {
-    customerNameInput.value = '';
-    customerEmailInput.value = '';
-    customerSosmedInput.value = '';
-    customerAddressInput.value = '';
-    customerHandphoneInput.value = '';
-    customerHandphoneInput.readOnly = false;
-    customerBalanceDisplay.textContent = '0';
-    saveProfileBtn.style.display = 'none';
-    openDepositFormBtn.style.display = 'none';
-    loginRegisterInfo.innerHTML = `
-        <p>Anda belum masuk. Silakan:</p>
-        <button id="goToLoginBtn" class="btn btn-secondary">Masuk</button>
-        <button id="goToRegisterBtn" class="btn btn-secondary">Daftar Akun Baru</button>
-    `;
-    document.getElementById('goToLoginBtn').addEventListener('click', () => {
-        showView('login-page-view');
-    });
-    document.getElementById('goToRegisterBtn').addEventListener('click', () => {
-        showView('register-page-view');
-    });
-}
-
-closeProfileButton.addEventListener('click', () => {
-    showView('mainContentView');
-});
-
-saveProfileBtn.addEventListener('click', async () => {
-    if (!loggedInPhoneNumber) {
-        showCustomAlert("Anda harus masuk untuk menyimpan profil.");
-        return;
-    }
-    const name = customerNameInput.value;
-    const email = customerEmailInput.value;
-    const sosmed = customerSosmedInput.value;
-    const address = customerAddressInput.value;
-
-    const result = await updateCustomerProfile(loggedInPhoneNumber, name, email, sosmed, address);
-    if (result.success) {
-        showCustomAlert("Profil Anda berhasil diperbarui!");
-    } else {
-        showCustomAlert(`Gagal memperbarui profil: ${result.message}`);
-    }
-});
-
-openDepositFormBtn.addEventListener('click', () => {
-    showView('deposit-page-view');
-    if (loggedInPhoneNumber) {
-        depositHandphoneInput.value = loggedInPhoneNumber;
-        depositHandphoneInput.readOnly = true;
-        depositNamaInput.value = customerNameInput.value;
-        depositNamaInput.readOnly = true;
-    } else {
-        depositHandphoneInput.value = '';
-        depositHandphoneInput.readOnly = false;
-        depositNamaInput.value = '';
-        depositNamaInput.readOnly = false;
-    }
-});
-
-closeDepositButton.addEventListener('click', () => {
-    showView('profile-page-view');
-});
-
-submitDepositBtn.addEventListener('click', async () => {
-    const nama = depositNamaInput.value;
-    const handphone = depositHandphoneInput.value;
-    const amount = parseFloat(depositAmountInput.value);
-    const method = depositMethodSelect.value;
-    const proofFile = depositProofInput.files[0];
-
-    if (!nama || !handphone || isNaN(amount) || amount <= 0 || !method) {
-        showCustomAlert("Harap isi semua kolom deposit dengan benar.");
-        return;
-    }
-
-    const isRegistered = await checkPhoneNumberRegistered(handphone);
-    if (!isRegistered) {
-        showCustomAlert("Nomor Handphone ini belum terdaftar. Silakan daftar terlebih dahulu.");
-        return;
-    }
-
-    const result = await submitDeposit(nama, handphone, amount, method, proofFile);
-    if (result.success) {
-        showCustomAlert("Konfirmasi deposit Anda berhasil dikirim. Menunggu verifikasi admin.");
-        depositNamaInput.value = '';
-        depositHandphoneInput.value = '';
-        depositAmountInput.value = '';
-        depositMethodSelect.value = '';
-        depositProofInput.value = '';
-        showView('profile-page-view');
-    } else {
-        showCustomAlert(`Gagal mengirim konfirmasi deposit: ${result.message}`);
-    }
-});
-
-closeRegisterButton.addEventListener('click', () => {
-    showView('profile-page-view');
-});
-
-submitRegisterBtn.addEventListener('click', async () => {
-    const nama = regNamaInput.value;
-    const handphone = regHandphoneInput.value;
-    const email = regEmailInput.value;
-    const sosmed = regSosmedInput.value;
-    const alamat = regAlamatInput.value;
-
-    if (!nama || !handphone) {
-        showCustomAlert("Nama Lengkap dan Nomor Handphone wajib diisi.");
-        return;
-    }
-
-    const result = await registerCustomer(nama, handphone, email, sosmed, alamat);
-    if (result.success) {
-        showCustomAlert(result.message);
-        loggedInPhoneNumber = handphone;
-        localStorage.setItem('loggedInPhoneNumber', handphone);
-        
-        regNamaInput.value = '';
-        regHandphoneInput.value = '';
-        regEmailInput.value = '';
-        regSosmedInput.value = '';
-        regAlamatInput.value = '';
-        
-        showView('profile-page-view');
-        profileButton.click();
-    } else {
-        showCustomAlert(`Pendaftaran gagal: ${result.message}`);
-    }
-});
-
-closeLoginButton.addEventListener('click', () => {
-    showView('profile-page-view');
-});
-
-submitLoginBtn.addEventListener('click', async () => {
-    const handphone = loginHandphoneInput.value;
-    if (!handphone) {
-        showCustomAlert("Nomor Handphone wajib diisi.");
-        return;
-    }
-
-    const isRegistered = await checkPhoneNumberRegistered(handphone);
-    if (isRegistered) {
-        loggedInPhoneNumber = handphone;
-        localStorage.setItem('loggedInPhoneNumber', handphone);
-        showCustomAlert("Berhasil masuk!");
-        loginHandphoneInput.value = '';
-        showView('profile-page-view');
-        profileButton.click();
-    } else {
-        showCustomAlert("Nomor Handphone belum terdaftar. Silakan daftar terlebih dahulu.");
-    }
-});
-
-customAlertOkButton.addEventListener('click', hideCustomAlert);
-
-document.addEventListener('DOMContentLoaded', () => {
-    renderProducts();
-    updateCartDisplay();
-    if (loggedInPhoneNumber) {
-        profileButton.textContent = 'Profil Saya';
-    } else {
-        profileButton.textContent = 'Masuk/Daftar';
+    } catch (error) {
+        showCustomAlert('Terjadi kesalahan saat checkout: ' + error.message, 'error');
+        console.error('Error checkout:', error);
     }
 });
