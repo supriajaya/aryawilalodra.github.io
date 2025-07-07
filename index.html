@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nasuka Foods</title>
+    <title>Nasuka Foods - Toko Online</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,7 +61,7 @@
                     <button id="saveProfileBtn" class="btn btn-primary">Simpan Perubahan</button>
                     <button id="openDepositFormBtn" class="btn btn-secondary">Deposit Saldo</button>
                 </div>
-                <div id="loginRegisterInfo" class="info-message">
+                <div id="profileResponseMessage" class="info-message">
                     </div>
             </div>
         </div>
@@ -93,6 +93,8 @@
                 <input type="file" id="deposit_proof" accept="image/*">
 
                 <button id="submitDepositBtn" class="btn btn-primary">Kirim Konfirmasi Deposit</button>
+                <div id="depositResponseMessage" class="info-message">
+                    </div>
             </div>
         </div>
 
@@ -118,6 +120,9 @@
                 <textarea id="reg_alamat" rows="3" placeholder="Alamat lengkap Anda"></textarea>
 
                 <button id="submitRegisterBtn" class="btn btn-primary">Daftar Sekarang</button>
+                <div id="registerResponseMessage" class="info-message">
+                    </div>
+                <p class="form-link">Sudah punya akun? <a href="#" id="openLoginFromRegister">Masuk di sini</a></p>
             </div>
         </div>
 
@@ -131,6 +136,9 @@
                 <label for="login_handphone">Nomor Handphone:</label>
                 <input type="tel" id="login_handphone" placeholder="Contoh: 081234567890" required>
                 <button id="submitLoginBtn" class="btn btn-primary">Masuk</button>
+                <div id="loginResponseMessage" class="info-message">
+                    </div>
+                <p class="form-link">Belum punya akun? <a href="#" id="openRegisterFromLogin">Daftar di sini</a></p>
             </div>
         </div>
 
