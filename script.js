@@ -425,6 +425,19 @@ function updateCartDisplay() {
     });
 }
 
+function removeFromCart(productId) {
+    const index = cart.findIndex(item => item.id === productId);
+    if (index !== -1) {
+        if (cart[index].quantity > 1) {
+            cart[index].quantity--;
+        } else {
+            cart.splice(index, 1);
+        }
+        updateCartDisplay();
+    }
+}
+
+
 // --- Fungsionalitas Checkout ---
 document.getElementById('checkoutButton').addEventListener('click', async () => {
     if (cart.length === 0) {
@@ -476,3 +489,57 @@ document.getElementById('checkoutButton').addEventListener('click', async () => 
         console.error('Error checkout:', error);
     }
 });
+
+// --- Fungsionalitas Riwayat Pesanan ---
+document.getElementById('viewOrderHistoryBtn').addEventListener('click', async () => {
+    if (!currentCustomer) {
+        showCustomAlert('Anda harus login untuk melihat riwayat pesanan.', 'error');
+        return;
+    }
+    showView('order-history-view');
+    await loadOrderHistory(currentCustomer.NomorHP);
+});
+
+document.getElementById('close-order-history-button').addEventListener('click', () => {
+    showView('profile-page-view'); // Kembali ke halaman profil
+});
+
+async function loadOrderHistory(nomorHp) {
+    const orderHistoryList = document.getElementById('orderHistoryList');
+    orderHistoryList.innerHTML = '<p>Memuat riwayat pesanan...</p>'; // Tampilkan pesan loading
+
+    const formData = new FormData();
+    formData.append('action', 'getCustomerOrders');
+    formData.append('nomorHpPelanggan', nomorHp);
+
+    try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success && data.orders.length > 0) {
+            orderHistoryList.innerHTML = ''; // Bersihkan pesan loading
+            // Urutkan pesanan dari terbaru ke terlama berdasarkan tanggal
+            data.orders.sort((a, b) => new Date(b.Tanggal) - new Date(a.Tanggal));
+
+            data.orders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                orderCard.innerHTML = `
+                    <h4>Pesanan pada ${order.Tanggal}</h4>
+                    <p>Total: Rp ${parseFloat(order.TotalPembelian).toLocaleString('id-ID')}</p>
+                    <p>Detail: ${order.DetailPesanan}</p>
+                    <p class="order-status">Status: <strong>${order.StatusPesanan || 'Menunggu Konfirmasi'}</strong></p>
+                `;
+                orderHistoryList.appendChild(orderCard);
+            });
+        } else {
+            orderHistoryList.innerHTML = '<p>Belum ada riwayat pesanan.</p>';
+        }
+    } catch (error) {
+        orderHistoryList.innerHTML = '<p class="error-text">Gagal memuat riwayat pesanan: ' + error.message + '</p>';
+        console.error('Error loading order history:', error);
+    }
+}
