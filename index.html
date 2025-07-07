@@ -3,156 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nasuka Foods - Toko Online</title>
+    <title>Nasu Foods</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Nasuka Foods</h1>
-            <nav>
-                <button id="profileButton" class="nav-button">Profil Saya</button>
-                <button id="cartButton" class="nav-button">Keranjang (<span id="cartCount">0</span>)</button>
-            </nav>
-        </header>
-
-        <div id="mainContentView" class="view active">
-            <section id="productList" class="product-list">
-                </section>
-        </div>
-
-        <div id="cartOverlay" class="modal-overlay">
-            <div class="modal-content">
-                <span class="close-button" id="closeCartModal">&times;</span>
-                <h2>Keranjang Belanja</h2>
-                <div id="cartItems" class="cart-items">
-                    </div>
-                <div class="cart-summary">
-                    <h3>Total: Rp <span id="cartTotal">0</span></h3>
-                    <button id="checkoutButton" class="btn btn-primary" disabled>Checkout Sekarang</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="profile-page-view" class="view hidden">
-            <div class="page-header">
-                <h2>Profil Pelanggan</h2>
-                <button class="close-button" id="close-profile-button">&times;</button>
-            </div>
-            <div class="profile-form form-section">
-                <label for="customerName">Nama Lengkap:</label>
-                <input type="text" id="customerName" placeholder="Nama Lengkap Anda">
-
-                <label for="customerHandphone">Nomor HP:</label>
-                <input type="text" id="customerHandphone" placeholder="Nomor HP" readonly>
-
-                <label for="customerEmail">Email:</label>
-                <input type="email" id="customerEmail" placeholder="Alamat Email Anda">
-
-                <label for="customerSosmed">Username Sosmed:</label>
-                <input type="text" id="customerSosmed" placeholder="Contoh: @username">
-
-                <label for="customerAddress">Alamat Lengkap:</label>
-                <textarea id="customerAddress" rows="3" placeholder="Alamat lengkap Anda"></textarea>
-
-                <p>Saldo Deposit: Rp <span id="customerBalanceDisplay">0</span></p>
-
-                <div class="profile-actions">
-                    <button id="saveProfileBtn" class="btn btn-primary">Simpan Perubahan</button>
-                    <button id="openDepositFormBtn" class="btn btn-secondary">Deposit Saldo</button>
-                </div>
-                <div id="profileResponseMessage" class="info-message">
-                    </div>
-            </div>
-        </div>
-
-        <div id="deposit-page-view" class="view hidden">
-            <div class="page-header">
-                <h2>Konfirmasi Deposit Saldo</h2>
-                <button class="close-button" id="close-deposit-button">&times;</button>
-            </div>
-            <div class="deposit-form form-section">
-                <label for="deposit_nama">Nama Lengkap:</label>
-                <input type="text" id="deposit_nama" placeholder="Nama Anda" required>
-
-                <label for="deposit_handphone">Nomor Handphone:</label>
-                <input type="tel" id="deposit_handphone" placeholder="Contoh: 081234567890" required>
-
-                <label for="deposit_amount">Jumlah Deposit (Rp):</label>
-                <input type="number" id="deposit_amount" min="1" placeholder="Minimum Rp 1" required>
-
-                <label for="deposit_method">Metode Pembayaran:</label>
-                <select id="deposit_method" required>
-                    <option value="">Pilih Metode</option>
-                    <option value="QRIS">QRIS</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                    <option value="Cash">Cash (Manual)</option>
-                </select>
-
-                <label for="deposit_proof">Bukti Transfer (Opsional):</label>
-                <input type="file" id="deposit_proof" accept="image/*">
-
-                <button id="submitDepositBtn" class="btn btn-primary">Kirim Konfirmasi Deposit</button>
-                <div id="depositResponseMessage" class="info-message">
-                    </div>
-            </div>
-        </div>
-
-        <div id="register-page-view" class="view hidden">
-            <div class="page-header">
-                <h2>Daftar Akun Baru</h2>
-                <button class="close-button" id="close-register-button">&times;</button>
-            </div>
-            <div class="register-form form-section">
-                <label for="reg_nama">Nama Lengkap:</label>
-                <input type="text" id="reg_nama" placeholder="Nama Lengkap Anda" required>
-
-                <label for="reg_handphone">Nomor Handphone:</label>
-                <input type="tel" id="reg_handphone" placeholder="Contoh: 081234567890" required>
-
-                <label for="reg_email">Email (Opsional):</label>
-                <input type="email" id="reg_email" placeholder="Alamat Email Anda">
-
-                <label for="reg_sosmed">Username Sosmed (Opsional):</label>
-                <input type="text" id="reg_sosmed" placeholder="Contoh: @username">
-
-                <label for="reg_alamat">Alamat Lengkap (Opsional):</label>
-                <textarea id="reg_alamat" rows="3" placeholder="Alamat lengkap Anda"></textarea>
-
-                <button id="submitRegisterBtn" class="btn btn-primary">Daftar Sekarang</button>
-                <div id="registerResponseMessage" class="info-message">
-                    </div>
-                <p class="form-link">Sudah punya akun? <a href="#" id="openLoginFromRegister">Masuk di sini</a></p>
-            </div>
-        </div>
-
-        <div id="login-page-view" class="view hidden">
-            <div class="page-header">
-                <h2>Masuk Akun</h2>
-                <button class="close-button" id="close-login-button">&times;</button>
-            </div>
-            <div class="login-form form-section">
-                <p>Masukkan Nomor Handphone Anda untuk masuk:</p>
-                <label for="login_handphone">Nomor Handphone:</label>
-                <input type="tel" id="login_handphone" placeholder="Contoh: 081234567890" required>
-                <button id="submitLoginBtn" class="btn btn-primary">Masuk</button>
-                <div id="loginResponseMessage" class="info-message">
-                    </div>
-                <p class="form-link">Belum punya akun? <a href="#" id="openRegisterFromLogin">Daftar di sini</a></p>
-            </div>
-        </div>
-
-        <div id="custom-alert-overlay" class="modal-overlay hidden">
-            <div class="modal-content small-modal">
-                <p id="custom-alert-message"></p>
-                <button id="custom-alert-ok-button" class="btn btn-primary">OK</button>
-            </div>
+    <div id="custom-alert-overlay" class="overlay hidden">
+        <div class="custom-alert">
+            <p id="custom-alert-message"></p>
+            <button id="custom-alert-ok-button" class="btn btn-primary">Oke</button>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Nasuka Foods. All rights reserved.</p>
-    </footer>
+    <header>
+        <div class="container">
+            <h1>Nasu Foods</h1>
+            <nav>
+                <button id="profileButton" class="btn btn-secondary">Profil Saya</button>
+                <button id="cartButton" class="btn btn-secondary">Keranjang (<span id="cartCount">0</span>)</button>
+            </nav>
+        </div>
+    </header>
+
+    <div id="mainContentView" class="view">
+        <div class="container">
+            <h2>Selamat Datang di Nasu Foods!</h2>
+            <p>Pesan makanan favoritmu dengan mudah.</p>
+
+            <div id="productList" class="product-grid">
+                </div>
+        </div>
+    </div>
+
+    <div id="login-page-view" class="view hidden">
+        <div class="container auth-form-container">
+            <h2>Masuk Akun</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login_handphone">Nomor Handphone:</label>
+                    <input type="tel" id="login_handphone" required>
+                </div>
+                <div id="loginResponseMessage" class="info-message hidden"></div>
+                <button type="button" id="submitLoginBtn" class="btn btn-primary">Masuk</button>
+                <p>Belum punya akun? <a href="#" id="openRegisterFromLogin">Daftar Sekarang</a></p>
+                <button type="button" id="close-login-button" class="btn btn-secondary mt-2">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-page-view" class="view hidden">
+        <div class="container auth-form-container">
+            <h2>Daftar Akun Baru</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="reg_nama">Nama Lengkap:</label>
+                    <input type="text" id="reg_nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_handphone">Nomor Handphone:</label>
+                    <input type="tel" id="reg_handphone" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_email">Email (Opsional):</label>
+                    <input type="email" id="reg_email">
+                </div>
+                <div class="form-group">
+                    <label for="reg_sosmed">Sosial Media (Opsional):</label>
+                    <input type="text" id="reg_sosmed" placeholder="Contoh: @nasufoods_ig">
+                </div>
+                <div class="form-group">
+                    <label for="reg_alamat">Alamat Lengkap (Opsional):</label>
+                    <textarea id="reg_alamat" rows="3"></textarea>
+                </div>
+                <div id="registerResponseMessage" class="info-message hidden"></div>
+                <button type="button" id="submitRegisterBtn" class="btn btn-primary">Daftar Sekarang</button>
+                <p>Sudah punya akun? <a href="#" id="openLoginFromRegister">Masuk di sini</a></p>
+                <button type="button" id="close-register-button" class="btn btn-secondary mt-2">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="profile-page-view" class="view hidden">
+        <div class="container">
+            <h2>Profil Pelanggan</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="customerName">Nama Lengkap:</label>
+                    <input type="text" id="customerName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="customerHandphone">Nomor Handphone:</label>
+                    <input type="tel" id="customerHandphone" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email:</label>
+                    <input type="email" id="customerEmail">
+                </div>
+                <div class="form-group">
+                    <label for="customerSosmed">Sosial Media:</label>
+                    <input type="text" id="customerSosmed">
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Alamat Lengkap:</label>
+                    <textarea id="customerAddress" rows="3"></textarea>
+                </div>
+                <p>Saldo Deposit: Rp <span id="customerBalanceDisplay">0</span></p>
+                <div id="profileResponseMessage" class="info-message hidden"></div>
+                <button type="button" id="saveProfileBtn" class="btn btn-primary">Simpan Perubahan</button>
+                <button type="button" id="openDepositFormBtn" class="btn btn-primary">Isi Saldo Deposit</button>
+                <button id="viewOrderHistoryBtn" class="btn btn-secondary mt-3">Lihat Riwayat Pesanan</button> <button type="button" id="close-profile-button" class="btn btn-secondary mt-2">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="deposit-page-view" class="view hidden">
+        <div class="container auth-form-container">
+            <h2>Isi Saldo Deposit</h2>
+            <form id="depositForm">
+                <div class="form-group">
+                    <label for="deposit_nama">Nama Lengkap:</label>
+                    <input type="text" id="deposit_nama" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="deposit_handphone">Nomor Handphone:</label>
+                    <input type="tel" id="deposit_handphone" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="deposit_amount">Jumlah Deposit (Rp):</label>
+                    <input type="number" id="deposit_amount" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="deposit_method">Metode Pembayaran:</label>
+                    <select id="deposit_method" required>
+                        <option value="">Pilih Metode</option>
+                        <option value="Transfer Bank">Transfer Bank</option>
+                        <option value="QRIS">QRIS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deposit_proof">Bukti Transfer (Opsional):</label>
+                    <input type="file" id="deposit_proof" accept="image/*">
+                </div>
+                <div id="depositResponseMessage" class="info-message hidden"></div>
+                <button type="button" id="submitDepositBtn" class="btn btn-primary">Kirim Konfirmasi Deposit</button>
+                <button type="button" id="close-deposit-button" class="btn btn-secondary mt-2">Kembali</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="order-history-view" class="view hidden">
+        <div class="container">
+            <h2>Riwayat Pesanan Saya</h2>
+            <div id="orderHistoryList" class="order-list">
+                <p>Memuat riwayat pesanan...</p>
+            </div>
+            <button id="close-order-history-button" class="btn btn-primary mt-3">Kembali ke Profil</button>
+        </div>
+    </div>
+
+    <div id="cartOverlay" class="cart-overlay">
+        <div class="cart-modal">
+            <span class="close-button" id="closeCartModal">&times;</span>
+            <h3>Keranjang Belanja</h3>
+            <div id="cartItems">
+                </div>
+            <div class="cart-summary">
+                <p>Total: Rp <span id="cartTotal">0</span></p>
+            </div>
+            <button id="checkoutButton" class="btn btn-primary" disabled>Checkout</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
