@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Nasuka</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #2196f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    p.notif {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Bank</h2>
+
+  <!-- Form Penukaran -->
+  <div class="box">
+    <h3>Tukar</h3>
+    <form id="formTukar">
+      <input type="hidden" name="action" value="tukar">
+      <input type="hidden" name="id" id="idTukar">
+
+      <label>Dari:</label>
+      <select name="dari" required>
+        <option value="Saldo">Saldo</option>
+        <option value="Perak">Perak</option>
+        <option value="Platinum">Platinum</option>
+        <option value="Gold">Gold</option>
+      </select>
+
+      <label>Ke:</label>
+      <select name="ke" required>
+        <option value="Perak">Perak</option>
+        <option value="Platinum">Platinum</option>
+        <option value="Gold">Gold</option>
+        <option value="Saldo">Saldo</option>
+      </select>
+
+      <label>Jumlah:</label>
+      <input type="number" name="jumlah" required>
+
+      <button type="submit">Tukar</button>
+    </form>
+    <p id="notifikasiTukar" class="notif"></p>
+  </div>
+
+  <!-- Form Transfer -->
+  <div class="box">
+   
+    <form id="formTransfer">
+      <input type="hidden" name="action" value="transfer">
+      <input type="hidden" name="id" id="idTransfer">
+
+      <label>Username Tujuan:</label>
+      <input type="text" name="username" required>
+
+      <label>Jenis:</label>
+      <select name="jenis" required>
+        <option value="Saldo">Saldo</option>
+        <option value="Perak">Perak</option>
+        <option value="Platinum">Platinum</option>
+        <option value="Gold">Gold</option>
+      </select>
+
+      <label>Jumlah:</label>
+      <input type="number" name="jumlah" required>
+
+      <button type="submit">Kirim</button>
+    </form>
+    <p id="notifikasiTransfer" class="notif"></p>
+  </div>
+
+  <script>
+    const id = localStorage.getItem("userID") || "";
+    document.getElementById("idTukar").value = id;
+    document.getElementById("idTransfer").value = id;
+
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwL9L9lI4GViVClRwcGN4dg2iyqhN_bPGnuwFL5v1Q_UMp5uZqdbQJmy9LIYwG81Dqy/exec";
+
+    document.getElementById("formTukar").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      fetch(GAS_URL, {
+        method: "POST",
+        body: data
+      })
+      .then(res => res.text())
+      .then(text => {
+        document.getElementById("notifikasiTukar").textContent = text;
+      })
+      .catch(err => {
+        document.getElementById("notifikasiTukar").textContent = "Gagal: " + err.message;
+      });
+    });
+
+    document.getElementById("formTransfer").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      fetch(GAS_URL, {
+        method: "POST",
+        body: data
+      })
+      .then(res => res.text())
+      .then(text => {
+        document.getElementById("notifikasiTransfer").textContent = text;
+      })
+      .catch(err => {
+        document.getElementById("notifikasiTransfer").textContent = "Gagal: " + err.message;
+      });
+    });
+  </script>
+
+</body>
+</html>
