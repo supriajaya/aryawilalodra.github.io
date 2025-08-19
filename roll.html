@@ -1,4 +1,23 @@
-<div class="roll-game-container">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1024">
+  <title>Roll Game</title>
+  
+  <link rel="stylesheet" href="roll.css">
+  
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-database-compat.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  
+  <audio id="winAudio" src="https://nasukafoods.site/slavafunk.mp3" preload="auto"></audio>
+
+</head>
+<body>
+    
   <div class="link-container">
     <a href="war.html" class="menu-link">war</a>
     <a href="rule.html" class="menu-link">Aturan</a>
@@ -15,30 +34,32 @@
       <div id="ring4" class="ring"></div>
       <div id="ring5" class="ring"></div>
     </div>
+  </div>
+  
+  <button id="spinButton">Putar</button>
+  
+  <div class="mainting-panel">
+    <div>Perak Saya: <span id="perakBalance">0</span></div>
+    <input type="number" id="mainAmount" class="main-input" placeholder="Mode Netral" min="1" readonly>
+    <div id="errorMessage" class="error-message"></div>
     
-    <audio id="winAudio" src="https://nasukafoods.site/slavafunk.mp3" preload="auto"></audio>
-    
-    <button id="spinButton">Putar</button>
-    
-    <div class="mainting-panel">
-      <div>Perak Saya: <span id="perakBalance">0</span></div>
-      <input type="number" id="mainAmount" class="main-input" placeholder="Mode Netral" min="1" readonly>
-      <div id="errorMessage" class="error-message"></div>
-      
-      <div class="auto-main-options">
-        <div id="automainButtons">
-          <button onclick="toggleAutomain(1)" id="automain1">1</button>
-          <button onclick="toggleAutomain(10)" id="automain10">10</button>          
-          <button onclick="toggleAutomain(100)" id="automain100">100</button>
-          <button onclick="toggleAutomain(1000)" id="automain1000">1.000</button>
-          <button onclick="toggleAutomain(0)">Netral</button>
-        </div>
+    <div class="auto-main-options">
+      <div id="automainButtons">
+        <button onclick="toggleAutomain(1)" id="automain1">1</button>
+        <button onclick="toggleAutomain(10)" id="automain10">10</button>          
+        <button onclick="toggleAutomain(100)" id="automain100">100</button>
+        <button onclick="toggleAutomain(1000)" id="automain1000">1.000</button>
+        <button onclick="toggleAutomain(0)">Netral</button>
       </div>
-      <div id="mainResult" class="result-message result-hidden"></div>
     </div>
+    <div id="mainResult" class="result-message result-hidden"></div>
   </div>
   
   <div class="history-link-container">
-    <a href="#home" onclick="navigateTo('home')" class="menu-link">Beranda</a>
+    <a href="index.html" class="menu-link">Beranda</a>
   </div>
-</div>
+
+<script src="firebase_init.js"></script>
+<script src="roll.js"></script>
+</body>
+</html>
