@@ -1,329 +1,557 @@
 .arya-scol {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 2px;
-  gap: 2px;
-  margin-top: -1px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 2px;
+    gap: 2px;
+    margin-top: -1px;
 }
-
+  
 .arya-scol::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
-
+  
 .arya-scol img {
-  width: 45px;
-  aspect-ratio: 1 / 1;
-  border-radius: 3px;
-  object-fit: cover;
-  flex: 0 0 auto;
+    width: 45px;
+    aspect-ratio: 1 / 1;
+    border-radius: 3px;
+    object-fit: cover;
+    flex: 0 0 auto;
 }
-
+  
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+}
+  
+.nasuka {
+    flex: 0 0 48%;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    box-sizing: border-box;
+}
+  
+.nasuka img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+  
+.nasuka-info {
+    padding: 10px;
+}
+  
+.nasuka-info.centered {
+    text-align: center;
+}
+  
+.nasuka-info.left {
+    text-align: left;
+}
+  
+.nasuka-info h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+  
+.nasuka-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+}
+  
+@media (max-width: 480px) {
+    .nasuka {
+        flex: 0 0 49%;
+        font-size: 13px;
+    }
+    .nasuka-info h3 {
+        font-size: 14px;
+    }
+    .nasuka-info p, .fake-online {
+        font-size: 12px;
+    }
+}
+  
 .arya-bar {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 2px;
-  overflow-x: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    overflow-x: auto;
 }
-
 .arya-bar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
-
+  
 .arya-item {
-  width: 70px;
-  aspect-ratio: 1 / 1;
-  border-radius: 2px;
-  object-fit: cover;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    width: 70px;
+    aspect-ratio: 1 / 1;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-
+  
 .arya-item {
-  border: 1px solid red;
-  padding: 2px;
+    border: 1px solid red;
+    padding: 2px;
 }
-
-.arya-overlay {
-  position: relative;
-  display: inline-block;
+  
+.arya-overlay, .profil-overlay {
+    position: relative;
+    display: inline-block;
 }
-
-.arya-overlay img {
-  display: block;
+  
+.arya-overlay img, .profil-overlay img {
+    display: block;
 }
-
-.arya-overlay span {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  background: ;
-  color: black;
-  padding: 2px 1px;
-  border-radius: 1px;
-  font-size: 10px;
-  font-weight: bold;
-  max-width: 90%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
+  
+.arya-overlay span, .profil-overlay span {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    color: black;
+    padding: 2px 1px;
+    border-radius: 1px;
+    font-size: 10px;
+    font-weight: bold;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
 }
-
-.profil-overlay {
-  position: relative;
-  display: inline-block;
-}
-
-.profil-overlay img {
-  display: block;
-}
-
+  
 .profil-overlay span {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  background: ;
-  color: white;
-  padding: 2px 1px;
-  border-radius: 1px;
-  font-size: 10px;
-  font-weight: bold;
-  max-width: 90%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
+    color: white;
 }
-
+  
 .post-item {
-  display: flex;
-  gap: 10px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
-
+  
 .foto-post {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }
-
+  
 .konten-post {
-  flex: 1;
+    flex: 1;
 }
-
+  
 .aksi-post button {
-  margin-right: 8px;
-  background: #eee;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 6px;
-  cursor: pointer;
+    margin-right: 8px;
+    background: #eee;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+   #notifInbox {
+    position: absolute;
+    top: 20px;
+    right: 12px;
+    padding: 2px 6px;
+    cursor: pointer;
+    min-width: 20px;
+    text-align: center;
+    user-select: none;
+    display: none;
 }
 
-#notifInbox {
-  position: absolute;
-  top: 20px;
-  right: 12px;
-  padding: 2px 6px;
-  cursor: pointer;
-  min-width: 20px;
-  text-align: center;
-  user-select: none;
-  display: none;
+.arya-scil {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 2px;
+    gap: 2px;
+    margin-top: -1px;
+}
+  
+.arya-scil::-webkit-scrollbar {
+    display: none;
+}
+  
+.arya-scil img {
+    width: 40px;
+    aspect-ratio: 1 / 1;
+    border-radius: 3px;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+      
+.arya-bir {
+    display: flex;
+    align-itims: center;
+    gap: 2px;
+    padding: 2px;
+    overflow-x: auto;
+}
+.arya-bar::-webkit-scrollbar {
+    display: none;
+}
+  
+.arya-itim {
+    width: 40px;
+    aspect-ratio: 1 / 1;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+  
+.arya-itim {
+    border: 1px solid black;
+    padding: 2px;
+}
+      
+.aryi-overlay {
+    position: relative;
+    display: inline-block;
+}
+  
+.aryi-overlay img {
+    display: block;
+}
+  
+.aryi-overlay span {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    color: black;
+    padding: 2px 1px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    max-width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
+}
+  
+.prifil-overlay {
+    position: relative;
+    display: inline-block;
+}
+  
+.prifil-overlay img {
+    display: block;
+}
+  
+.prifil-overlay span {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    color: red;
+    padding: 2px 1px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
+}
+      
+.menu-links {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.menu-links span {
+    margin: 0 10px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 5px;
+}
+
+.menu-links span:hover {
+    text-decoration: underline;
 }
 
 .produk-title {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
 }
-
 .produk-container {
-  width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
 }
-
+    
 .produk-card {
-  display: inline-block;
-  width: 140px;
-  background: white;
-  margin-right: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  scroll-snap-align: start;
-  vertical-align: top;
-  cursor: pointer;
+    display: inline-block;
+    width: 140px;
+    background: white;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    scroll-snap-align: start;
+    vertical-align: top;
+    cursor: pointer;
 }
-
+    
 .produk-card img {
-  width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 1px;
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 1px;
 }
-
 .produk-card p {
-  font-size: 16px;
-  margin: 5px 0 0;
+    font-size: 16px;
+    margin: 5px 0 0;
 }
-
 .produk-card .deskripsi {
-  font-size: 13px;
-  color: #555;
-  margin-top: 3px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    font-size: 13px;
+    color: #555;
+    margin-top: 3px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
-
+    
 .struk {
-  background: #fff;
-  width: 85%;
-  max-width: 400px;
-  padding: 20px;
-  border: 1px dashed #333;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    background: #fff;
+    width: 85%;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px dashed #333;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
-
 .struk h1 {
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
-
 .struk p {
-  margin: 3px 0;
-  font-size: 16px;
+    margin: 3px 0;
+    font-size: 16px;
 }
-
 .line {
-  border-top: 1px dashed #000;
-  margin: 15px 0;
+    border-top: 1px dashed #000;
+    margin: 15px 0;
 }
-
 .label {
-  display: inline-block;
-  width: 130px;
+    display: inline-block;
+    width: 130px;
 }
-
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 input[type="text"], input[type="url"], select {
-  width: 100%;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: inherit;
-  font-size: 14px;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
 }
-
 label {
-  font-size: 14px;
-  display: block;
-  margin: 8px 0 3px;
+    font-size: 14px;
+    display: block;
+    margin: 8px 0 3px;
 }
-
-tombol {
-  margin-top: 15px;
-  padding: 10px;
-  width: 100%;
-  background: red;
-  color: #fff;
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
+    
+button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background: red;
+    color: #fff;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
 }
-
-tombol:disabled {
-  background: #aaa;
-  cursor: not-allowed;
+   
+button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
 }
-
+    
+    
 #kwitansi {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  z-index: 999;
-  border-radius: 10px;
-  padding: 20px;
-  width: 90%;
-  max-width: 320px;
-  text-align: left;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  border: 2px dashed #4CAF50;
-  cursor: pointer;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    z-index: 999;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 320px;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border: 2px dashed #4CAF50;
+    cursor: pointer;
 }
-
 #kwitansi p {
-  font-size: 14px;
-  margin: 5px 0;
+    font-size: 14px;
+    margin: 5px 0;
 }
-
 #deskripsiOrder {
-  font-size: 15px;
-  color: #444;
-  font-style: italic;
-  margin-top: 5px;
+    font-size: 15px;
+    color: #444;
+    font-style: italic;
+    margin-top: 5px;
 }
-
 #qrisModal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  align-items: center;
-  justify-content: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
 }
-
 #qrisModal .modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 300px;
-  width: 90%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 300px;
+    width: 90%;
 }
-
 #qrisModal img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
 }
-
-#qrisModal tombol {
-  background: #4CAF50;
+#qrisModal button {
+    background: #4CAF50;
 }
-
 .close-btn {
-  position: absolute;
-  top: 300px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: #888;
+    position: absolute;
+    top: 300px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #888;
+}
+
+.arya-scil {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 2px;
+    gap: 2px;
+    margin-top: -1px;
+}
+  
+.arya-scil::-webkit-scrollbar {
+    display: none;
+}
+  
+.arya-scil img {
+    width: 40px;
+    aspect-ratio: 1 / 1;
+    border-radius: 3px;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+      
+.arya-bir {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    overflow-x: auto;
+}
+.arya-bir::-webkit-scrollbar {
+    display: none;
+}
+  
+.arya-itim {
+    width: 40px;
+    aspect-ratio: 1 / 1;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+  
+.arya-itim {
+    border: 1px solid black;
+    padding: 2px;
+}
+      
+.aryi-overlay {
+    position: relative;
+    display: inline-block;
+}
+  
+.aryi-overlay img {
+    display: block;
+}
+  
+.aryi-overlay span {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: ;
+    color: black;
+    padding: 2px 1px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    max-width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
+}
+  
+.prifil-overlay {
+    position: relative;
+    display: inline-block;
+}
+  
+.prifil-overlay img {
+    display: block;
+}
+  
+.prifil-overlay span {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    color: red;
+    padding: 2px 1px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 6px white, 0 0 8px green, 0 0 10px red;
 }
