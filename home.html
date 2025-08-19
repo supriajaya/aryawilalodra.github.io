@@ -1,0 +1,80 @@
+<div class="home-container">
+  <div style="padding:2px; text-align:center; margin-top: 50px;">
+    <input id="cariUser" placeholder="Cari akun....." />
+    <div id="hasilUser" style="margin-top:8px"></div>
+  </div>
+
+  <div class="arya-bar raya" style="position: relative;">
+    <div class="profil-overlay">
+      <a id="linkProfil" href="#">
+        <img src="https://nasukafoods.site/gambarkosong.jpg" class="arya-item raya" id="fotoProfil" />
+      </a>
+      <span id="namaUser" class="blink-glow">Memuat....</span>
+    </div>
+    
+    <div class="profil-overlay" style="position: relative; display: inline-flex; align-items: center; gap: 6px;">
+      <img src="https://nasukafoods.site/nasukachat.png" class="arya-item raya" id="fol" />
+      <span></span>
+      <span id="notifInbox"></span>
+    </div>
+    
+    <div class="arya-scol">
+      <div class="arya-overlay">
+        <a href="burung.html"><img src="https://nasukafoods.site/nasukabird.jpg" /></a>
+      </div>
+      <div class="arya-overlay">
+        <a href="#roll" onclick="navigateTo('roll')"><img src="https://nasukafoods.site/roll.jpg" /></a>
+      </div>
+      <div class="arya-overlay">
+        <a href="puzzle.html"><img src="https://nasukafoods.site/puzzle.jpg" /></a>
+      </div>
+      <div class="arya-overlay">
+        <a href="https://nasukafoods.site/nasuka.apk"><img src="https://nasukafoods.site/download.png" /><span></span></a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="produk-container" id="produkContainer"></div>
+
+  <div class="struk" id="strukPembayaran" style="display: none;">
+    <button class="close-btn" onclick="closeStruk()">Tutup</button>
+    <h1>PEMBAYARAN</h1>
+    <p><span class="label">Produk</span><span id="layanan">-</span></p>
+    <p><span class="label">Harga</span><span id="harga">-</span></p>
+    <div id="inputManualBox" style="margin-top:10px;"></div>
+    <div id="deskripsiOrder"></div>
+    <div class="line"></div>
+    <p><span class="label">Nama</span><span id="nama">-</span></p>
+    <p><span class="label">Telepon</span><span id="telepon">-</span></p>
+    <p><span class="label">Alamat</span><span id="alamat">-</span></p>
+    <p><span class="label">Saldo</span><span id="Saldo">-</span></p>
+    <div class="line"></div>
+    <tombol type="tombol" id="btnBayar" style="display: none;" onclick="submitDigital()">Beli Sekarang</tombol>
+    <tombol type="tombol" id="btnBayarQris" style="display: none;" onclick="showQris()">Bayar via QRIS</tombol>
+  </div>
+
+  <div id="kwitansi">
+    <p class="bold">✅ PEMBAYARAN BERHASIL</p>
+    <p>Pembelian: <span id="kLayanan"></span></p>
+    <p>Dibayar: <span id="kTotal"></span></p>
+    <p>Nama: <span id="kNama"></span></p>
+    <p>Telepon: <span id="kTelepon"></span></p>
+    <p>Alamat: <span id="kAlamat"></span></p>
+    <p id="kSaldo">Sisa saldo: <span id="kSaldoValue"></span></p>
+    <p style="margin-top:10px; font-weight: bold;">Pesanan akan segera kami proses</p>
+  </div>
+
+  <div id="qrisModal">
+    <div class="modal-content">
+      <h3>Scan QRIS untuk membayar</h3>
+      <img src="https://nasukafoods.site/image/qris.jpg" alt="QRIS">
+      <p>Total: <span id="qrisTotal"></span></p>
+      <tombol type="tombol" onclick="closeQris()">Tutup</tombol>
+    </div>
+  </div>
+  
+  <div id="daftarPostingan" style="padding: 10px;"></div>
+  <div id="modalGambar" style="display: none;position: fixed;z-index: 9999;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.8);justify-content: center;align-items: center;">
+    <img id="gambarModal" src="" style="max-width: 95%; max-height: 95%; border-radius: 8px" />
+  </div>
+</div>
