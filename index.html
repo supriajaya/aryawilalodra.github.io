@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Nasuka Wireless</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-database-compat.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang di Nasuka Wireless</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: snow;
+        }
+        .welcome-box {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .welcome-box h1 {
+            margin-bottom: 1rem;
+        }
+        .welcome-box a {
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  
-  <header class="header">
-    <div class="terutus">
-      <a href="leaderboard.html" class="varis">Leaderboard</a>   
-      <a href="topup.html" class="varis">Topup</a>   
-      <a href="#" class="varis">Fitur Mendatang</a>   
-      <a href="#" class="varis">Event</a>   
+    <div class="welcome-box">
+        <h1>Selamat Datang di Nasuka Wireless</h1>
+        <p>Silakan masuk atau daftar untuk melanjutkan.</p>
+        <a href="home.html">Masuk ke Aplikasi</a>
     </div>
-  </header>
-  
-  <div id="main-content"></div>
-
-  <footer class="footer">
-    <div class="terbiwih">
-      <a href="#" class="varis">Faq</a>   
-      <a href="#" class="varis">Privacy Policy</a>   
-      <a href="#" class="varis">Return Policy</a>   
-      <a href="#" class="varis">Term & Condition</a>   
-    </div>
-  </footer>
-
-  <script src="js/app.js"></script>
 </body>
 </html>
