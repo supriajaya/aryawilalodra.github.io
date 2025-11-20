@@ -3,614 +3,498 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>adm</title>
+    <title>Nasuka Foods</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-database-compat.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    
-    
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
-            -webkit-font-smoothing: antialiased;
-        }
+    <link rel="stylesheet" href="https://nasukafoods.site/lain.css">
+    </head>
 
-        .container {
-            max-width: 450px;
-            margin: 0 auto;
-            background-color: white;
-            min-height: 10vh;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        #login-container, #signup-container, #profil-container, #editprofil-container, #payment-container {
-            display: none;
-        }
-        
-        .header {
-            background: linear-gradient(180deg, #007bff, #0056b3);
-            color: white;
-            padding: 20px 15px 100px 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('placeholder-building-bg.png'); 
-            background-size: cover;
-            background-position: center top;
-            opacity: 0.2; 
-            z-index: 1;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .welcome {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .help-center {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-        }
-
-        .help-center i {
-            margin-right: 5px;
-        }
-
-        .balance-card {
-            background-color: white;
-            color: #333;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: absolute; 
-            top: 100px; 
-            left: 15px;
-            right: 15px;
-            z-index: 10;
-        }
-
-        .balance-title {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .balance-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .balance-amount {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .balance-icon {
-            font-size: 20px;
-            color: #007bff; 
-            cursor: pointer;
-        }
-
-        .all-accounts {
-            background-color: #f0f2f5;
-            color: #007bff; 
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .main-features {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px 10px;
-            margin-top: 100px; 
-            margin-bottom: 10px;
-            background-color: white; 
-            border-bottom: 1px solid #eee;
-        }
-        
-        .feature-item, .feature-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            font-size: 12px;
-            color: #555;
-            cursor: pointer;
-            width: 20%; 
-            text-decoration: none; 
-        }
-
-        .feature-icon-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            font-size: 22px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .transfer-icon { background-color: #e6f7ff; color: #007bff; }
-        .briva-icon { background-color: #e6fffb; color: #00bcd4; }
-        .pdam-icon { background-color: #e6f0ff; color: #007bff; } 
-        .pulsa-icon { background-color: #e6ffe6; color: #28a745; }
-
-        .feature-icon-circle i {
-            font-size: 24px;
-        }
-
-        .banner {
-            margin: 0 15px 20px 15px;
-            padding: 15px;
-            border-radius: 12px;
-            background: linear-gradient(90deg, #007bff, #0056b3); 
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-
-        .banner-text {
-            flex-grow: 1;
-            line-height: 1.4;
-        }
-
-        .banner-text strong {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .banner-button {
-            background-color: white;
-            color: #007bff; 
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-
-        .search-bar {
-            margin: 0 15px 20px 15px;
-            padding: 10px 15px;
-            background-color: #f0f2f5;
-            border-radius: 8px;
-            color: #666;
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            cursor: text;
-        }
-
-        .search-bar i {
-            margin-right: 10px;
-            color: #999;
-        }
-
-        .other-features {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px 10px;
-            padding: 0 15px 20px 15px;
-        }
-
-        .other-feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            font-size: 12px;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .other-feature-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            font-size: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            overflow: hidden; /* Penting untuk gambar */
-        }
-        
-        /* CSS Baru untuk Gambar Produk */
-        .product-icon-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Memastikan gambar mengisi area tanpa distorsi */
-            border-radius: 10px; /* Sesuai dengan border-radius parent */
-        }
-        /* Akhir CSS Baru */
-
-        .top-up-icon { color: #28a745; }
-        .brizzi-icon { color: #00bcd4; }
-        .tagihan-icon { color: #007bff; } 
-        .setor-tarik-icon { color: #007bff; }
-        .lifestyle-icon { color: #e83e8c; }
-        .virtual-icon { color: #007bff; }
-        .catatan-icon { color: #007bff; } 
-        .investasi-icon { color: #007bff; } 
-
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 450px;
-            width: 100%;
-            background-color: white;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-around;
-            padding: 5px 0;
-            z-index: 100;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 10px;
-            color: #999;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .nav-item.active {
-            color: #007bff; 
-            font-weight: 600;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 2px;
-        }
-
-        .qris-button {
-            position: absolute;
-            bottom: 30px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background-color: #007bff; 
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border: 5px solid white; 
-            z-index: 101;
-            cursor: pointer;
-        }
-        
-        #editprofil-container textarea {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 24px;
-            resize: vertical;
-        }
-        .auth-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 200001;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .auth-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-        .auth-card h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .auth-card input[type="text"],
-        .auth-card input[type="password"] {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 24px;
-        }
-        .auth-card button {
-            width: 100%;
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 28px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        .auth-card button:hover {
-            background-color: #45a049;
-        }
-        .auth-card .link-switch {
-            margin-top: 20px;
-            font-size: 20px;
-        }
-        .auth-card .link-switch a {
-            color: #2196F3;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .auth-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 22px;
-        }
-        .auth-status.error {
-            background-color: #fdd;
-            color: red;
-            border: 1px solid red;
-        }
-        .auth-status.success {
-            background-color: #dfd;
-            color: green;
-            border: 1px solid green;
-        }
-        #profil-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 200002;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .profil-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-        .profil-card h2 {
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .profil-foto {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 5px solid #4CAF50;
-        }
-        .profil-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 24px;
-        }
-        .profil-info-item strong {
-            color: #555;
-        }
-        .profil-info-item span {
-            font-weight: bold;
-            color: #000;
-        }
-        .profil-info-item:last-child {
-            border-bottom: none;
-        }
-        .profil-info-item #profilPoin {
-            color: gold;
-            text-shadow: 1px 1px 2px #333;
-        }
-        .profil-card .btn-kembali {
-            margin-top: 30px;
-            padding: 15px 30px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .profil-card .btn-kembali:hover {
-            background-color: #da190b;
-        }
-        .profil-card .button-group-bottom {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 20px;
-        }
-        .profil-card .button-group-bottom .btn-kembali,
-        .profil-card .button-group-bottom #btnLogout {
-            width: 50%;
-            margin: 0;
-        }
-        #payment-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 200003;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .payment-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            text-align: left;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .payment-card p, .payment-card h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        .payment-options button {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .payment-card .btn-kembali {
-            width: 100%;
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .product-image-slider {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .slider-wrapper {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-        .slider-item {
-            min-width: 100%;
-        }
-        .slider-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .slider-nav button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 10;
-            font-size: 20px;
-        }
-        .slider-nav button:first-child {
-            left: 0;
-        }
-        .slider-nav button:last-child {
-            right: 0;
-        }
-        .slider-dots {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .slider-dot {
-            height: 10px;
-            width: 10px;
-            margin: 0 5px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .slider-dot.active {
-            background-color: #717171;
-        }
-    </style>
+   
 </head>
+
+
+<style>
+    body { 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
+        margin: 0; 
+        padding: 0; 
+        background-color: #ffffff; 
+        color: #333; 
+        -webkit-font-smoothing: antialiased; 
+    } 
+    .container { 
+        max-width: 450px; 
+        margin: 0 auto; 
+        background-color: white; 
+        min-height: 10vh; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); 
+        position: relative; 
+    } 
+    #login-container, #signup-container, #profil-container, #editprofil-container, #payment-container, #receipt-popup, #video-container, #download-container, #leaderboard-container, #dokumen-container, #free-shipping-container { 
+        display: none; 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: white; 
+        z-index: 200005; 
+        overflow-y: auto; 
+    } 
+    
+    .header { 
+        background: #007bff; 
+        color: white; 
+        padding: 15px 15px 50px 15px; 
+        position: relative; 
+        overflow: hidden; 
+        border-bottom-left-radius: 15px; 
+        border-bottom-right-radius: 15px; 
+    } 
+    .header::before { 
+        content: ""; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        background-image: none; 
+        opacity: 0; 
+        z-index: 1; 
+    } 
+    .header-content { 
+        position: relative; 
+        z-index: 2; 
+    } 
+    .top-nav { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 5px; 
+    } 
+    .welcome { 
+        font-size: 20px; 
+        font-weight: 600; 
+    } 
+    .help-center { 
+        background-color: rgba(255, 255, 255, 0.1); 
+        padding: 5px 10px; 
+        border-radius: 20px; 
+        font-size: 12px; 
+        display: flex; 
+        align-items: center; 
+        border: 1px solid rgba(255, 255, 255, 0.5); 
+    } 
+    .help-center i { 
+        margin-right: 5px; 
+    } 
+    
+    .balance-card { 
+        background-color: white; 
+        color: #333; 
+        padding: 15px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+        position: absolute; 
+        top: 65px; 
+        left: 15px; 
+        right: 15px; 
+        z-index: 10; 
+    } 
+    .balance-title { 
+        font-size: 14px; 
+        color: #666; 
+        margin-bottom: 5px; 
+        font-weight: 500;
+    } 
+    .balance-details { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    } 
+    .balance-amount { 
+        font-size: 26px; 
+        font-weight: 800; 
+        color: #007bff; 
+    } 
+    .balance-icon { 
+        font-size: 20px; 
+        color: #666; 
+        cursor: pointer; 
+    } 
+    .all-accounts { 
+        background-color: #f0f2f5; 
+        color: #007bff; 
+        padding: 8px; 
+        border-radius: 8px; 
+        margin-top: 10px; 
+        text-align: center; 
+        font-weight: 600; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        font-size: 13px; 
+        cursor: pointer; 
+        border: none;
+    } 
+    
+    .main-features { 
+        display: flex; 
+        justify-content: space-around; 
+        padding: 20px 10px 10px 10px; 
+        margin-top: 170px; 
+        margin-bottom: 10px; 
+        background-color: white; 
+        border-bottom: none; 
+    } 
+    .feature-item, .feature-link { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        font-size: 12px; 
+        color: #555; 
+        cursor: pointer; 
+        width: 20%; 
+        text-decoration: none; 
+    } 
+    .feature-icon-circle { 
+        width: 50px; 
+        height: 50px; 
+        border-radius: 10px; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        margin-bottom: 5px; 
+        font-size: 22px; 
+        box-shadow: none; 
+        border: 1px solid #f0f2f5; 
+    } 
+    .transfer-icon { 
+        background-color: #e6f7ff; 
+        color: #007bff; 
+    } 
+    .briva-icon { 
+        background-color: #e6fffb; 
+        color: #00bcd4; 
+    } 
+    .pdam-icon { 
+        background-color: #f0f2f5; 
+        color: #007bff; 
+    } 
+    .pulsa-icon { 
+        background-color: #f0f2f5; 
+        color: #28a745; 
+    } 
+    .feature-icon-circle i { 
+        font-size: 24px; 
+    } 
+    .leaderboard-icon-img { 
+        width: 25px; 
+        height: 25px; 
+        object-fit: contain; 
+    } 
+    
+    .banner { 
+        margin: 0 15px 20px 15px; 
+        padding: 12px 15px; 
+        border-radius: 8px; 
+        background: linear-gradient(90deg, #ff9800, #f57c00); 
+        color: white; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        font-size: 14px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        cursor: pointer; 
+    } 
+    .banner-text { 
+        flex-grow: 1; 
+        line-height: 1.4; 
+        overflow: hidden; 
+        padding-right: 10px; 
+    } 
+    .banner-text strong { 
+        font-size: 15px; 
+        font-weight: 700; 
+    } 
+    .banner-text marquee { 
+        width: 100%; 
+        line-height: 1.2;
+    } 
+    .banner-button { 
+        background-color: white; 
+        color: #ff9800; 
+        padding: 8px 15px; 
+        border-radius: 20px; 
+        font-weight: 600; 
+        margin-left: 10px; 
+    } 
+    .search-bar { 
+        margin: 0 15px 20px 15px; 
+        padding: 12px 15px; 
+        background-color: #f0f2f5; 
+        border-radius: 8px; 
+        color: #666; 
+        display: flex; 
+        align-items: center; 
+        font-size: 14px; 
+        cursor: text; 
+    } 
+    .search-bar i { 
+        margin-right: 10px; 
+        color: #999; 
+    } 
+    .search-bar .marquee-content { 
+        flex-grow: 1; 
+        white-space: nowrap; 
+        overflow: hidden; 
+    } 
+    .search-bar marquee { 
+        width: 100%; 
+        margin: 0; 
+        padding: 0; 
+        display: block; 
+    } 
+    
+    .other-features { 
+        display: grid; 
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 15px 10px; 
+        padding: 0 15px 20px 15px; 
+        background-color: white; 
+    } 
+    .other-feature-item { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        font-size: 12px; 
+        color: #555; 
+        cursor: pointer; 
+    } 
+    .other-feature-icon { 
+        width: 50px; 
+        height: 50px; 
+        background-color: #fff; 
+        border: none; 
+        border-radius: 10px; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        margin-bottom: 5px; 
+        font-size: 24px; 
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+        overflow: hidden; 
+    } 
+    .product-icon-img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        border-radius: 10px; 
+    } 
+    .top-up-icon { color: #28a745; } 
+    .brizzi-icon { color: #00bcd4; } 
+    .tagihan-icon { color: #007bff; } 
+    .setor-tarik-icon { color: #f44336; } 
+    .lifestyle-icon { color: #e83e8c; } 
+    .virtual-icon { color: #ff5722; } 
+    .catatan-icon { color: #4caf50; } 
+    .investasi-icon { color: #007bff; } 
+    
+    .bottom-nav { 
+        position: fixed; 
+        bottom: 0; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        max-width: 450px; 
+        width: 100%; 
+        background-color: white; 
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
+        display: flex; 
+        justify-content: space-around; 
+        padding: 5px 0; 
+        z-index: 100; 
+    } 
+    .nav-item { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        font-size: 10px; 
+        color: #999; 
+        padding: 5px; 
+        cursor: pointer; 
+    } 
+    .nav-item.active { 
+        color: #007bff; 
+        font-weight: 600; 
+    } 
+    .nav-item i { 
+        font-size: 20px; 
+        margin-bottom: 2px; 
+    } 
+    .nav-item .leaderboard-img { 
+        width: 20px; 
+        height: 20px; 
+        margin-bottom: 2px; 
+        object-fit: contain; 
+    } 
+    
+    #loading { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: grey; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        z-index: 1000; 
+    } 
+    @keyframes blinker { 
+        50% { opacity: 0; } 
+    } 
+    .blinking-glowing-text { 
+        animation: blinker 1.5s linear infinite; 
+        color: red; 
+        font-size: 30px; 
+        font-weight: 700; 
+        text-shadow: 0 0 5px #ffeb3b, 0 0 10px #ffc107, 0 0 15px blue; 
+    } 
+    #blinking-text { 
+        animation: blinker 1s linear infinite; 
+        color: #ffffff; 
+        font-size: 14px; 
+        font-weight: 700; 
+        text-shadow: 0 0 5px #000; 
+        /* Pastikan properti ini ada untuk senter */
+        display: block; 
+        text-align: center;
+    }
+    
+    .auth-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: 200005;
+        overflow-y: auto;
+        justify-content: center; 
+        align-items: flex-start; 
+        padding-top: 20px;
+    }
+    
+    .auth-card {
+        max-width: 350px;
+        width: 90%;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; 
+    }
+    
+    .leaderboard-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border-left: 5px solid #007bff;
+    }
+    .leaderboard-rank {
+        font-weight: 700;
+        font-size: 16px;
+        color: #007bff;
+        width: 20px;
+        text-align: center;
+    }
+    .leaderboard-name {
+        flex-grow: 1;
+        margin: 0 10px;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .leaderboard-score {
+        font-weight: 700;
+        font-size: 14px;
+        color: #ff9800;
+    }
+    
+    .video-card-modified {
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background-color: white;
+    }
+    .video-header, .download-header, .dokumen-header, .leaderboard-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .video-header i, .download-header i, .dokumen-header i, .leaderboard-header i {
+        margin-right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .video-header h3, .dokumen-header h3, .leaderboard-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        flex-grow: 1;
+    }
+    .video-content-section, .download-content, .dokumen-content-section, .leaderboard-content-section {
+        padding: 15px;
+    }
+    
+    .video-item {
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .video-thumbnail video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .video-details {
+        padding: 10px 15px;
+    }
+    .video-details h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .video-details p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+    }
+</style>
+
+  
+</style>
 <body>
     
 <div class="container">
@@ -620,10 +504,16 @@
         <div class="header">
             <div class="header-content">
                 <div class="top-nav">
-                    <span class="welcome">Nasuka Foods<br></span> 
-                    <div class="help-center" id="Profil">
-                        <i class="fas fa-user"></i>
-                        <span id="userNameDisplay">...</span> </div>
+                    <span class="welcome">Nasuka Foods</span> 
+                    
+                    <a href="https://nasukafoods.site/galer.html" target="_blank" class="help-center" style="text-decoration: none; color: inherit; margin-right: 10px;">
+                        <i class="fas fa-crown"></i>
+                        <span style="font-size: 14px;"></span> 
+                    </a>
+                    <div 
+                        <i class=""></i>
+                        <span id="userNameDisplay">selamat datang</span> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -631,28 +521,44 @@
         <div class="balance-card">
             <div class="balance-title">Saldo</div>
             <div class="balance-details">
-                <span class="balance-amount" id="poinAmountDisplay">...</span> <i class="fas fa-eye-slash balance-icon"></i>
+                <span class="balance-amount" id="SaldoAmountDisplay">...</span> <i class="fas fa-mobile-alt balance-icon" onclick="showDownload()"></i>
             </div>
-            <div class="all-accounts">
-                <span>Aset Digital (segera)</span>
-                <i class="fas fa-chevron-right"></i>
-            </div>
+            
+            <a href="https://nasukafoods.site/kir.html" target="_blank" class="all-accounts" style="text-decoration: none;">
+    <span>Kirim lokasi</span>
+    <i class="fas fa-chevron-right"></i>
+</a>
+
+            
+            
+           
         </div>
 
+
+
+
         <div class="main-features">
-            <a href="https://nasukafoods.site/giveaway.html" target="_blank" class="feature-link">
+           <a href="https://nasukafoods.site/giveaway.html" target="_blank" class="feature-link">
                 <div class="feature-icon-circle transfer-icon">
                     <i class="fas fa-exchange-alt"></i>
                 </div>
                 <span>Give Away</span>
             </a>
             
-            <a href="https://nasukafoods.site/test-giveaway.html" target="_blank" class="feature-link">
-                <div class="feature-icon-circle briva-icon">
-                    <i class="fas fa-file-invoice"></i>
+             
+          
+            
+            
+            
+               <a href="https://nasukafoods.site/tambahsaldo.html" target="_blank" class="feature-link">
+                <div class="feature-icon-circle pdam-icon">
+                    <i class="fas fa-plus"></i> 
                 </div>
-                <span>Simulasi</span>
+                <span>Saldo</span>
             </a>
+            
+            
+            
             
             <a href="https://nasukafoods.site/tambahpoin.html" target="_blank" class="feature-link">
                 <div class="feature-icon-circle pdam-icon">
@@ -661,84 +567,64 @@
                 <span>Poin</span>
             </a>
             
-            <a href="https://nasukafoods.site/kir.html" target="_blank" class="feature-link">
-                <div class="feature-icon-circle pulsa-icon">
-                    <i class="fas fa-arrow-up"></i>
+            <a href="https://nasukafoods.site/lokasi-pelanggan.html" target="_blank" class="feature-link">
+                <div class="feature-icon-circle pulsa-icon" style="overflow: hidden; padding: 0;">
+                    <img src="https://nasukafoods.site/lacak-lokasi.gif" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                 </div>
-                <span>Kirim Posisi</span>
+                <span>Lihat Posisi</span>
             </a>
-        </div>
+            </div>
 
         <div class="banner">
-            <div class="banner-text">
-                <strong>Promo khusus</strong>
-                <br>Nasuka Wireless
+            <div class="banner-text" style="padding: 0; text-align: center; flex-grow: 1;">
+                <span id="blinking-text" style="display: block; width: 100%; white-space: normal;">
+                    <strong>Jas Hujan Plastik Premium</strong>
+                </span>
             </div>
-            <div class="banner-button">
-                cek <i class="fas fa-chevron-right"></i>
+            <div class="banner-button" onclick="showFree()">
+                Klaim sekarang
             </div>
         </div>
-
-
-
         <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <span>Produk</span>
+            <i class=""></i>
+            <span>Cilok Isian Gajih</span>
         </div>
 
         <div class="other-features">
-            <div class="other-feature-item" onclick="showPayment('Produk 1', 'Deskripsi Produk 1', 900, ['https://nasukafoods.site/psu1.jpg'], 'Keterangan manual 1')">
+            <div class="other-feature-item" onclick="showPayment(' Cilok Premium', 'Cilok dengan kualitas terbaik, rasa original gurih. lezat', 1000, ['https://nasukafoods.site/1pcs.jpg'], 'Isi 1 biji.')">
                 <div class="other-feature-icon top-up-icon">
-                    <img src="https://nasukafoods.site/cilokpro.jpg" alt="Rp 900 Product" class="product-icon-img">
+                    <img src="https://nasukafoods.site/1pcs.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>900 poin</span>
+                <span>Rp 1.000</span>
             </div>
-            <div class="other-feature-item" onclick="showPayment('Produk 2', 'Deskripsi Produk 2', 44000, ['https://nasukafoods.site/psu2.jpg'], 'Keterangan manual 2')">
+            
+            
+            <div class="other-feature-item" onclick="showPayment('Paket Hemat ', 'Paket hemat diskon 20%.', 44000, ['https://nasukafoods.site/cilokpro.jpg'], 'Isi 50 Pcs.')">
                 <div class="other-feature-icon brizzi-icon">
-                    <img src="https://nasukafoods.site/cilokpro.jpg" alt="Rp 44.000 Product" class="product-icon-img">
+                    <img src="https://nasukafoods.site/cilokpro.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>44.000 poin</span>
+                <span>Rp 44.000</span>
             </div>
-            <div class="other-feature-item" onclick="showPayment('Produk 3', 'Deskripsi Produk 3', 87000, ['https://nasukafoods.site/psu3.jpg'], 'Keterangan manual 3')">
+            <div class="other-feature-item" onclick="showPayment('Cilok Premium: Paket Keluarga', 'Porsi besar untuk acara keluarga.', 87000, ['https://nasukafoods.site/100pcs.jpg'], 'Isi 100 pc. Promo terbatas!')">
                 <div class="other-feature-icon tagihan-icon">
-                    <img src="https://nasukafoods.site/cilokpro.jpg" alt="Rp 87.000 Product" class="product-icon-img">
+                    <img src="https://nasukafoods.site/100pcs.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>87.000 poin</span>
+                <span>Rp 87.000</span>
             </div>
-            <div class="other-feature-item" onclick="showPayment('Produk 4', 'Deskripsi Produk 4', 850000, ['https://nasukafoods.site/psu4.jpg'], 'Keterangan manual 4')">
+            <div class="other-feature-item" onclick="showPayment('Paket Sultan', 'Cilok frozen siap masak untuk stok di rumah, Cilok isian gajih berkualitas super, isi 1000 pcs', 850000, ['https://nasukafoods.site/1000pcs.jpg'], 'Gratis ongkos kirim seluruh kota bandung.')">
                 <div class="other-feature-icon setor-tarik-icon">
-                    <img src="https://nasukafoods.site/cilokpro.jpg" alt="Rp 850.000 Product" class="product-icon-img">
+                    <img src="https://nasukafoods.site/1000pcs.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>850.000 Poin</span>
+                <span>Rp 850.000</span>
             </div>
             </div>
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-      
-            
-            
-           
-            
-            
-            
-              <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <span>Lain nya</span>
-        </div>
+              <div class="search-bar" id="marquee-search-bar">
+                <i class="fas fa-search"></i>
+                <div class="marquee-content">
+                    <span id="running-text"></span>
+                </div>
+            </div>
         </div> 
         
  <div class="other-features">
@@ -747,63 +633,54 @@
                 <div class="other-feature-icon lifestyle-icon">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
-                <span>Lifestyle</span>
+                <span>Kado</span>
             </div>
             
-            <div class="other-feature-item">
+            <a href="https://nasukafoods.site/test-giveaway.html" target="_blank" class="other-feature-item" style="text-decoration: none; color: inherit;">
                 <div class="other-feature-icon virtual-icon">
-                    <i class="fas fa-video"></i>
+                    <i class="fas fa-file-invoice"></i>
                 </div>
-                <span>Video</span>
-            </div>
-            <div class="other-feature-item" onclick="showSignup()">
-                <div class="other-feature-icon catatan-icon">
-                    <i class="fas fa-user-plus"></i>
+                <span>Simulasi</span>
+            </a>
+            
+            <a href="https://nasukafoods.site/burung.html" target="_blank" class="other-feature-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-icon-circle pulsa-icon" style="overflow: hidden; padding: 0;">
+                    <img src="https://nasukafoods.site/nasukabird.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>Daftar</span>
-            </div>
-            <div class="other-feature-item" onclick="showLogin()">
-                <div class="other-feature-icon investasi-icon">
-                    <i class="fas fa-sign-in-alt"></i>
+                <span>Tap Bird</span>
+            </a>
+            
+              <a href="https://nasukafoods.site/roll.html" target="_blank" class="other-feature-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-icon-circle pulsa-icon" style="overflow: hidden; padding: 0;">
+                    <img src="https://nasukafoods.site/roll.jpg" alt="" class="product-icon-img">
                 </div>
-                <span>Masuk</span>
+                <span>Roll</span>
+            </a>
+            
+           
             </div>
-        </div>
         
         
         
         
-        
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <span>Game</span>
-        </div>
-        
-        
-        
-          
         
         <div class="other-feature-icon investasi-icon" style="margin: 0 auto; display: block; width: 50px; height: 50px;"> 
             <i class="fas fa-chart-line"></i>
         </div>
       
         
-        <div class="qris-button">
-            <i class="fas fa-qrcode"></i>
-        </div>
-
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="showHome()">
+            <div class="nav-item active" id="nav-home" onclick="showHome()">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </div>
-            <div class="nav-item">
-                <i class="fas fa-redo"></i>
+            <div class="nav-item" id="nav-leaderboard" onclick="showLeaderboard()">
+                <img src="https://nasukafoods.site/wingbiru.gif" alt="Leaderboard" class="leaderboard-img">
                 <span>Leaderboard</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" id="nav-dokumen" onclick="showDokumen()">
                 <i class="fas fa-list-alt"></i>
-                <span>Aktivitas</span>
+                <span>Dokumen</span>
             </div>
             <div class="nav-item" onclick="localStorage.getItem('ID') ? showProfil() : showLogin()">
                 <i class="fas fa-user-circle"></i>
@@ -816,76 +693,398 @@
             
             
             
-        </div> </div>
+        </div> 
    
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div id="login-container" class="auth-container">
+      <div id="login-container" class="auth-container">
         <div class="auth-card">
-            <h2>Masuk</h2>
+            <div class="auth-logo-section">
+                <img src="https://nasukafoods.site/nasukafoods.jpg" alt="Nasuka Foods" class="auth-logo">
+            </div>
+            <h2>Masuk Akun Anda</h2>
             <form id="loginForm">
-                <input type="text" id="loginUsername" placeholder="Username" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <button type="submit">Login</button>
+                <div class="auth-input-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Masukkan Username Anda" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Masukkan Password Anda" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
                 <div id="loginStatus" class="auth-status"></div>
             </form>
             <div class="link-switch">Belum punya akun? <a href="#" onclick="showSignup()">Daftar di sini</a></div>
-            <button onclick="showHome()" class="btn-kembali" style="margin-top: 10px; background-color: #f44336;">Batal</button>
+            <button onclick="showHome()" class="btn-secondary">Batal / Kembali ke Beranda</button>
         </div>
     </div>
 
     <div id="signup-container" class="auth-container">
         <div class="auth-card">
+            <div class="auth-logo-section">
+                <img src="https://nasukafoods.site/nasukafoods.jpg" alt="Nasuka Foods Logo" class="auth-logo">
+            </div>
             <h2>Daftar Akun Baru</h2>
             <form id="signupForm">
-                <input type="text" id="signupUsername" placeholder="Username" required>
-                <input type="text" id="signupNama" placeholder="Nama Lengkap" required>
-                <input type="password" id="signupPassword" placeholder="Password" required>
-                <button type="submit">Daftar</button>
+                <div class="auth-input-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" placeholder="Buat Username" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="signupNama">Nama Lengkap</label>
+                    <input type="text" id="signupNama" placeholder="Nama Lengkap Anda" required>
+                </div>
+                <div class="auth-input-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Buat Password" required>
+                </div>
+                <button type="submit" class="btn-primary">Daftar</button>
                 <div id="signupStatus" class="auth-status"></div>
             </form>
             <div class="link-switch">Sudah punya akun? <a href="#" onclick="showLogin()">Masuk di sini</a></div>
-            <button onclick="showHome()" class="btn-kembali" style="margin-top: 10px; background-color: #f44336;">Batal</button>
+            <button onclick="showHome()" class="btn-secondary">Batal / Kembali ke Beranda</button>
         </div>
     </div>
 
     <div id="profil-container">
         <div class="profil-card">
-            <h2>Profil Pengguna</h2>
-            <img id="profilFoto" class="profil-foto" src="https://nasukafoods.site/gambarkosong.jpg" alt="Foto Profil">
             
-            <div class="profil-info">
-                <div class="profil-info-item"><strong>Nama:</strong> <span id="profilNama">...</span></div>
-                <div class="profil-info-item"><strong>Username:</strong> <span id="profilUsername">...</span></div>
-                <div class="profil-info-item"><strong>Poin:</strong> <span id="profilPoin">0</span></div>
-                <div class="profil-info-item"><strong>No. HP:</strong> <span id="profilNomorHP">...</span></div>
-                <div class="profil-info-item"><strong>Alamat:</strong> <span id="profilAlamat">...</span></div>
+            <div class="profil-header-nav">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Profil Saya</h3>
+                <div>
+                    <i class="fas fa-pencil-alt" onclick="showEditProfil()"></i>
+                    <i class="fas fa-question-circle" style="margin-left: 15px;"></i>
+                </div>
+            </div>
+
+            <div class="driver-info">
+                <img id="profilFoto" class="driver-foto" src="https://nasukafoods.site/gambarkosong.jpg" alt="Foto Profil">
+                <div class="driver-text">
+                    <h4 id="profilNamaDriver">...</h4>
+                    <div class="driver-details">
+                        Gabung bulan <span id="profilBulanJoin">...</span> | 
+                        <span id="profilIDPlat">...</span> 
+                    </div>
+                </div>
             </div>
             
-            <button id="btnEditProfil" style="display: none;"></button>
-            <div class="button-group-bottom">
+            <div class="rating-section" style="padding: 10px 15px; margin-bottom: 5px; background-color: #fff8e1; border-radius: 8px; border: 1px solid #ffecb3;">
+                <div style="font-size: 14px; font-weight: 600; color: #ff9800;">Saldo Anda</div>
+                <div style="font-size: 20px; font-weight: 700; color: #333;" id="profilSaldoDisplay">...</div>
             </div>
+            
+            <div class="rating-section" style="padding: 10px 15px; margin-bottom: 5px; background-color: #e6f7ff; border-radius: 8px; border: 1px solid #b3e5ff;">
+                <div style="font-size: 14px; font-weight: 600; color: #007bff;">Total Poin Anda</div>
+                <div style="font-size: 20px; font-weight: 700; color: #333;" id="profilPoinDisplay">...</div>
+            </div>
+            <div class="safety-report" onclick="showHistory()"> <div class="safety-report-left">
+                    <div class="safety-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="safety-text">
+                        Riwayat pembelian
+                        <span>Lihat transaksi anda</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            
+            <div class="rating-section" style="padding-bottom: 5px;">
+                <div class="rating-breakdown" style="margin-right: 0;">
+                    <div style="font-size: 10px; color: #666; margin-bottom: 5px;">Aktivitas 10 order terakhir</div>
+                    <div style="font-size: 10px; color: #666; margin-bottom: 10px;">Diperbarui setiap hari</div>
+                </div>
+            </div>
+
+            <div class="rating-section" style="margin-top: -10px; padding-top: 0; border-top: 1px solid #eee;">
+                <div class="rating-main">
+                    <div class="rating-score" id="profilRatingScore">5.00</div>
+                    <div class="rating-label">Penilaian</div>
+                </div>
+                <div class="rating-breakdown">
+                    <div class="rating-bar-row">
+                        <span>5</span>
+                        <div class="rating-bar"><div class="rating-fill" style="width: 100%;"></div></div>
+                        <span id="ratingCount5">10</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span>4</span>
+                        <div class="rating-bar"><div class="rating-fill" style="width: 0%;"></div></div>
+                        <span id="ratingCount4">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span>3</span>
+                        <div class="rating-bar"><div class="rating-fill" style="width: 0%;"></div></div>
+                        <span id="ratingCount3">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span>2</span>
+                        <div class="rating-bar"><div class="rating-fill" style="width: 0%;"></div></div>
+                        <span id="ratingCount2">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span>1</span>
+                        <div class="rating-bar"><div class="rating-fill" style="width: 0%;"></div></div>
+                        <span id="ratingCount1">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profil-tabs">
+                <div class="profil-tab-item active" id="tabPencapaian">Umum</div>
+                <div class="profil-tab-item" id="tabPerbaikan">Keluar</div>
+            </div>
+
+            <div id="contentPencapaian" class="tab-content-section">
+                <div class="badge-section">
+                    <h4>Informasi Pengiriman</h4>
+                    <div class="badge-card">
+                        <img src="https://nasukafoods.site/sayapunggu.gif" alt="Lencana" class="badge-image">
+                        <div class="badge-text">
+                            <strong>Alamat :</strong>
+                            <span id="profilAlamatPengiriman">...</span>
+                          
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="passenger-comments">
+                    <h4>Apa Kata Anda</h4>
+                    <img src="https://nasukafoods.site/pitasebar.gif" alt="Mencari Komentar" class="magnifying-glass">
+                    <p style="text-align: center; color: #666; margin-top: 10px;">Belum ada kata kata untuk ditampilkan</p>
+                </div>
+            </div>
+
+            <div id="contentPerbaikan" class="tab-content-section" style="display: none; text-align: center;">
+                <p style="color: #666; font-style: italic;">Anda yakin ingin keluar ?.</p>
+                <button id="btnLogout" class="btn-kembali" onclick="logoutUser()" style="background-color: #f44336; margin-top: 20px;">Keluar Sekarang</button>
+            </div>
+            
         </div>
     </div>
-    
     <div id="editprofil-container" class="auth-container">
     </div>
 
     <div id="payment-container">
     </div>
     
-</div>
+    <div id="receipt-popup" class="auth-container">
+        <div class="auth-card" style="max-width: 350px; padding: 20px; text-align: left; background: #fff;">
+            <div id="receipt-content">
+                </div>
+            <button onclick="hideReceiptAndShowHome()" style="width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; margin-top: 20px;">
+                Selesai
+            </button>
+        </div>
+    </div>
+
+    <div id="video-container" class="auth-container">
+        <div class="video-card-modified">
+            <div class="video-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Pilihan Video</h3>
+            </div>
+            
+            <div class="video-content-section">
+                <div id="video-list">
+                    <p style="text-align: center; color: #666; margin-top: 20px;">Memuat video...</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
     
+    <div id="download-container">
+        <div class="download-header">
+            <i class="fas fa-arrow-left" onclick="showHome()"></i>
+            Kembali
+        </div>
+        
+        <div class="download-content">
+            <div class="app-info-top">
+                <img src="https://nasukafoods.site/nasukafoods.jpg" alt="" class="app-logo">
+                <div class="app-text">
+                    <div class="app-title">Nasuka.Apk</div>
+                    <div class="app-version">Versi: 8.0.7</div>
+                    <div class="app-publisher">Nasuka Wireless</div>
+                </div>
+            </div>
+            
+            <div class="app-stats">
+                <div class="stat-item">
+                    <div class="stat-value"><i class="fas fa-star" style="color: #ffc107;"></i> 4.9</div>
+                    <div class="stat-label">Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">400+</div>
+                    <div class="stat-label">Ulasan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4 MB</div>
+                    <div class="stat-label">Ukuran File</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">700+</div>
+                    <div class="stat-label">Unduhan</div>
+                </div>
+            </div>
+            
+            <div class="download-description">
+                <h4>Deskripsi Aplikasi</h4>
+                <p>
+                    Aplikasi resmi Nasuka Foods hadir untuk memudahkan Anda memesan produk favorit kami, mengumpulkan Poin, dan mendapatkan berbagai promo eksklusif. Rasakan pengalaman berbelanja Cilok dan menu lainnya dengan lebih cepat dan praktis!
+                </p>
+                <p>
+                    <strong>Fitur Unggulan:</strong>
+                    <ul>
+                        <li>Pemesanan Cepat Dan Aman.</li>
+                        <li>Integrasi Poin & Hadiah.</li>
+                        
+                        <li>Notifikasi Promo Terbaru.</li>
+                    </ul>
+                </p>
+                
+                <h4>Informasi Tambahan</h4>
+                <p>
+                    Diperbarui: 06 November 2025<br>
+                    
+                    
+                       <h4>Disclaimer</h4>
+                <p>
+                    Mungkin tidak support dengan beberapa perangkat<br>
+                     
+                </p>
+                <div style="height: 60px;"></div> 
+            </div>
+        </div>
+        
+        <a href="https://nasukafoods.site/nasuka.apk" target="_blank" class="download-footer-bar">
+            <div>
+                <div class="download-footer-text">Dapatkan versi terbaru</div>
+                <div class="download-footer-version">Download sekarang</div>
+            </div>
+            <i class="fas fa-download download-footer-icon"></i>
+        </a>
+    </div>
+
+    <div id="leaderboard-container">
+        <div class="leaderboard-card-modified">
+            <div class="leaderboard-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Leaderboard</h3>
+            </div>
+            <div class="leaderboard-content-section">
+                
+                
+                <div style="background-color: white; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+                    <img src="https://nasukafoods.site/wingbiru.gif" alt="" style="width: 50px; height: 50px; margin-bottom: 10px;">
+                   
+                        <p class="blinking-glowing-text">Best Customers</p><p>Queen Of Honor In The Year</p>
+                    </p>
+                </div>
+
+
+                <div id="leaderboard-list">
+                    <p style="text-align: center; color: #666; margin-top: 20px;">Leaderboard masih kosong.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dokumen-container" class="auth-container" style="display: none;">
+        <div class="dokumen-card-modified">
+            <div class="dokumen-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Dokumen & Informasi</h3>
+            </div>
+            
+            <div class="dokumen-content-section">
+                
+                   <div class="dokumen-item">
+                    <h4>❤️ Disclaimer</h4>
+                    <p>Kami hanya sebatas pelayan, Anda BOS nya, Kekuatan tertinggi yang kami miliki ada ditangan Anda, Sampaikan kritik saran atau masukan maupun ide, Kami berusaha menciptakan citarasa yang khas untuk Anda, Bila kurang puas beritahu kami, Bila lezat beritahu yang lain.</p>
+                </div>
+
+                
+                
+                <div class="dokumen-item">
+                    <h4>✨ Perjalanan Nasuka Foods</h4>
+                    <p>Nasuka Foods didirikan dengan visi membawa kelezatan Cilok Premium ke setiap rumah. Kami berfokus pada kualitas bahan baku dan resep otentik. Kini, kami hadir secara digital untuk melayani lebih banyak pelanggan dengan produk frozen siap masak dan paket keluarga.</p>
+                    <p>Kami berkomitmen untuk terus berinovasi dan menjaga kualitas rasa yang gurih dan lezat.</p>
+                </div>
+                
+                <div class="dokumen-item">
+                    <h4>💳 Pembayaran Non Tunai (Saldo)</h4>
+                    <p>Kami menerapkan sistem pembayaran Saldo/Non Tunai untuk mempercepat transaksi, Menghindari risiko uang palsu dan order fiktif dan memudahkan catatan riwayat pembelian Anda. Setiap pembelian langsung memotong saldo Anda, yang juga terintegrasi dengan sistem Reward dan Loyalty pelanggan.</p>
+                </div>
+
+                <div class="dokumen-item">
+                    <h4>🎁 Program Reward Pelanggan</h4>
+                    <p>Setiap pembelian produk Nasuka Foods akan terakumulasi. Pelanggan dengan akumulasi pembelian tertinggi (terlihat di Leaderboard) akan mendapatkan hadiah bulanan, seperti Voucher diskon atau Produk gratis, Semakin sering Anda bertransaksi, Semakin besar peluang Anda mendapat gelar kehormatan sebagai Sultan Cilok versi Nasuka Foods!</p>
+                </div>
+                
+                <div class="dokumen-item">
+                    <h4>🔄 Kebijakan Pengembalian Dana & Produk</h4>
+                    <p>Kami menerima pengembalian dana atau penggantian produk jika: (1) Produk yang diterima basi atau rusak parah akibat pengiriman. (2) Terdapat kesalahan pengiriman (produk atau kuantitas tidak sesuai pesanan). Pengajuan bisa dilakukan 1x24 jam setelah produk diterima, disertai bukti foto/video. Saldo akan dikembalikan dalam waktu 1-3 hari kerja.</p>
+                </div>
+                
+                 <div class="dokumen-item">
+                    <h4>🔒 Keamanan Akun Anda</h4>
+                    <p>Jaga kerahasiaan Username dan Password* Anda. Nasuka Foods tidak pernah meminta informasi akun sensitif melalui telepon atau apapun itu. Segera ubah password jika Anda mencurigai adanya aktivitas tidak sah di akun Anda.</p>
+                </div>
+
+         
+
+
+            </div>
+        </div>
+    </div>
+    
+    <div id="free-shipping-container" class="auth-container" style="display: none;">
+        <div class="video-card-modified">
+            <div class="video-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Gratis Ongkos Kirim</h3>
+            </div>
+            
+            <div class="video-content-section" style="padding: 15px;">
+                <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <h4 style="color: #007bff; margin-top: 0; font-size: 18px;">Gratis Ongkos Kirim Cibaduyut! 🛵💨</h4>
+                    <p style="font-size: 14px; color: #555;">Nikmati pengiriman "GRATIS" untuk pemesanan di area Cibaduyut, Kota Bandung.</p>
+                    <p style="font-size: 14px; color: #555;">Pastikan alamat pengiriman Anda berada dalam radius peta di bawah ini.</p>
+                    
+                    <img src="https://nasukafoods.site/mapradius.jpg" alt="Peta Radius Pengiriman Gratis" style="width: 100%; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
+                    
+                    <li style="font-size: 12px; color: #999; text-align: center;">*Syarat dan ketentuan berlaku. Promo dapat berubah sewaktu-waktu.</li>
+              <li style="font-size: 12px; color: #999; text-align: center;">Diluar radius kita kenakan biaya tambahan</li>        
+                    
+                    
+                </div>
+                <button onclick="showHome()" style="width: 100%; padding: 12px; background-color: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 20px;">
+                    Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="formal-confirmation-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 300000; justify-content: center; align-items: center;">
+        <div style="background-color: white; max-width: 350px; width: 90%; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); text-align: left; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <h4 style="margin-top: 0; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; font-size: 18px; font-weight: 700;">
+                <i class="fas fa-file-signature" style="margin-right: 8px;"></i>Persetujuan Pembayaran
+            </h4>
+            <p style="font-size: 14px; color: #333; line-height: 1.5; margin-bottom: 20px;">
+                Saya memastikan bahwa semua detail pesanan termasuk produk, harga, dan alamat pengiriman ($$ALAMAT$$), telah diverifikasi. Dengan menekan tombol "Setuju & Bayar", Saya menyetujui pemotongan Saldo sebesar  $$JUMLAH$$ untuk pembelian $$PRODUK$$.
+            </p>
+            <div style="display: flex; justify-content: space-between; gap: 10px;">
+                <button id="modal-cancel-btn" style="flex: 1; padding: 12px; background-color: #f44336; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Batal
+                </button>
+                <button id="modal-confirm-btn" style="flex: 1; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Setuju & Bayar
+                </button>
+            </div>
+        </div>
+    </div>
     
 <script>
     
@@ -901,15 +1100,18 @@ if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.database();
+const userRef = db.ref(`users/${localStorage.getItem("ID")}`); 
 
 const localUser = {
   Username: localStorage.getItem("Username"),
   Nama: localStorage.getItem("Nama"),
   ID: localStorage.getItem("ID"),
-  Poin: parseInt(localStorage.getItem("Poin")) || 0,
+  Saldo: parseInt(localStorage.getItem("Saldo")) || 0,
   Alamat: localStorage.getItem("Alamat") || "Alamat belum diatur",
   NomorHP: localStorage.getItem("NomorHP") || "Nomor HP belum diatur",
-  Foto: localStorage.getItem("Foto") || "https://nasukafoods.site/gambarkosong.jpg",
+  Foto: localStorage.getItem("Foto") || "https://nasukafoods.site/gambarkosong.jpg", 
+  TotalPengeluaran: parseInt(localStorage.getItem("TotalPengeluaran")) || 0,
+  Poin: parseInt(localStorage.getItem("Poin")) || 0,
 };
 
 if (localUser.ID) {
@@ -917,48 +1119,63 @@ if (localUser.ID) {
     userRef.on('value', (snapshot) => {
       const userData = snapshot.val();
       if (userData !== null) {
-        localUser.Poin = userData.Poin || 0;
+        localUser.Saldo = userData.Saldo || 0;
         localUser.Alamat = userData.Alamat || "Alamat belum diatur";
         localUser.NomorHP = userData.NomorHP || "Nomor HP belum diatur";
-        localUser.Foto = userData.Foto || "https://nasukafoods.site/gambarkosong.jpg";
+        localUser.Foto = userData.Foto || "https://nasukafoods.site/gambarkosong.jpg"; 
         localUser.Nama = userData.Nama || localUser.Nama;
+        localUser.TotalPengeluaran = userData.TotalPengeluaran || 0; 
+        localUser.Poin = userData.Poin || 0;
         
-        localStorage.setItem("Poin", localUser.Poin);
+        localStorage.setItem("Saldo", localUser.Saldo);
         localStorage.setItem("Alamat", localUser.Alamat);
         localStorage.setItem("NomorHP", localUser.NomorHP);
         localStorage.setItem("Foto", localUser.Foto);
         localStorage.setItem("Nama", localUser.Nama);
+        localStorage.setItem("TotalPengeluaran", localUser.TotalPengeluaran); 
+        localStorage.setItem("Poin", localUser.Poin);
         
-        updatePoinDisplay();
+        updateSaldoDisplay();
       }
     });
 }
 
 function updateHomeDisplay() {
     const userNameEl = document.getElementById('userNameDisplay');
-    const poinEl = document.getElementById('poinAmountDisplay');
+    const SaldoEl = document.getElementById('SaldoAmountDisplay');
     const welcomeEl = document.querySelector('.welcome');
     const isLoggedIn = !!localUser.ID;
+    
+    const navHome = document.getElementById('nav-home');
+    const navLeaderboard = document.getElementById('nav-leaderboard');
+    const navDokumen = document.getElementById('nav-dokumen');
+    
+    if (navHome) navHome.classList.add('active');
+    if (navLeaderboard) navLeaderboard.classList.remove('active');
+    if (navDokumen) navDokumen.classList.remove('active');
 
-    if (!userNameEl || !poinEl || !welcomeEl) return;
+    if (!userNameEl || !SaldoEl || !welcomeEl) return;
+    
+    
+    welcomeEl.textContent = 'Nasuka Foods'; 
 
     if (isLoggedIn) {
         const displayName = localUser.Nama ? localUser.Nama.split(' ')[0] : localUser.Username || 'Pengguna';
         
-        userNameEl.textContent = displayName;
-        poinEl.textContent = (localUser.Poin || 0).toLocaleString('id-ID');
         
-        welcomeEl.innerHTML = `Selamat Datang,<br><strong>${displayName}!</strong>`;
+        userNameEl.textContent = displayName;
+        
+        
+        SaldoEl.textContent = 'Rp ' + (localUser.Saldo || 0).toLocaleString('id-ID'); 
         
     } else {
-        userNameEl.textContent = "Tamu";
-        poinEl.textContent = "0"; 
+     
         
-        welcomeEl.innerHTML = `Nasuka Foods<br>`; 
+        SaldoEl.textContent = "Rp 0"; 
     }
 }
 
-function updatePoinDisplay() {
+function updateSaldoDisplay() {
     updateHomeDisplay();
 }
 
@@ -966,16 +1183,28 @@ function updatePoinDisplay() {
 function initializeHome() {
   initializeUserProfile();
   updateHomeDisplay();
+  
+  const runningTextEl = document.getElementById('running-text');
+  if (runningTextEl) {
+    const marqueeEl = document.createElement('marquee');
+    marqueeEl.setAttribute('behavior', 'scroll');
+    marqueeEl.setAttribute('direction', 'left');
+    marqueeEl.setAttribute('scrollamount', '8'); 
+    marqueeEl.textContent = '';
+    
+    runningTextEl.parentNode.replaceChild(marqueeEl, runningTextEl);
+  }
 }
 
 function initializeUserProfile() {
   const userID = localStorage.getItem("ID") || "";
   const profilLink = document.getElementById("Profil");
   
+  
   if (!userID) {
     if (profilLink) {
       profilLink.href = "#";
-      profilLink.onclick = showLogin;
+      profilLink.onclick = () => { if (!localStorage.getItem('ID')) showLogin(); else showProfil(); };
     }
     return;
   }
@@ -1005,18 +1234,22 @@ function fetchUserProfileFromDB(userID) {
     const val = snapshot.val();
     if (val) {
       const nama = val.Nama || "Tanpa Nama";
-      const foto = val.Foto || "https://nasukafoods.site/gambarkosong.jpg";
+      const foto = val.Foto || "https://nasukafoods.site/gambarkosong.jpg"; 
       
       localUser.Nama = nama;
       localUser.Foto = foto;
       localUser.Alamat = val.Alamat || "Alamat belum diatur";
       localUser.NomorHP = val.NomorHP || "Nomor HP belum diatur";
+      localUser.Saldo = val.Saldo || 0;
+      localUser.TotalPengeluaran = val.TotalPengeluaran || 0; 
       localUser.Poin = val.Poin || 0;
       
       localStorage.setItem("Nama", nama);
       localStorage.setItem("Foto", foto);
       localStorage.setItem("Alamat", localUser.Alamat);
       localStorage.setItem("NomorHP", localUser.NomorHP);
+      localStorage.setItem("Saldo", localUser.Saldo);
+      localStorage.setItem("TotalPengeluaran", localUser.TotalPengeluaran); 
       localStorage.setItem("Poin", localUser.Poin);
 
       updateProfileDisplay(nama, foto, userID);
@@ -1031,11 +1264,15 @@ function fetchUserProfileFromDB(userID) {
   });
 }
 
+
+
 function hideAllContainers() {
-    document.querySelectorAll('#home-container, #login-container, #signup-container, #profil-container, #payment-container, #editprofil-container').forEach(el => {
+    
+    document.querySelectorAll('#home-container, #login-container, #signup-container, #profil-container, #payment-container, #editprofil-container, #receipt-popup, #video-container, #download-container, #leaderboard-container, #formal-confirmation-modal, #dokumen-container, #free-shipping-container').forEach(el => { 
         if (el) el.style.display = 'none';
     });
 }
+
 
 
 function showHome() {
@@ -1045,6 +1282,12 @@ function showHome() {
         homeContainer.style.display = 'block';
         initializeHome();
     }
+    
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const navHome = document.getElementById('nav-home');
+    if (navHome) navHome.classList.add('active');
 }
 
 function showLogin() {
@@ -1060,6 +1303,193 @@ function showSignup() {
     document.getElementById('signupStatus').innerHTML = '';
     document.getElementById('signupForm').reset();
 }
+
+function showDownload() {
+    hideAllContainers();
+    const downloadContainer = document.getElementById('download-container');
+    if (downloadContainer) {
+        downloadContainer.style.display = 'block'; 
+        downloadContainer.scrollTop = 0; 
+    }
+}
+
+// FUNGSI BARU DITAMBAHKAN
+function showFree() {
+    hideAllContainers();
+    const freeShippingContainer = document.getElementById('free-shipping-container');
+    if (freeShippingContainer) {
+        freeShippingContainer.style.display = 'flex'; 
+        freeShippingContainer.scrollTop = 0; 
+    }
+}
+// END FUNGSI BARU
+
+
+function showDokumen() {
+    hideAllContainers();
+    const dokumenContainer = document.getElementById('dokumen-container');
+    
+    if (dokumenContainer) {
+        dokumenContainer.style.display = 'flex';
+        dokumenContainer.scrollTop = 0; 
+    }
+    
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const navDokumen = document.getElementById('nav-dokumen');
+    if(navDokumen) navDokumen.classList.add('active');
+}
+
+
+
+function showLeaderboard() {
+    hideAllContainers();
+    const leaderboardContainer = document.getElementById('leaderboard-container');
+    
+    if (leaderboardContainer) {
+        leaderboardContainer.style.display = 'flex';
+        leaderboardContainer.scrollTop = 0;
+    }
+    
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const navLeaderboard = document.getElementById('nav-leaderboard');
+    if (navLeaderboard) navLeaderboard.classList.add('active');
+
+    const leaderboardListEl = document.getElementById('leaderboard-list');
+    if (!leaderboardListEl) return;
+
+    
+    const contentSection = document.querySelector('.leaderboard-content-section');
+    if (contentSection) {
+        
+        let staticHeader = contentSection.querySelector('div[style*="background-color: white"]');
+        if (staticHeader) {
+            contentSection.removeChild(staticHeader);
+        }
+    }
+
+
+    leaderboardListEl.innerHTML = '<p style="text-align: center; color: #007bff;"><i class="fas fa-spinner fa-spin"></i> Memuat List Leaderboard ..</p>';
+    
+    const userID = localUser.ID;
+    
+    
+    const leaderboardHeaderContent = `
+        <div style="background-color: white; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+            <img src="https://nasukafoods.site/wingbiru.gif" alt="" style="width: 50px; height: 50px; margin-bottom: 10px;">
+           
+            <p class="blinking-glowing-text">Best Customers</p>
+            <p id="rank-one-display" style="font-size: 24px; font-weight: 800; color: #f44336; margin: 5px 0;">
+                <i class="fas fa-gem" style="margin-right: 5px;"></i> Memuat Juara...
+            </p>
+            <p>---------</p>
+        </div>
+    `;
+    
+    
+    $(leaderboardHeaderContent).insertBefore(leaderboardListEl);
+    
+    const rankOneDisplayEl = document.getElementById('rank-one-display');
+
+
+    db.ref("users").orderByChild("Poin").limitToLast(10).once("value")
+        .then(top10Snapshot => {
+            let top10Users = [];
+            top10Snapshot.forEach(childSnapshot => {
+                top10Users.push({
+                    ID: childSnapshot.key,
+                    ...childSnapshot.val()
+                });
+            });
+
+            
+            top10Users.reverse(); 
+
+            let listHTML = '';
+            let isUserInTop10 = false;
+            
+            
+            if (top10Users.length > 0) {
+                const rankOneUser = top10Users[0];
+                const rankOneName = rankOneUser.Nama || rankOneUser.Username || 'Pengguna Anonim';
+                
+                if (rankOneDisplayEl) {
+                    rankOneDisplayEl.innerHTML = `<i class="fas fa-crown" style="color: #ffc107; margin-right: 5px;"></i> ${rankOneName} <i class="fas fa-crown" style="color: #ffc107; margin-left: 5px;"></i>`;
+                }
+            } else if (rankOneDisplayEl) {
+                 rankOneDisplayEl.textContent = 'Belum Ada Data Poin';
+            }
+            
+            
+            
+            top10Users.forEach((user, index) => {
+                const rank = index + 1;
+                const isMe = userID && user.ID === userID;
+                
+                if (isMe) {
+                    isUserInTop10 = true;
+                }
+                
+                const displayName = user.Nama || user.Username || 'Pengguna Anonim';
+                
+                
+                const scoreDisplay = `${(user.Poin || 0).toLocaleString('id-ID')} Poin`;
+                
+                listHTML += `
+                    <div class="leaderboard-item" style="${isMe ? 'border: 2px solid #007bff; background-color: #e6f7ff;' : ''}">
+                        <span class="leaderboard-rank">${rank}</span>
+                        <span class="leaderboard-name" style="${isMe ? 'font-weight: 700; color: #007bff;' : ''}">${displayName} ${isMe ? '(Anda)' : ''}</span>
+                        <span class="leaderboard-score" style="color: #ff9800;">${scoreDisplay}</span>
+                    </div>
+                `;
+            });
+
+            if (top10Users.length > 0) {
+                leaderboardListEl.innerHTML = listHTML;
+            } else {
+                 leaderboardListEl.innerHTML = '<p style="text-align: center; color: #666; margin-top: 20px;">Belum ada data Leaderboard.</p>';
+            }
+            
+            
+            if (userID && !isUserInTop10) {
+                
+                const userPoin = localUser.Poin || 0;
+                
+                
+                db.ref("users").orderByChild("Poin").startAt(userPoin + 1).once("value")
+                    .then(rankSnapshot => {
+                        let rank = 1;
+                        rankSnapshot.forEach(childSnapshot => {
+                            rank++;
+                        });
+                        
+                        const rankAndaHTML = `
+                            <div style="margin-top: 20px; padding: 15px; border: 2px solid #ff9800; background-color: #fff3e0; border-radius: 8px; text-align: center;">
+                                <p style="margin: 0; font-size: 16px; font-weight: 600; color: #ff9800;">🏆 Dominasi Sultan<p>Peringkat Anda :</p>
+                                <p style="margin: 5px 0 0 0; font-size: 24px; font-weight: 700; color: #333;">${rank}</p>
+                                <p style="margin: 5px 0 0 0; font-size: 14px; color: #666;">Total Poin: ${userPoin.toLocaleString('id-ID')}</p>
+                            </div>
+                        `;
+                        leaderboardListEl.innerHTML += rankAndaHTML;
+                    })
+                    .catch(error => {
+                        console.error("Gagal mengambil peringkat pengguna:", error);
+                        leaderboardListEl.innerHTML += `<p style="text-align: center; color: red; margin-top: 10px;">Gagal mengambil peringkat Anda.</p>`;
+                    });
+            } else if (!userID) {
+                leaderboardListEl.innerHTML += `<p style="text-align: center; color: #666; margin-top: 10px;">Silakan login untuk melihat peringkat Anda.</p>`;
+            }
+
+        })
+        .catch(error => {
+            console.error("Gagal memuat Leaderboard:", error);
+            leaderboardListEl.innerHTML = `<p style="text-align: center; color: red; margin-top: 20px;">Gagal memuat Leaderboard: ${error.message}</p>`;
+        });
+}
+
 
 function loginUser() {
     const username = document.getElementById('loginUsername').value.trim();
@@ -1082,20 +1512,25 @@ function loginUser() {
                     localStorage.setItem("ID", user.ID);
                     localStorage.setItem("Username", user.Username);
                     localStorage.setItem("Nama", user.Nama || 'Tanpa Nama');
-                    localStorage.setItem("Poin", user.Poin || 0);
-                    localStorage.setItem("Foto", user.Foto || "https://nasukafoods.site/gambarkosong.jpg");
+                    localStorage.setItem("Saldo", user.Saldo || 0);
+                    localStorage.setItem("Foto", user.Foto || "https://nasukafoods.site/gambarkosong.jpg"); 
                     localStorage.setItem("Alamat", user.Alamat || "Alamat belum diatur");
                     localStorage.setItem("NomorHP", user.NomorHP || "Nomor HP belum diatur");
-                    
+                    localStorage.setItem("TanggalJoin", user.TanggalJoin || new Date().toISOString());
+                    localStorage.setItem("TotalPengeluaran", user.TotalPengeluaran || 0);
+                    localStorage.setItem("Poin", user.Poin || 0);
+
                     localUser.ID = user.ID;
                     localUser.Username = user.Username;
                     localUser.Nama = user.Nama || 'Tanpa Nama';
-                    localUser.Poin = user.Poin || 0;
-                    localUser.Foto = user.Foto || "https://nasukafoods.site/gambarkosong.jpg";
+                    localUser.Saldo = user.Saldo || 0;
+                    localUser.Foto = user.Foto || "https://nasukafoods.site/gambarkosong.jpg"; 
                     localUser.Alamat = user.Alamat || "Alamat belum diatur";
                     localUser.NomorHP = user.NomorHP || "Nomor HP belum diatur";
+                    localUser.TotalPengeluaran = user.TotalPengeluaran || 0; 
+                    localUser.Poin = user.Poin || 0;
                     
-                    statusDiv.innerHTML = 'Login Berhasil! Mengalihkan...';
+                    statusDiv.innerHTML = 'Lading...';
                     statusDiv.classList.add('success');
                     setTimeout(showHome, 1500);
                 } else {
@@ -1130,43 +1565,63 @@ function signupUser() {
         statusDiv.classList.add('error');
         return;
     }
+    
+    
+    const generateRandomNumber = () => {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    };
+
+    
+    const newID = "NASUKA" + generateRandomNumber(); 
+    
+    
     db.ref("users").orderByChild("Username").equalTo(username).once("value")
         .then(snapshot => {
             if (snapshot.exists()) {
                 statusDiv.innerHTML = 'Username sudah digunakan. Silakan pilih yang lain.';
                 statusDiv.classList.add('error');
             } else {
-                const newID = db.ref().child('users').push().key;
+                
                 const newUser = {
-                    ID: newID,
+                    ID: newID, 
                     Username: username,
                     Nama: nama,
                     Password: password,
-                    Poin: 500,
-                    Foto: "https://nasukafoods.site/gambarkosong.jpg",
+                    Saldo: 500,
+                    Foto: "https://nasukafoods.site/gambarkosong.jpg", 
                     Jenis: "Member",
                     Alamat: "Alamat belum diatur",
-                    NomorHP: "Nomor HP belum diatur"
+                    NomorHP: "Nomor HP belum diatur",
+                    TanggalJoin: new Date().toISOString(),
+                    TotalPengeluaran: 0, 
+                    Poin: 0,
                 };
+                
+                
                 db.ref(`users/${newID}`).set(newUser)
                     .then(() => {
                         localStorage.setItem("ID", newUser.ID);
                         localStorage.setItem("Username", newUser.Username);
                         localStorage.setItem("Nama", newUser.Nama);
-                        localStorage.setItem("Poin", newUser.Poin);
+                        localStorage.setItem("Saldo", newUser.Saldo);
                         localStorage.setItem("Foto", newUser.Foto);
                         localStorage.setItem("Alamat", newUser.Alamat);
                         localStorage.setItem("NomorHP", newUser.NomorHP);
+                        localStorage.setItem("TanggalJoin", newUser.TanggalJoin);
+                        localStorage.setItem("TotalPengeluaran", newUser.TotalPengeluaran); 
+                        localStorage.setItem("Poin", newUser.Poin);
                         
                         localUser.ID = newUser.ID;
                         localUser.Username = newUser.Username;
                         localUser.Nama = newUser.Nama;
-                        localUser.Poin = newUser.Poin;
+                        localUser.Saldo = newUser.Saldo;
                         localUser.Foto = newUser.Foto;
                         localUser.Alamat = newUser.Alamat;
                         localUser.NomorHP = newUser.NomorHP;
+                        localUser.TotalPengeluaran = newUser.TotalPengeluaran; 
+                        localUser.Poin = newUser.Poin;
                         
-                        statusDiv.innerHTML = 'Pendaftaran Berhasil! Anda mendapatkan 500 Poin gratis. Mengalihkan ke Beranda...';
+                        statusDiv.innerHTML = 'Pendaftaran Berhasil! Anda mendapatkan 500 Saldo gratis';
                         statusDiv.classList.add('success');
                         setTimeout(showHome, 1500);
                     })
@@ -1189,16 +1644,17 @@ function logoutUser() {
         localUser.ID = null;
         localUser.Username = null;
         localUser.Nama = null;
-        localUser.Poin = 0;
+        localUser.Saldo = 0;
         localUser.Alamat = "Alamat belum diatur";
         localUser.NomorHP = "Nomor HP belum diatur";
-        localUser.Foto = "https://nasukafoods.site/gambarkosong.jpg";
+        localUser.Foto = "https://nasukafoods.site/gambarkosong.jpg"; 
+        localUser.TotalPengeluaran = 0;
+        localUser.Poin = 0;
         
         alert("Anda telah keluar.");
         showHome();
     }
 }
-
 
 function showProfil() {
     hideAllContainers();
@@ -1208,96 +1664,311 @@ function showProfil() {
         showLogin();
         return;
     }
-    const profilContainer = document.getElementById('profil-container');
-    profilContainer.style.display = 'flex';
-    const profilCard = profilContainer.querySelector('.profil-card');
     
+    const profilContainer = document.getElementById('profil-container');
+    profilContainer.style.display = 'block'; 
+    
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const navAkun = document.querySelector('.bottom-nav').lastElementChild;
+    if(navAkun) navAkun.classList.add('active');
+
+
     const renderProfil = () => {
-        document.getElementById('profilFoto').src = localUser.Foto || "https://nasukafoods.site/gambarkosong.jpg";
-        document.getElementById('profilNama').textContent = localUser.Nama || 'Nama belum diatur';
-        document.getElementById('profilUsername').textContent = localUser.Username || 'Username tidak tersedia';
-        document.getElementById('profilPoin').textContent = (localUser.Poin || 0).toLocaleString('id-ID');
-        document.getElementById('profilNomorHP').textContent = localUser.NomorHP || 'No. HP belum diatur';
-        document.getElementById('profilAlamat').textContent = localUser.Alamat || 'Alamat belum diatur';
+        const nama = localUser.Nama || 'Nama belum diatur';
+        const foto = localUser.Foto || "https://nasukafoods.site/gambarkosong.jpg"; 
+        const Saldo = 'Rp ' + (localUser.Saldo || 0).toLocaleString('id-ID');
+        
+        const Poin = (localUser.Poin || 0).toLocaleString('id-ID') + ' Poin';
+        
+        const tanggalJoinISO = localStorage.getItem("TanggalJoin") || new Date().toISOString();
+        const tanggalObj = new Date(tanggalJoinISO);
+        const bulanJoin = tanggalObj.toLocaleString('id-ID', { month: 'short', year: 'numeric' });
+        
+        const displayNomorHP = localUser.NomorHP || 'Nomor HP belum diatur'; 
+        
+        
+        document.getElementById('profilFoto').src = foto;
+        document.getElementById('profilNamaDriver').textContent = nama;
+        document.getElementById('profilBulanJoin').textContent = bulanJoin;
+        
+        
+        document.getElementById('profilIDPlat').textContent = 'Nomor HP: ' + displayNomorHP; 
+        
+        
+        document.getElementById('profilSaldoDisplay').textContent = Saldo; 
+        
+        const profilPoinDisplayEl = document.getElementById('profilPoinDisplay');
+        if (profilPoinDisplayEl) {
+            profilPoinDisplayEl.textContent = Poin;
+        }
+        
+        const alamatPengirimanEl = document.getElementById('profilAlamatPengiriman');
+        if (alamatPengirimanEl) {
+            alamatPengirimanEl.textContent = localUser.Alamat || "Alamat belum diatur";
+        }
+        
+        const safetyReport = document.querySelector('.safety-report');
+        if (safetyReport) {
+             safetyReport.onclick = showHistory;
+        }
+
+        
+        document.getElementById('profilRatingScore').textContent = '5.00';
+        document.getElementById('ratingCount5').textContent = '10';
+        document.getElementById('ratingCount4').textContent = '0';
+        document.getElementById('ratingCount3').textContent = '0';
+        document.getElementById('ratingCount2').textContent = '0';
+        document.getElementById('ratingCount1').textContent = '0';
+        
+        updateHomeDisplay();
     };
     
     renderProfil(); 
     
-    let buttonGroupBottom = profilCard.querySelector('.button-group-bottom');
-    if (!buttonGroupBottom) {
-        buttonGroupBottom = document.createElement('div');
-        buttonGroupBottom.className = 'button-group-bottom';
-        profilCard.appendChild(buttonGroupBottom);
-    }
-    buttonGroupBottom.innerHTML = '';
+    const tabPencapaian = document.getElementById('tabPencapaian');
+    const tabPerbaikan = document.getElementById('tabPerbaikan');
+    const contentPencapaian = document.getElementById('contentPencapaian');
+    const contentPerbaikan = document.getElementById('contentPerbaikan');
     
-    let editButton = profilCard.querySelector('#btnEditProfil');
-    if (!editButton) {
-        editButton = document.createElement('button');
-        editButton.id = 'btnEditProfil';
-        editButton.textContent = 'Edit Profil';
-        editButton.style.cssText = 'padding: 15px 30px; background-color: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 24px; transition: background-color 0.3s; margin-top: 30px; width: 100%;';
-        editButton.onclick = showEditProfil;
-        profilCard.insertBefore(editButton, buttonGroupBottom);
-    } else {
-        editButton.style.display = 'block';
-    }
+    const switchTab = (activeTab) => {
+        tabPencapaian.classList.remove('active');
+        tabPerbaikan.classList.remove('active');
+        contentPencapaian.style.display = 'none';
+        contentPerbaikan.style.display = 'none';
 
-    let newKembaliButton = document.createElement('button');
-    newKembaliButton.textContent = 'Kembali';
-    newKembaliButton.className = 'btn-kembali'; 
-    newKembaliButton.onclick = showHome;
-    newKembaliButton.style.width = '50%';
-    newKembaliButton.style.margin = '0';
-    newKembaliButton.style.backgroundColor = '#4CAF50';
-
-    let logoutButton = document.createElement('button');
-    logoutButton.id = 'btnLogout';
-    logoutButton.textContent = 'Logout';
-    logoutButton.className = 'btn-kembali'; 
-    logoutButton.style.backgroundColor = '#f44336';
-    logoutButton.onclick = logoutUser;
-    logoutButton.style.width = '50%';
-    logoutButton.style.margin = '0';
+        if (activeTab === 'pencapaian') {
+            tabPencapaian.classList.add('active');
+            contentPencapaian.style.display = 'block';
+             if (contentPencapaian.querySelector('#history-list')) {
+                contentPencapaian.innerHTML = `
+                    <div class="badge-section">
+                        <h4>Informasi</h4>
+                        <div class="badge-card">
+                            <img src="https://nasukafoods.site/sayapunggu.gif" alt="Lencana" class="badge-image">
+                            <div class="badge-text">
+                                <strong>Alamat pengiriman</strong>
+                                <span id="profilAlamatPengiriman">${localUser.Alamat || "Alamat belum diatur"}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="passenger-comments">
+                        <h4>Apa Kata Anda</h4>
+                        <img src="https://nasukafoods.site/pitasebar.gif" alt="Mencari Komentar" class="magnifying-glass">
+                        <p style="text-align: center; color: #666; margin-top: 10px;">Belum ada kata kata untuk ditampilkan</p>
+                    </div>
+                `;
+            }
+        } else {
+            tabPerbaikan.classList.add('active');
+            contentPerbaikan.style.display = 'block';
+        }
+    };
     
-    buttonGroupBottom.appendChild(newKembaliButton);
-    buttonGroupBottom.appendChild(logoutButton);
+    tabPencapaian.onclick = () => switchTab('pencapaian');
+    tabPerbaikan.onclick = () => switchTab('perbaikan');
+    
+    switchTab('pencapaian');
 }
+
+
+
+
+
+function showHistory() {
+    const contentPencapaian = document.getElementById('contentPencapaian');
+    
+    
+    document.getElementById('tabPencapaian').classList.add('active');
+    document.getElementById('tabPerbaikan').classList.remove('active');
+
+    
+    contentPencapaian.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <h4 style="margin-top: 0; color: #333; font-size: 16px; font-weight: 600;">Riwayat Pembelian</h4>
+            <div id="history-list" style="margin-top: 15px; background-color: white; padding: 10px; border-radius: 8px;">
+                <p style="color: #007bff;"><i class="fas fa-spinner fa-spin"></i> Memuat riwayat...</p>
+            </div>
+            <button onclick="showProfil()" style="margin-top: 20px; padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                Kembali ke Profil
+            </button>
+        </div>
+    `;
+    
+    
+    db.ref(`transactions/${localUser.ID}`).orderByChild('timestamp').limitToLast(20).once('value')
+        .then(snapshot => {
+            const historyListEl = document.getElementById('history-list');
+            historyListEl.innerHTML = ''; 
+            const transactions = [];
+            snapshot.forEach(childSnapshot => {
+                transactions.push(childSnapshot.val());
+            });
+            
+            if (transactions.length === 0) {
+                historyListEl.innerHTML = '<p style="color: #666; font-style: italic;">Belum ada riwayat pembelian.</p>';
+                return;
+            }
+
+            transactions.reverse();
+
+            transactions.forEach(tx => {
+                const date = new Date(tx.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+                const txItem = document.createElement('div');
+                txItem.style.cssText = `
+                    padding: 10px 0;
+                    border-bottom: 1px solid #eee;
+                    text-align: left;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    transition: background-color 0.1s;
+                `;
+                txItem.onmouseover = function() { this.style.backgroundColor = '#f9f9f9'; };
+                txItem.onmouseout = function() { this.style.backgroundColor = 'white'; };
+                
+                
+                txItem.onclick = () => {
+                    showReceiptPopup(tx);
+                };
+                
+                
+                const pointsDisplay = tx.pointsEarned ? `<span style="font-size: 12px; color: #ff9800; margin-left: 10px;">(+${tx.pointsEarned} Poin)</span>` : '';
+
+                txItem.innerHTML = `
+                    <div>
+                        <strong style="color: ${tx.status === 'Success' ? '#28a745' : '#f44336'};">${tx.productName}</strong><br>
+                        <span style="font-size: 12px; color: #666;">${date} | ID: ${tx.transactionID.substring(0, 8)}...</span><br>
+                        <span style="font-size: 14px; font-weight: 500;">Total: -Rp ${tx.amount.toLocaleString('id-ID')} ${pointsDisplay}</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="font-size: 12px; color: #999;"></i>
+                `;
+                historyListEl.appendChild(txItem);
+            });
+        })
+        .catch(error => {
+            document.getElementById('history-list').innerHTML = `<p style="color: red;">Gagal memuat riwayat: ${error.message}</p>`;
+        });
+}
+
+function showReceiptPopup(txData) {
+    hideAllContainers();
+    
+    const tempTxData = {
+        ...txData,
+        
+        initialSaldo: txData.initialSaldo || (txData.finalSaldo + txData.amount),
+        deliveryAddress: txData.deliveryAddress || localUser.Alamat || 'Alamat tidak tercatat'
+    };
+    
+    
+    document.getElementById('receipt-content').innerHTML = generateReceiptHTML(tempTxData);
+    
+    
+    const receiptPopup = document.getElementById('receipt-popup');
+    receiptPopup.style.display = 'flex';
+    
+    
+    const finishButton = receiptPopup.querySelector('button');
+    if(finishButton) {
+        finishButton.onclick = showProfil;
+        finishButton.textContent = 'Kembali ke Riwayat';
+    }
+}
+
 
 function showEditProfil() {
     hideAllContainers();
     const editContainer = document.getElementById('editprofil-container');
-    editContainer.style.display = 'flex';
+    editContainer.style.display = 'flex'; 
+
+    const currentUsername = localUser.Username || '';
+    const currentNama = localUser.Nama || '';
+    const currentNomorHP = localUser.NomorHP === 'Nomor HP belum diatur' ? '' : localUser.NomorHP; 
+    const currentAlamat = localUser.Alamat === 'Alamat belum diatur' ? '' : localUser.Alamat; 
+    const currentFoto = localUser.Foto || "https://nasukafoods.site/gambarkosong.jpg"; 
     
     editContainer.style.position = 'fixed';
     editContainer.style.top = '0';
     editContainer.style.left = '0';
     editContainer.style.width = '100%';
     editContainer.style.height = '100%';
-    editContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     editContainer.style.zIndex = '200003';
-    editContainer.style.justifyContent = 'center';
-    editContainer.style.alignItems = 'center';
-    editContainer.style.padding = '20px';
-    
-    const currentUsername = localUser.Username || '';
-    const currentNama = localUser.Nama || '';
-    const currentNomorHP = localUser.NomorHP === 'Nomor HP belum diatur' ? '' : localUser.NomorHP;
-    const currentAlamat = localUser.Alamat === 'Alamat belum diatur' ? '' : localUser.Alamat;
-    
+    editContainer.style.padding = '0';
+    editContainer.style.backgroundColor = '#f0f2f5'; 
+    editContainer.style.alignItems = 'flex-start'; 
+    editContainer.style.overflowY = 'auto'; 
+
     editContainer.innerHTML = `
         <div class="auth-card">
-            <h2>Edit Profil</h2>
+            
+            <div class="edit-header-nav">
+                <i class="fas fa-arrow-left" onclick="showProfil()"></i>
+                <h3>Edit Profil</h3>
+                <i class="fas fa-question-circle"></i>
+            </div>
+            
+            <div class="edit-profile-photo-section">
+                <img id="editFotoProfil" class="edit-profile-photo" src="${currentFoto}" alt="Foto Profil">
+                <div class="change-photo-text" onclick="alert('Fitur ganti foto belum tersedia.')">Ubah foto profil</div>
+            </div>
+
             <form id="editProfilForm">
-                <input type="text" id="editUsername" placeholder="Username" value="${currentUsername}" required>
-                <input type="text" id="editNama" placeholder="Nama Lengkap" value="${currentNama}" required>
-                <input type="text" id="editNomorHP" placeholder="Nomor HP" value="${currentNomorHP}" required>
-                <textarea id="editAlamat" placeholder="Alamat Pengiriman" rows="3" required>${currentAlamat}</textarea>
-                <input type="password" id="editPassword" placeholder="Password Baru (kosongkan jika tidak ingin ganti)">
+                <div class="edit-form-section">
+                    <h4>Informasi Kontak & Pengiriman</h4>
+                    
+                    
+                   
+                    
+                    <div class="form-group">
+                        <label for="editNama">Nama Lengkap</label>
+                        <input type="text" id="editNama" placeholder="Nama Lengkap" value="${currentNama}" required>
+                    </div>
+                        <div class="form-group">
+                        <label for="editNomorHP">Nomor HP</label>
+                        <input type="text" id="editNomorHP" placeholder="Nomor HP" value="${currentNomorHP}" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="editAlamat">Alamat Pengiriman</label>
+                        <textarea id="editAlamat" placeholder="Alamat Pengiriman" rows="3" required>${currentAlamat}</textarea>
+                    </div>
+                    
+                  
+                    
+                </div>
+
+                <div class="edit-form-section">
+                    <h4>Informasi Akun</h4>
+                   
+                      
+                    <div class="form-group">
+                        <label for="editUsername">Username</label>
+                        <input type="text" id="editUsername" placeholder="Username" value="${currentUsername}" required>
+                    </div>
+                    
+                       <div class="form-group">
+                        <label for="editPassword">Password Baru (Kosongkan jika tidak ingin ganti)</label>
+                        <input type="password" id="editPassword" placeholder="Password Baru">
+                    </div>
+                    
+                    
+                </div>
+
+
+
+
+
+
                 <button type="submit">Simpan Perubahan</button>
-                <div id="editStatus" class="auth-status"></div>
+                <div id="editStatus" class="auth-status" style="margin-bottom: 10px; margin-top: 0;"></div>
             </form>
-            <button onclick="showProfil()" class="btn-kembali" style="margin-top: 10px; background-color: #f44336;">Batal</button>
+            
+            <div class="edit-footer-buttons" style="padding-bottom: 20px;">
+                <button onclick="showProfil()" class="btn-batal">Batal</button>
+               
+            </div>
         </div>
     `;
     document.getElementById('editProfilForm').addEventListener('submit', function(e) {
@@ -1392,44 +2063,224 @@ function updateProfile() {
 }
 
 
-function processPoinPayment(amount, productName) {
+function logPurchaseToDB(productName, amount, newSaldo, pointsEarned) {
+    const userID = localUser.ID;
+    if (!userID) return; 
+
+    const transactionRef = db.ref(`transactions/${userID}`).push();
+    const transactionID = transactionRef.key;
+    const timestamp = new Date().toISOString();
+    
+    const transactionData = {
+        transactionID: transactionID,
+        userID: userID,
+        productName: productName,
+        amount: amount,
+        timestamp: timestamp,
+        status: 'Success',
+        initialSaldo: localUser.Saldo + amount, 
+        finalSaldo: newSaldo,
+        deliveryAddress: localUser.Alamat,
+        deliveryContact: localUser.NomorHP,
+        totalPengeluaranSaatIni: localUser.TotalPengeluaran,
+        pointsEarned: pointsEarned
+    };
+
+    transactionRef.set(transactionData)
+        .then(() => {
+            console.log("Transaction logged successfully with ID:", transactionID);
+        })
+        .catch(error => {
+            console.error("Failed to log transaction:", error);
+        });
+        
+    return transactionData;
+}
+
+function generateReceiptHTML(txData) {
+    const date = new Date(txData.timestamp);
+    const dateString = date.toLocaleString('id-ID', { dateStyle: 'medium' });
+    const timeString = date.toLocaleString('id-ID', { timeStyle: 'short' });
+    const totalSaldo = txData.amount.toLocaleString('id-ID');
+    
+    const pointsText = txData.pointsEarned ? `<div style="text-align: center; font-size: 14px; font-weight: bold; color: #ff9800; margin-top: 10px;">Anda Mendapat ${txData.pointsEarned} Poin!</div>` : '';
+
+
+    return `
+        <div style="font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #333; line-height: 1.4;">
+            <h3 style="text-align: center; margin: 0 0 5px 0; font-size: 18px; font-weight: bold;">NASUKA FOODS</h3>
+            <div style="text-align: center; margin-bottom: 15px;">Cibaduyut - Kota Bandung</div>
+            <div style="border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 10px 0; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>TGL/JAM:</span>
+                    <span>${dateString} ${timeString}</span>
+                </div>
+                <div style="display: flex; justify-in-between;">
+                    <span>TRX ID:</span>
+                    <span>${txData.transactionID.substring(0, 15)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>PELANGGAN:</span>
+                    <span>${localUser.Nama}</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 5px;">
+                    <span>PRODUK</span>
+                    <span>Harga</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>1 x ${txData.productName}</span>
+                    <span>Rp ${totalSaldo}</span>
+                </div>
+            </div>
+
+            <div style="border-top: 1px dashed #333; padding-top: 10px;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
+                    <span>Dibayar lunas:</span>
+                    <span style="color: #f44336;">Rp ${totalSaldo}</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; border-top: 1px dashed #333; padding-top: 10px;">
+                <div style="font-weight: bold;">SISA Saldo ANDA:</div>
+                <div style="font-size: 18px; color: #007bff; text-align: right; margin-top: 5px;">
+                    Rp ${txData.finalSaldo.toLocaleString('id-ID')}
+                </div>
+            </div>
+
+            ${pointsText} 
+            
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; font-style: italic;">
+                Terima kasih telah berbelanja! <br> Pesanan akan dikirim ke: <br> ${txData.deliveryAddress}
+            </div>
+        </div>
+    `;
+}
+
+function hideReceiptAndShowHome() {
+    document.getElementById('receipt-popup').style.display = 'none';
+    showHome();
+}
+
+function showFormalConfirmation(amount, productName, onConfirm) {
+    const modal = document.getElementById('formal-confirmation-modal');
+    const userAddress = localUser.Alamat || "Alamat belum di seting";
+    
+    
+    const contentP = modal.querySelector('p');
+    let originalHtml = `Saya memastikan bahwa semua detail pesanan termasuk produk, harga, dan alamat pengiriman ($$ALAMAT$$), telah diverifikasi. Dengan menekan tombol "Setuju & Bayar", Saya menyetujui pemotongan Saldo sebesar $$JUMLAH$$ untuk pembelian $$PRODUK$$.`;
+    
+    
+    contentP.innerHTML = originalHtml
+        .replace(/\$\$ALAMAT\$\$/g, `${userAddress}`)
+        .replace(/\$\$JUMLAH\$\$/g, `Rp ${amount.toLocaleString('id-ID')}`)
+        .replace(/\$\$PRODUK\$\$/g, `${productName}`);
+
+    const confirmBtn = document.getElementById('modal-confirm-btn');
+    const cancelBtn = document.getElementById('modal-cancel-btn');
+    
+    
+    confirmBtn.onclick = null;
+    cancelBtn.onclick = null;
+
+    
+    confirmBtn.onclick = () => {
+        modal.style.display = 'none';
+        onConfirm(); 
+    };
+    cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+        
+        document.getElementById('payment-status').innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Pembayaran dibatalkan oleh pengguna.</div>`;
+    };
+
+    modal.style.display = 'flex';
+}
+ 
+
+function processSaldoPayment(amount, productName) {
     const statusDiv = document.getElementById('payment-status');
     statusDiv.innerHTML = '';
     
-    if (localUser.Poin < amount) {
-        statusDiv.innerHTML = `<span style="color: red; display: block; text-align: center;">Poin Anda (${(localUser.Poin || 0).toLocaleString('id-ID')}) tidak cukup untuk membeli ${productName} (${amount.toLocaleString('id-ID')} Poin).</span>`;
+    if (!localUser.ID) {
+         statusDiv.innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Anda belum login. Silakan login untuk membeli.</div>`;
+         return;
+    }
+    
+    if (localUser.Alamat === "Alamat belum diatur" || localUser.NomorHP === "Nomor HP belum diatur") {
+         statusDiv.innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Mohon lengkapi Alamat Pengiriman dan Nomor HP Anda di menu Edit Profil.</div>`;
+         return;
+    }
+    
+    if (localUser.Saldo < amount) {
+        statusDiv.innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Saldo Anda (Rp ${(localUser.Saldo || 0).toLocaleString('id-ID')}) tidak cukup untuk membeli ${productName} (Rp ${amount.toLocaleString('id-ID')}).</div>`;
         return;
     }
     
-    if (!confirm(`Anda yakin ingin membeli "${productName}" seharga ${amount.toLocaleString('id-ID')} Poin?`)) {
-        return;
-    }
     
-    const newPoin = localUser.Poin - amount;
-    statusDiv.innerHTML = `<span style="color: orange; display: block; text-align: center;">Memproses pembelian...</span>`;
-    
-    db.ref(`users/${localUser.ID}`).update({ Poin: newPoin })
-        .then(() => {
-            localUser.Poin = newPoin;
-            localStorage.setItem("Poin", newPoin);
-            updatePoinDisplay();
-            
-            statusDiv.innerHTML = `
-                <span style="color: green; display: block; text-align: center; font-weight: bold;">
-                    Pembelian "${productName}" Berhasil! ✅
-                </span>
-                <span style="display: block; text-align: center; margin-top: 10px;">
-                    Poin Anda sekarang: ${newPoin.toLocaleString('id-ID')}.
-                </span>
-                <span style="display: block; text-align: center; margin-top: 10px; font-style: italic;">
-                    Pesanan akan segera diproses dan dikirim ke alamat Anda: ${localUser.Alamat}.
-                </span>
-            `;
-            setTimeout(showHome, 5000); 
+    const executePayment = () => {
+        const initialSaldo = localUser.Saldo;
+        
+        
+        const pointsEarned = Math.floor(amount / 1000);
+        
+        statusDiv.innerHTML = `<div class="auth-status" style="background-color: #fff3e0; color: #ff9800; margin-top: 0; margin-bottom: 0;">Memproses pembelian...</div>`;
+        
+        
+        const userRef = db.ref(`users/${localUser.ID}`);
+        userRef.transaction((currentData) => {
+            if (currentData) {
+                
+                if ((currentData.Saldo || 0) < amount) {
+                     return; 
+                }
+                currentData.Saldo = (currentData.Saldo || 0) - amount; 
+                
+                currentData.TotalPengeluaran = (currentData.TotalPengeluaran || 0) + amount;
+                currentData.Poin = (currentData.Poin || 0) + pointsEarned;
+            }
+            return currentData;
+        })
+        .then(({committed, snapshot}) => {
+            if (committed) {
+                
+                const updatedUserData = snapshot.val();
+                localUser.Saldo = updatedUserData.Saldo;
+                localUser.TotalPengeluaran = updatedUserData.TotalPengeluaran;
+                localUser.Poin = updatedUserData.Poin;
+                
+                localStorage.setItem("Saldo", localUser.Saldo);
+                localStorage.setItem("TotalPengeluaran", localUser.TotalPengeluaran);
+                localStorage.setItem("Poin", localUser.Poin);
+                
+                updateSaldoDisplay();
+                
+                
+                const transactionData = logPurchaseToDB(productName, amount, localUser.Saldo, pointsEarned);
+                
+                statusDiv.innerHTML = `
+                    <div class="auth-status success" style="margin-top: 0; margin-bottom: 0;">
+                        Pembelian Berhasil! ✅  
+                    </div>
+                `;
+                
+                document.getElementById('receipt-content').innerHTML = generateReceiptHTML(transactionData);
+                document.getElementById('payment-container').style.display = 'none';
+                document.getElementById('receipt-popup').style.display = 'flex';
+            } else {
+                 statusDiv.innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Pembelian gagal. Terjadi konflik data atau saldo tidak cukup. Coba ulangi.</div>`;
+            }
         })
         .catch(error => {
-            statusDiv.innerHTML = `<span style="color: red; display: block; text-align: center;">Pembelian gagal. Silakan coba lagi.</span>`;
+            console.error("Firebase Transaction Failed:", error);
+            statusDiv.innerHTML = `<div class="auth-status error" style="margin-top: 0; margin-bottom: 0;">Pembelian gagal. Silakan coba lagi.</div>`;
         });
+    };
+
+    
+    showFormalConfirmation(amount, productName, executePayment); 
 }
 
 function showPayment(productName, productDescription, productPrice, productImageUrls, manualDescription) {
@@ -1439,90 +2290,85 @@ function showPayment(productName, productDescription, productPrice, productImage
         showLogin();
         return;
     }
-    const userName = localUser.Nama || "Nama belum di setting";
-    const userAddress = localUser.Alamat || "Alamat pengantaran belum di seting";
-    const productPriceInPoin = productPrice; 
-    const paymentContainer = document.getElementById('payment-container');
-    paymentContainer.style.display = 'flex';
-    
-    let sliderHtml = '';
-    if (productImageUrls && productImageUrls.length > 0) {
-        sliderHtml = `
-            <div class="product-image-slider">
-                <div class="slider-wrapper" id="productImageSliderWrapper">
-                    ${productImageUrls.map(url => `<div class="slider-item"><img src="${url}" alt="${productName}"></div>`).join('')}
-                </div>
-                <div class="slider-nav">
-                    <button onclick="prevSlide()">&lt;</button>
-                    <button onclick="nextSlide()">&gt;</button>
-                </div>
-                <div class="slider-dots" id="sliderDots">
-                    ${productImageUrls.map((_, index) => `<span class="slider-dot" onclick="currentSlide(${index})"></span>`).join('')}
-                </div>
-            </div>
-        `;
+    if (localUser.Alamat === "Alamat belum diatur" || localUser.NomorHP === "Nomor HP belum diatur") {
+         alert("Mohon lengkapi Alamat Pengiriman dan Nomor HP Anda di menu Edit Profil sebelum melakukan pembelian.");
+         showEditProfil();
+         return;
     }
     
+    const userName = localUser.Nama || "Nama belum di seting";
+    const userAddress = localUser.Alamat || "Alamat pengantaran belum di seting";
+    const userNomorHP = localUser.NomorHP || "Nomor HP belum di seting";
+    const productPriceInSaldo = productPrice; 
+    const paymentContainer = document.getElementById('payment-container');
+    
+    paymentContainer.style.display = 'flex';
+    paymentContainer.style.backgroundColor = '#f0f2f5'; 
+
+    const imageUrl = (productImageUrls && productImageUrls.length > 0) ? productImageUrls[0] : 'https://nasukafoods.site/cilokpro.jpg';
+
+
     paymentContainer.innerHTML = `
-        <div class="payment-card">
-            ${sliderHtml}
-            <p><strong>Produk:</strong> ${productName}</p>
-            <p><strong>Deskripsi:</strong> ${productDescription}</p>
-            <p><strong>Harga:</strong> Rp ${Math.round(productPrice).toLocaleString('id-ID')}</p>
-            <p><strong>Bayar dengan poin:</strong> <span style="font-weight:; color: black;">${productPriceInPoin.toLocaleString('id-ID')} Poin</span></p>
-            <p><strong>Keterangan:</strong> ${manualDescription}</p>
-            <hr>
-            <h3>Informasi Pengiriman</h3>
-            <p><strong>Nama:</strong> ${userName}</p>
-            <p><strong>Alamat:</strong> ${userAddress}</p>
-            <p><strong>Poin Anda:</strong> <span style="font-weight: bold; color: black; text-shadow: 1px 1px 1px #333;">${(localUser.Poin || 0).toLocaleString('id-ID')} Poin</span></p>
-            <hr>
-            <div class="payment-options">
-                <button onclick="processPoinPayment(${productPriceInPoin}, '${productName}')" style="background-color: #ff9800; color: white;">Bayar dengan Poin</button>
+        <div class="payment-card-modified">
+            
+            <div class="payment-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>Detail Produk</h3>
             </div>
-            <button onclick="showHome()" class="btn-kembali">Kembali ke Beranda</button>
-            <div id="payment-status" style="margin-top: 15px;"></div>
+            
+            <div class="product-image-container">
+                <img src="${imageUrl}" alt="${productName}">
+            </div>
+
+            <div class="product-details-section">
+                <h4>${productName}</h4>
+                <div class="product-price-display">
+                    Harga: Rp ${productPriceInSaldo.toLocaleString('id-ID')}
+                </div>
+                <p class="product-description-text">
+                    ${productDescription}
+                </p>
+                <p class="product-keterangan-manual">
+                    ${manualDescription}
+                </p>
+            </div>
+
+            <div class="payment-info-section">
+                <div style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333;">Info Pembeli & Pengiriman</div>
+                
+                <div class="info-row">
+                    <span class="info-label">Pelanggan</span>
+                    <span class="info-value">${userName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nomor HP</span>
+                    <span class="info-value">${userNomorHP}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Alamat Pengiriman</span>
+                    <span class="info-value address">${userAddress}</span>
+                </div>
+                <div class="info-row Saldo-row">
+                    <span class="info-label">Saldo Anda</span>
+                    <span class="info-value" style="color: #007bff;">Rp ${(localUser.Saldo || 0).toLocaleString('id-ID')}</span>
+                </div>
+                <div class="info-row total-bayar-row">
+                    <span class="info-label" style="color: #333;">Harga yang akan di bayar</span>
+                    <span class="info-value">Rp ${productPriceInSaldo.toLocaleString('id-ID')}</span>
+                </div>
+            </div>
+            
+            <div id="payment-status" style="margin: 0 15px 15px 15px;"></div>
+
+            <div class="payment-action-section">
+                <button class="btn-bayar-Saldo" onclick="processSaldoPayment(${productPriceInSaldo}, '${productName}')">
+                    Bayar Rp ${productPriceInSaldo.toLocaleString('id-ID')} Sekarang
+                </button>
+            </div>
+            
         </div>
     `;
     
-    if (productImageUrls && productImageUrls.length > 0) {
-        initializeSlider(productImageUrls.length);
-    }
-}
-
-
-let currentSlideIndex = 0;
-let totalSlides = 0;
-function initializeSlider(numSlides) {
-    totalSlides = numSlides;
-    currentSlideIndex = 0;
-    updateSlider();
-}
-function updateSlider() {
-    const sliderWrapper = document.getElementById('productImageSliderWrapper');
-    const sliderDotsContainer = document.getElementById('sliderDots');
-    if (sliderWrapper && sliderDotsContainer) {
-        sliderWrapper.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-        const dots = sliderDotsContainer.children;
-        for (let i = 0; i < dots.length; i++) {
-            dots[i].classList.remove('active');
-        }
-        if (dots[currentSlideIndex]) {
-            dots[currentSlideIndex].classList.add('active');
-        }
-    }
-}
-function nextSlide() {
-    currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
-    updateSlider();
-}
-function prevSlide() {
-    currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
-    updateSlider();
-}
-function currentSlide(index) {
-    currentSlideIndex = index;
-    updateSlider();
 }
 
 
@@ -1539,7 +2385,9 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
 $(document).ready(function() {
     showHome(); 
 });
+
+
 </script>
-    
+
 </body>
 </html>
